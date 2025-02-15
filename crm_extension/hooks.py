@@ -245,3 +245,17 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+fixtures = [
+    {
+        "doctype":"Custom Field", "filters":{"module":["in",["Crm Extension"]]}
+    },
+    {
+        "doctype":"Print Format", "filters":{"module":["in",["Crm Extension"]]}
+    },
+    {
+        "doctype":"Client Script", "filters":{"module":["in",["Crm Extension"]]}
+    },
+    {
+        "doctype":"Server Script", "filters":{"module":["in",["Crm Extension"]]}
+    }
+]
