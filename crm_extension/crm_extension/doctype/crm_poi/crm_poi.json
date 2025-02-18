@@ -1,0 +1,115 @@
+{
+ "actions": [],
+ "autoname": "format:POI-{######}-{crm_lead_id}",
+ "creation": "2025-02-18 20:51:38.833769",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "latitude",
+  "column_break_mhxn",
+  "longitude",
+  "section_break_ctvs",
+  "crm_lead_id",
+  "lead_name",
+  "column_break_fiyr",
+  "workmate_id",
+  "column_break_dfpn",
+  "fieldmate_id",
+  "column_break_bfsl",
+  "fieldassist_id",
+  "information_tab",
+  "location_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "latitude",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Latitude",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_mhxn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "longitude",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Longitude",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_ctvs",
+   "fieldtype": "Section Break",
+   "label": "Legacy Details"
+  },
+  {
+   "fieldname": "crm_lead_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "CRM Lead ID",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_fiyr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "workmate_id",
+   "fieldtype": "Data",
+   "label": "Workmate ID"
+  },
+  {
+   "fieldname": "column_break_dfpn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fieldmate_id",
+   "fieldtype": "Data",
+   "label": "Fieldmate ID"
+  },
+  {
+   "fieldname": "column_break_bfsl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fieldassist_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "FieldAssist ID"
+  },
+  {
+   "fieldname": "information_tab",
+   "fieldtype": "Tab Break",
+   "label": "Information"
+  },
+  {
+   "fieldname": "location_notes",
+   "fieldtype": "Small Text",
+   "label": "Location Notes"
+  },
+  {
+   "fieldname": "lead_name",
+   "fieldtype": "Data",
+   "is_virtual": 1,
+   "label": "Lead Name"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-02-18 21:24:37.729919",
+ "modified_by": "Administrator",
+ "module": "Crm Extension",
+ "name": "CRM POI",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "crm_lead_id"
+}

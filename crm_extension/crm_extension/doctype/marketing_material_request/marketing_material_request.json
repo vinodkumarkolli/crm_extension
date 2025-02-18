@@ -1,0 +1,367 @@
+{
+ "actions": [
+  {
+   "action": "/",
+   "action_type": "Server Action",
+   "label": "Approve"
+  },
+  {
+   "action": "/",
+   "action_type": "Server Action",
+   "label": "Reject"
+  },
+  {
+   "action": "/",
+   "action_type": "Server Action",
+   "label": "On Hold"
+  },
+  {
+   "action": "/",
+   "action_type": "Server Action",
+   "label": "Completed"
+  },
+  {
+   "action": "/",
+   "action_type": "Server Action",
+   "label": "Shortlisted"
+  },
+  {
+   "action": "/",
+   "action_type": "Server Action",
+   "group": "Proofs",
+   "label": "Verify Recce"
+  },
+  {
+   "action": "/",
+   "action_type": "Server Action",
+   "group": "Proofs",
+   "label": "Verify Manufacture"
+  },
+  {
+   "action": "/",
+   "action_type": "Server Action",
+   "group": "Proofs",
+   "label": "Verify Installation"
+  }
+ ],
+ "autoname": "format:MAT-REQ-{######}",
+ "creation": "2025-02-18 21:13:12.568557",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_chj2",
+  "amended_from",
+  "crm_lead_id",
+  "crm_lead_name",
+  "request_material",
+  "requested_date",
+  "column_break_gehr",
+  "request_status",
+  "approveddeclinedon_hold_date",
+  "completed_date",
+  "process_stage",
+  "require_proofs",
+  "installation_status",
+  "section_break_zvea",
+  "place",
+  "details_section",
+  "request_notes",
+  "proofs_tab",
+  "pre_installation_section",
+  "recce_image_1__installation_place_image_1",
+  "recce_image_2__installation_place_image_2",
+  "recce_verified_by",
+  "column_break_rbvq",
+  "recce_notes",
+  "quotation_section",
+  "quote_measurement",
+  "quote_uom",
+  "column_break_luas",
+  "quote_rate_per_uom",
+  "quotation_price",
+  "manufacturing_section",
+  "manufactured_image",
+  "manufacture_verified_by",
+  "column_break_mids",
+  "manufacturing_notes",
+  "installed_details_section",
+  "installation_image_1",
+  "installation_image_2",
+  "installation_verified_by",
+  "column_break_lswg",
+  "installation_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_chj2",
+   "fieldtype": "Section Break",
+   "label": "Configuration"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Marketing Material Request",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "crm_lead_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "CRM Lead ID",
+   "reqd": 1
+  },
+  {
+   "fieldname": "crm_lead_name",
+   "fieldtype": "Data",
+   "label": "CRM Lead Name"
+  },
+  {
+   "fieldname": "requested_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Requested Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_gehr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "request_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Request Status",
+   "options": "\nDraft\nShortlisted\nCompleted\nDeclined\nHold",
+   "reqd": 1
+  },
+  {
+   "fieldname": "approveddeclinedon_hold_date",
+   "fieldtype": "Date",
+   "label": "Approved/Declined/On Hold Date"
+  },
+  {
+   "fieldname": "completed_date",
+   "fieldtype": "Date",
+   "label": "Completed Date"
+  },
+  {
+   "fieldname": "process_stage",
+   "fieldtype": "Select",
+   "label": "Process Stage",
+   "options": "Under Manufacture\nManufactured & Placed in Goodown\nUnder Transit\nMounted\nDe-Mounted"
+  },
+  {
+   "fieldname": "request_material",
+   "fieldtype": "Select",
+   "label": "Request Material",
+   "options": "Backlit Boards\nFrontlit Boards\nStationary Dairies\nStationary Calendars\nStationary Canvas Bags\nStationary Medical Covers",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_zvea",
+   "fieldtype": "Section Break",
+   "label": "Place"
+  },
+  {
+   "fieldname": "place",
+   "fieldtype": "Table",
+   "label": "Place",
+   "options": "CRM POI"
+  },
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "request_notes",
+   "fieldtype": "Small Text",
+   "label": "Request Notes"
+  },
+  {
+   "fieldname": "proofs_tab",
+   "fieldtype": "Tab Break",
+   "label": "Proofs"
+  },
+  {
+   "fieldname": "pre_installation_section",
+   "fieldtype": "Section Break",
+   "label": "Pre Installation"
+  },
+  {
+   "fieldname": "recce_image_1__installation_place_image_1",
+   "fieldtype": "Attach Image",
+   "label": "Recce Image 1 / Installation Place Image 1"
+  },
+  {
+   "fieldname": "recce_image_2__installation_place_image_2",
+   "fieldtype": "Attach Image",
+   "label": "Recce Image 2 / Installation Place Image 2"
+  },
+  {
+   "fieldname": "column_break_rbvq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "recce_notes",
+   "fieldtype": "Small Text",
+   "label": "Recce Notes"
+  },
+  {
+   "fieldname": "manufacturing_section",
+   "fieldtype": "Section Break",
+   "label": "Manufacturing"
+  },
+  {
+   "fieldname": "manufactured_image",
+   "fieldtype": "Attach Image",
+   "label": "Manufactured Image"
+  },
+  {
+   "fieldname": "column_break_mids",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "manufacturing_notes",
+   "fieldtype": "Small Text",
+   "label": "Manufacturing Notes"
+  },
+  {
+   "fieldname": "installed_details_section",
+   "fieldtype": "Section Break",
+   "label": "Installed Details"
+  },
+  {
+   "fieldname": "installation_image_1",
+   "fieldtype": "Attach Image",
+   "label": "Installation Image 1"
+  },
+  {
+   "fieldname": "installation_image_2",
+   "fieldtype": "Attach Image",
+   "label": "Installation Image 2"
+  },
+  {
+   "fieldname": "installation_verified_by",
+   "fieldtype": "Data",
+   "label": "Installation Verified by"
+  },
+  {
+   "fieldname": "column_break_lswg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "installation_notes",
+   "fieldtype": "Small Text",
+   "label": "Installation Notes"
+  },
+  {
+   "default": "0",
+   "fieldname": "require_proofs",
+   "fieldtype": "Check",
+   "label": "Require Proofs"
+  },
+  {
+   "fieldname": "installation_status",
+   "fieldtype": "Select",
+   "label": "Installation Status",
+   "options": "Under Process\nAccepted\nDisputed\nDeclined"
+  },
+  {
+   "fieldname": "recce_verified_by",
+   "fieldtype": "Data",
+   "label": "Recce Verified by"
+  },
+  {
+   "fieldname": "manufacture_verified_by",
+   "fieldtype": "Data",
+   "label": "Verified by"
+  },
+  {
+   "fieldname": "quotation_section",
+   "fieldtype": "Section Break",
+   "label": "Quotation"
+  },
+  {
+   "fieldname": "column_break_luas",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quotation_price",
+   "fieldtype": "Float",
+   "label": "Quotation Price"
+  },
+  {
+   "fieldname": "quote_measurement",
+   "fieldtype": "Data",
+   "label": "Measurement"
+  },
+  {
+   "fieldname": "quote_uom",
+   "fieldtype": "Select",
+   "label": "UOM",
+   "options": "Sft"
+  },
+  {
+   "fieldname": "quote_rate_per_uom",
+   "fieldtype": "Data",
+   "label": "Rate per UOM"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-02-18 21:50:12.517718",
+ "modified_by": "Administrator",
+ "module": "Crm Extension",
+ "name": "Marketing Material Request",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [
+  {
+   "color": "Green",
+   "title": "Approved"
+  },
+  {
+   "color": "Gray",
+   "title": "Completed"
+  },
+  {
+   "color": "Red",
+   "title": "Rejected"
+  },
+  {
+   "color": "Yellow",
+   "title": "On Hold"
+  },
+  {
+   "color": "Blue",
+   "title": "Shortlisted"
+  },
+  {
+   "color": "Orange",
+   "title": "Manufactured"
+  }
+ ]
+}
