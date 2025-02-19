@@ -63,7 +63,11 @@
   "require_proofs",
   "installation_status",
   "section_break_zvea",
-  "place",
+  "latitude",
+  "column_break_jrnh",
+  "longitude",
+  "column_break_gzyy",
+  "field_assist_id",
   "details_section",
   "request_notes",
   "proofs_tab",
@@ -109,9 +113,10 @@
   },
   {
    "fieldname": "crm_lead_id",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "CRM Lead ID",
+   "options": "CRM Lead",
    "reqd": 1
   },
   {
@@ -131,6 +136,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "default": "Draft",
    "fieldname": "request_status",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -167,12 +173,6 @@
    "label": "Place"
   },
   {
-   "fieldname": "place",
-   "fieldtype": "Table",
-   "label": "Place",
-   "options": "CRM POI"
-  },
-  {
    "fieldname": "details_section",
    "fieldtype": "Section Break",
    "label": "Details"
@@ -188,16 +188,19 @@
    "label": "Proofs"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "pre_installation_section",
    "fieldtype": "Section Break",
    "label": "Pre Installation"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "recce_image_1__installation_place_image_1",
    "fieldtype": "Attach Image",
    "label": "Recce Image 1 / Installation Place Image 1"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "recce_image_2__installation_place_image_2",
    "fieldtype": "Attach Image",
    "label": "Recce Image 2 / Installation Place Image 2"
@@ -207,6 +210,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "recce_notes",
    "fieldtype": "Small Text",
    "label": "Recce Notes"
@@ -231,6 +235,7 @@
    "label": "Manufacturing Notes"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "installed_details_section",
    "fieldtype": "Section Break",
    "label": "Installed Details"
@@ -272,6 +277,7 @@
    "options": "Under Process\nAccepted\nDisputed\nDeclined"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "recce_verified_by",
    "fieldtype": "Data",
    "label": "Recce Verified by"
@@ -282,6 +288,7 @@
    "label": "Verified by"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "quotation_section",
    "fieldtype": "Section Break",
    "label": "Quotation"
@@ -310,12 +317,37 @@
    "fieldname": "quote_rate_per_uom",
    "fieldtype": "Data",
    "label": "Rate per UOM"
+  },
+  {
+   "fieldname": "latitude",
+   "fieldtype": "Data",
+   "label": "Latitude",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_jrnh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "longitude",
+   "fieldtype": "Data",
+   "label": "Longitude",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_gzyy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "field_assist_id",
+   "fieldtype": "Data",
+   "label": "Field Assist ID"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-18 21:50:12.517718",
+ "modified": "2025-02-19 16:24:21.000682",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
@@ -331,6 +363,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
    "share": 1,
    "submit": 1,
    "write": 1
