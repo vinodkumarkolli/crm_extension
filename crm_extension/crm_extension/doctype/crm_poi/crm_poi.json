@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "autoname": "format:POI-{######}-{crm_lead_id}",
  "creation": "2025-02-18 20:51:38.833769",
  "doctype": "DocType",
@@ -101,7 +102,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-19 16:11:36.536361",
+ "modified": "2025-02-28 21:54:33.907193",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI",
