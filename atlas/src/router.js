@@ -5,14 +5,9 @@ import { userResource } from '@/data/user'
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: () => import('@/pages/Home.vue'),
-  },
-  {
-    name: 'Login',
-    path: '/account/login',
-    component: () => import('@/pages/Login.vue'),
-  },
+    name: 'Map',
+    component: () => import('@/pages/Map.vue'),
+  }
 ]
 
 let router = createRouter({
@@ -27,14 +22,10 @@ router.beforeEach(async (to, from, next) => {
   } catch (error) {
     isLoggedIn = false
   }
-
-  if (to.name === 'Login' && isLoggedIn) {
-    next({ name: 'Home' })
-  } else if (to.name !== 'Login' && !isLoggedIn) {
-    next({ name: 'Login' })
-  } else {
-    next()
+  if(!isLoggedIn){
+    window.location.href = "/login?redirect-to=atlas"
   }
+  next()
 })
 
 export default router
