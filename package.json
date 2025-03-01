@@ -1,0 +1,15 @@
+{
+  "name": "crm_extension",
+  "version": "1.0.0",
+  "description": "An extension for Frappe CRM and used internally for Sravi Enterprises",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd romeo && yarn install",
+    "dev": "cd romeo && yarn dev",
+    "build": "cd romeo && yarn build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

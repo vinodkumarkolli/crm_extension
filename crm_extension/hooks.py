@@ -259,3 +259,5 @@ fixtures = [
         "doctype":"Server Script", "filters":{"module":["in",["Crm Extension"]]}
     }
 ]
+
+website_route_rules = [{'from_route': '/romeo/<path:app_path>', 'to_route': 'romeo'},]
