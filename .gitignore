@@ -22,7 +22,8 @@ wheels/
 *.egg
 tags
 MANIFEST
-
+crm_extension/public
+crm_extension/www
 # Environments
 .env
 .venv
