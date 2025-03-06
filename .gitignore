@@ -22,8 +22,9 @@ wheels/
 *.egg
 tags
 MANIFEST
-crm_extension/public
-crm_extension/www
+crm_extension/public/romeo
+crm_extension/www/romeo.html
+romeo/yarn.lock
 # Environments
 .env
 .venv
