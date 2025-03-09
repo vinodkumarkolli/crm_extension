@@ -1,32 +1,45 @@
-<!--Generate Code to use createListResource from frappe-ui to read doctype CRM POI-->
 <template>
-    <div  class="space-y-4">
-        <div class="flex items-center justify-between"
-        v-for="mapPOI in mapPOIs"
-        :key="mapPOI.name">
-        <div>{{ mapPOI.crm_lead_id }}</div>
-        <div>{{ mapPOI.fieldassist_id }}</div>
-        <div>{{ mapPOI.fieldmate_id }}</div>
-        <div>{{ mapPOI.workmate_id }}</div>
-        <div>{{ mapPOI.latitude }}</div>
-        <div>{{ mapPOI.longitude }}</div>
-    </div>
-    </div>
+  <div id="map" ref="mapContainer" class="map"></div>
 </template>
-<script >
-// import { pois } from "../data/poi";
-import { toRaw } from "vue";
-import { createListResource } from 'frappe-ui';
-import {computed} from 'vue';
+<script setup>
+import { onMounted, ref } from 'vue';
+import L from 'leaflet';
+import {createListResource} from 'frappe-ui'
 
-//let mapPOIs = toRaw(pois.data,{deep:true})
-let mapPOISResource = createListResource({
-    doctype:"CRM POI",
-    fields:["*"],
-    auto: true
+const mapContainer = ref(null);
+
+onMounted(() => {
+    initMap();
 })
-const mapPOIs = computed(()=> {
-    return JSON.stringify(mapPOISResource.list)
-})
-console.log(JSON.stringify(mapPOISResource))
+function initMap() {
+    const mapResource = createListResource({
+        doctype: "CRM POI",
+        fields:["*"],
+        pageLength: "None",
+    })
+
+    mapResource.reload().then(response => {
+        //pois = JSON.parse(JSON.stringify(response))
+        const pois = JSON.parse(JSON.stringify(response))
+        console.log(pois)
+    });
+    if(mapContainer.value){
+        mapContainer.value = L.map('map').setView([13.009409, 80.151071], 12);
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.{ext}', {
+        minZoom: 0,
+        maxZoom: 20,
+        attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        ext: 'png'
+      }).addTo(mapContainer.value);
+    }
+    else {
+        console.error('Map container not found');
+    }
+}
 </script>
+<style scoped>
+.map{
+    width: "100%";
+    height: 100vh;
+}
+</style>

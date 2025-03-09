@@ -1,13 +1,10 @@
-import { createListResource } from 'frappe-ui';
-export const pois = createListResource({
-    doctype:"CRM POI",
-    fields:["*"],
-    auto: true,
-    pageLength: "None",
-    onSuccess(data){
-        console.log(data)
-    },
-    transform(data){
-        return data
+import { createResource } from 'frappe-ui';
+export const pois = createResource({
+    url: 'frappe.client.get_list',
+    params: {
+      doctype: 'CRM POI',
+      fields: ["*"],
+      limit_page_length: 'None'
     }
-})
+  })
+  

@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/data',
     name: 'Data',
-    component: () => import('@/pages/Data.vue'),
+    component: async () => import('@/pages/Data.vue'),
   }
 ]
 
