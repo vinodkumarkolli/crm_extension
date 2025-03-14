@@ -94,15 +94,19 @@
    "label": "Location Notes"
   },
   {
+   "default": "crm_lead_id.first_name",
+   "fetch_from": "crm_lead_id.first_name",
+   "fetch_if_empty": 1,
    "fieldname": "lead_name",
    "fieldtype": "Data",
-   "is_virtual": 1,
-   "label": "Lead Name"
+   "label": "Lead Name",
+   "read_only": 1
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-28 21:54:33.907193",
+ "modified": "2025-03-14 18:00:51.890656",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI",
@@ -135,6 +139,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],

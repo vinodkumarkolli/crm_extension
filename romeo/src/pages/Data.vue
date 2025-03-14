@@ -5,7 +5,10 @@
 import { onMounted, ref } from 'vue';
 import L, { map } from 'leaflet';
 import {createListResource} from 'frappe-ui'
-import leafletSearch from 'leaflet-search/src/leaflet-search';
+import {leafletSearch} from 'leaflet-search/src/leaflet-search';
+import {LocateControl} from 'leaflet.locatecontrol';
+import "leaflet.locatecontrol/dist/L.Control.Locate.min.css"; 
+import "leaflet-search/dist/leaflet-search.src.css"
 
 const mapContainer = ref(null);
 
@@ -54,7 +57,6 @@ function initMap() {
                 },
                 properties: poi
             })
-            // console.log(poi)
         }
         for (let poi of oldPOIs) {
             oldGeoJsonFeatureCollection.features.push({
@@ -65,16 +67,16 @@ function initMap() {
                 },
                 properties: poi
             })
-            // console.log(poi)
         }
-        //console.log(geoJsonFeatureCollection)
         if(mapContainer.value){
             mapContainer.value = L.map('map', { zoomControl: false }).setView([13.009409, 80.151071], 12);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            const geoLocate = new LocateControl().addTo(mapContainer.value)
+            const zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(mapContainer.value)
+            const osmTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(mapContainer.value);
-            L.control.zoom({ position: 'bottomright' }).addTo(mapContainer.value);
+            });
+            
             const newGeoJSONLayer = L.geoJson(newGeoJsonFeatureCollection, {
             //add code to convert pointTo Circle
             pointToLayer: function(feature,latlng){
@@ -105,26 +107,33 @@ function initMap() {
             onEachFeature: function (feature, layer) {
                 layer.bindTooltip(L.Util.template(`<b>${feature.properties.name}</b><br /> ${feature.properties.crm_lead_id}<br /> ${feature.properties.fieldassist_id}<br /> ${feature.properties.fieldmate_id}<br /> ${feature.properties.workmate_id}`));
             }})
-            
-            // L.control.leafletSearch({
+            // const newPOISearch = L.Control.Search({
             //     position: 'topleft',
             //     layer: newGeoJSONLayer,
-            //     placeholder: 'Search by name or crm_lead_id',
+            //     placeholder: 'Search FieldAssist Locations',
             //     propertyName: 'name',
             //     zoomToResult: true,
-            // }).addTo(newGeoJSONLayer)
-            // L.control.leafletSearch({
+            // })
+            // newPOISearch.addTo(mapContainer.value)
+            //.addTo(newGeoJSONLayer)
+            // const oldPOISearch = L.control.leafletSearch({
             //     position: 'topleft',
             //     layer: oldGeoJSONLayer,
             //     placeholder: 'Search by name or crm_lead_id',
             //     propertyName: 'name',
             //     zoomToResult: true,
-            // }).addTo(oldGeoJSONLayer)
+            // })
+            const newPOImap = L.layerGroup([newGeoJSONLayer])
+            const oldPOImap = L.layerGroup([oldGeoJSONLayer])
+            //.addTo(oldGeoJSONLayer)
             const baseMaps = {
-                "Field Assist": newGeoJSONLayer,
-                "Old Fieldmate": oldGeoJSONLayer
+                "OSM": osmTileLayer
             }
-            L.control.layers(baseMaps).addTo(mapContainer.value)
+            const overlayMaps = {
+                "Field Assist": newPOImap,
+                "Old Fieldmate": oldPOImap
+            }
+            L.control.layers(baseMaps,overlayMaps,{ collapsed: false }).addTo(mapContainer.value)
             //newGeoJSONLayer.addTo(mapContainer.value)
             //oldGeoJSONLayer.addTo(mapContainer.value)
         }
