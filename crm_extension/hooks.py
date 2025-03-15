@@ -257,6 +257,9 @@ fixtures = [
     },
     {
         "doctype":"Server Script", "filters":{"module":["in",["Crm Extension"]]}
+    },
+    {
+        "doctype":"Custom DocPerm", "filters":{}
     }
 ]
 
