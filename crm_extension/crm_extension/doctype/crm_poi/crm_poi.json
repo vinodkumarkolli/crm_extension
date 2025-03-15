@@ -8,8 +8,10 @@
  "engine": "InnoDB",
  "field_order": [
   "latitude",
-  "column_break_mhxn",
   "longitude",
+  "column_break_mhxn",
+  "location_name",
+  "pincode",
   "section_break_ctvs",
   "crm_lead_id",
   "lead_name",
@@ -52,7 +54,6 @@
    "in_list_view": 1,
    "label": "CRM Lead ID",
    "options": "CRM Lead",
-   "reqd": 1,
    "unique": 1
   },
   {
@@ -101,12 +102,24 @@
    "fieldtype": "Data",
    "label": "Lead Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "location_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Location Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "pincode",
+   "fieldtype": "Data",
+   "label": "Pincode"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-14 18:00:51.890656",
+ "modified": "2025-03-15 10:11:58.254060",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI",
