@@ -17,6 +17,7 @@ class CRMPOI(Document):
 		polys = self.df.contains(pt)
 		pol = self.df[polys]
 		self.pincode = pol['pincode'].iloc[0]
+		self.custom_district = pol['district'].iloc[0]
 		#print(pol)
 	def validate(self):
 		if not self.workmate_id:
