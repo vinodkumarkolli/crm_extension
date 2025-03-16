@@ -66,17 +66,9 @@
    "label": "Workmate ID"
   },
   {
-   "fieldname": "column_break_dfpn",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "fieldmate_id",
    "fieldtype": "Data",
    "label": "Fieldmate ID"
-  },
-  {
-   "fieldname": "column_break_bfsl",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "fieldassist_id",
