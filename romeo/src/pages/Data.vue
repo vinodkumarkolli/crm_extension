@@ -90,7 +90,9 @@ function initMap() {
                 })
             },
             onEachFeature: function (feature, layer) {
+                let win_url = "https://www.google.com/maps/place/"+feature.geometry.coordinates[1]+','+feature.geometry.coordinates[0]
                 layer.bindTooltip(L.Util.template(`<b>${feature.properties.name}</b><br /> ${feature.properties.crm_lead_id}<br /> ${feature.properties.fieldassist_id}<br /> ${feature.properties.fieldmate_id}<br /> ${feature.properties.workmate_id}`));
+                layer.bindPopup(L.Util.template(`<br/><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a>`))
             }})
             const oldGeoJSONLayer = L.geoJson(oldGeoJsonFeatureCollection, {
             //add code to convert pointTo Circle
@@ -105,7 +107,10 @@ function initMap() {
                 })
             },
             onEachFeature: function (feature, layer) {
+                let win_url = "https://www.google.com/maps/place/"+feature.geometry.coordinates[1]+','+feature.geometry.coordinates[0]
+                //console.log(win_url)
                 layer.bindTooltip(L.Util.template(`<b>${feature.properties.name}</b><br /> ${feature.properties.crm_lead_id}<br /> ${feature.properties.fieldassist_id}<br /> ${feature.properties.fieldmate_id}<br /> ${feature.properties.workmate_id}`));
+                layer.bindPopup(L.Util.template(`<br/><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a>`))
             }})
             // const newPOISearch = L.Control.Search({
             //     position: 'topleft',
@@ -147,5 +152,9 @@ function initMap() {
 .map{
     width: "100%";
     height: 100vh;
+}
+.leaflet-popup-content-wrapper {
+    background: #e0e0e0;
+    color: #234c5e;
 }
 </style>
