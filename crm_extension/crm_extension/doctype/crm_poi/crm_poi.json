@@ -17,9 +17,7 @@
   "lead_name",
   "column_break_fiyr",
   "workmate_id",
-  "column_break_dfpn",
   "fieldmate_id",
-  "column_break_bfsl",
   "fieldassist_id",
   "information_tab",
   "location_notes"
@@ -63,18 +61,21 @@
   {
    "fieldname": "workmate_id",
    "fieldtype": "Data",
-   "label": "Workmate ID"
+   "label": "Workmate ID",
+   "set_only_once": 1
   },
   {
    "fieldname": "fieldmate_id",
    "fieldtype": "Data",
-   "label": "Fieldmate ID"
+   "label": "Fieldmate ID",
+   "set_only_once": 1
   },
   {
    "fieldname": "fieldassist_id",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "FieldAssist ID"
+   "label": "FieldAssist ID",
+   "set_only_once": 1
   },
   {
    "fieldname": "information_tab",
@@ -111,7 +112,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-15 10:11:58.254060",
+ "modified": "2025-03-16 14:58:21.608650",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI",

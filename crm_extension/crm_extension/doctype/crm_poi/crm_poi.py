@@ -22,7 +22,7 @@ class CRMPOI(Document):
 		if res.status_code != 200:
 			frappe.msgprint('Unable to fetch Address for the Coordinates')
 		else:
-			print(res.json()['features'][0]['properties']['geocoding']['label'])
+			#print(res.json()['features'][0]['properties']['geocoding']['label'])
 			self.custom_reverse_geocoded_address = res.json()['features'][0]['properties']['geocoding']['label']
 		pt= Point((self.longitude,self.latitude))
 		polys = self.df.contains(pt)
