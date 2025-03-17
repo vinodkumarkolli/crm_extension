@@ -9,12 +9,29 @@ import {leafletSearch} from 'leaflet-search/src/leaflet-search';
 import {LocateControl} from 'leaflet.locatecontrol';
 import "leaflet.locatecontrol/dist/L.Control.Locate.min.css"; 
 import "leaflet-search/dist/leaflet-search.src.css"
-
+import bingLayer from 'leaflet-bing-layer'
 const mapContainer = ref(null);
 
 onMounted(() => {
     initMap();
 })
+function getBoundsFromLatLng(latlng, radius) {
+    const earthRadius = 6378137; // Earth's radius in meters
+
+  const lat = latlng.lat;
+  const lng = latlng.lng;
+
+  // Convert radius from meters to degrees
+  const latOffset = (radius / earthRadius) * (180 / Math.PI);
+  const lngOffset = (radius / (earthRadius * Math.cos(Math.PI * lat / 180))) * (180 / Math.PI);
+
+  // Calculate the bounding box coordinates
+  const northEast = L.latLng(lat + latOffset, lng + lngOffset);
+  const southWest = L.latLng(lat - latOffset, lng - lngOffset);
+
+  // Create a Leaflet LatLngBounds object
+  return L.latLngBounds(southWest, northEast);
+}
 function initMap() {
     const mapResource = createListResource({
         doctype: "CRM POI",
@@ -69,14 +86,27 @@ function initMap() {
             })
         }
         if(mapContainer.value){
+            const centerLatLng = L.latLng(13.009409, 80.151071);
             mapContainer.value = L.map('map', { zoomControl: false }).setView([13.009409, 80.151071], 12);
+            const bounds = getBoundsFromLatLng(centerLatLng, 30 * 1000); // 80 km in meters
+            //console.log(bounds)
+            mapContainer.value.setMaxBounds(bounds);
+            // Optionally, fit the map view to these bounds
+            mapContainer.value.fitBounds(bounds);
             const geoLocate = new LocateControl().addTo(mapContainer.value)
             const zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(mapContainer.value)
             const osmTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             });
-            
+            const bingL = L.tileLayer.bing(
+            {
+                bingMapsKey: 'Ap5ZdTzb1hx-M6LRMFQNlvy_lkACzdfzZ20LElE0AMI8ueMfjCrTV9mNDTfMKsB0',
+                imagerySet: 'RoadOnDemand',
+                culture: 'en-US',
+                type: 'AerialWithLabels',
+                //style: 'wt|fc:28fa3c;lbc:a0a1a1;loc:111505_ar|fc:474747_trs|fc:222527;lbc:a0a1a1;loc:000505;sc:0_g|lc:2f3133;srv:0;lbc:a0a1a1;loc:000505'
+            })
             const newGeoJSONLayer = L.geoJson(newGeoJsonFeatureCollection, {
             //add code to convert pointTo Circle
             pointToLayer: function(feature,latlng){
@@ -132,7 +162,8 @@ function initMap() {
             const oldPOImap = L.layerGroup([oldGeoJSONLayer])
             //.addTo(oldGeoJSONLayer)
             const baseMaps = {
-                "OSM": osmTileLayer
+                "Classic Map": osmTileLayer,
+                "Modern Map": bingL
             }
             const overlayMaps = {
                 "Field Assist": newPOImap,
