@@ -260,6 +260,9 @@ fixtures = [
     },
     {
         "doctype":"Custom DocPerm", "filters":{}
+    },
+    {
+        "doctype":"Role","filters":[["role_name","in",["CRM Viewer"]]]
     }
 ]
 

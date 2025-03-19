@@ -17,6 +17,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "API Key",
+   "permlevel": 1,
    "reqd": 1
   },
   {
@@ -51,7 +52,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-03-19 18:17:56.310124",
+ "modified": "2025-03-19 22:06:02.677272",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "Bing Maps Settings",
