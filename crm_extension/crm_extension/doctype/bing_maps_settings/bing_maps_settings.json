@@ -1,0 +1,75 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-18 16:20:24.277416",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "api_key",
+  "column_break_ncrm",
+  "imagery_set",
+  "map_culture",
+  "map_style"
+ ],
+ "fields": [
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "API Key",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ncrm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "RoadOnDemand",
+   "fieldname": "imagery_set",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Imagery Set",
+   "options": "Aerial\nAerialWithLabels\nAerialWithLabelsOnDemand\nCanvasDark\nCanvasLight\nCanvasGray\nRoad\nRoadOnDemand",
+   "reqd": 1
+  },
+  {
+   "default": "en-US",
+   "fieldname": "map_culture",
+   "fieldtype": "Select",
+   "label": "Map Culture",
+   "options": "en-US\nen-GB\nte\nta"
+  },
+  {
+   "description": "only works with the AerialWithLabelsOnDemand and RoadOnDemand imagerySet",
+   "documentation_url": "https://learn.microsoft.com/en-us/previous-versions/mt823632(v=msdn.10)?redirectedfrom=MSDN",
+   "fieldname": "map_style",
+   "fieldtype": "Small Text",
+   "label": "Map Style"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-03-19 18:17:56.310124",
+ "modified_by": "Administrator",
+ "module": "Crm Extension",
+ "name": "Bing Maps Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

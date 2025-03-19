@@ -4,7 +4,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import L, { map } from 'leaflet';
-import {createListResource} from 'frappe-ui'
+import {createListResource,createResource} from 'frappe-ui'
 import {leafletSearch} from 'leaflet-search/src/leaflet-search';
 import {LocateControl} from 'leaflet.locatecontrol';
 import "leaflet.locatecontrol/dist/L.Control.Locate.min.css"; 
@@ -17,7 +17,6 @@ onMounted(() => {
 })
 function getBoundsFromLatLng(latlng, radius) {
     const earthRadius = 6378137; // Earth's radius in meters
-
   const lat = latlng.lat;
   const lng = latlng.lng;
 
@@ -94,19 +93,11 @@ function initMap() {
             // Optionally, fit the map view to these bounds
             mapContainer.value.fitBounds(bounds);
             const geoLocate = new LocateControl().addTo(mapContainer.value)
-            const zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(mapContainer.value)
+            const zoomControl = L.control.zoom({ position: 'topleft' }).addTo(mapContainer.value)
             const osmTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             });
-            const bingL = L.tileLayer.bing(
-            {
-                bingMapsKey: 'Ap5ZdTzb1hx-M6LRMFQNlvy_lkACzdfzZ20LElE0AMI8ueMfjCrTV9mNDTfMKsB0',
-                imagerySet: 'RoadOnDemand',
-                culture: 'en-US',
-                type: 'AerialWithLabels',
-                //style: 'wt|fc:28fa3c;lbc:a0a1a1;loc:111505_ar|fc:474747_trs|fc:222527;lbc:a0a1a1;loc:000505;sc:0_g|lc:2f3133;srv:0;lbc:a0a1a1;loc:000505'
-            })
             const newGeoJSONLayer = L.geoJson(newGeoJsonFeatureCollection, {
             //add code to convert pointTo Circle
             pointToLayer: function(feature,latlng){
@@ -163,15 +154,27 @@ function initMap() {
             //.addTo(oldGeoJSONLayer)
             const baseMaps = {
                 "Classic Map": osmTileLayer,
-                "Modern Map": bingL
+                //"Modern Map": bingL
             }
             const overlayMaps = {
                 "Field Assist": newPOImap,
                 "Old Fieldmate": oldPOImap
             }
-            L.control.layers(baseMaps,overlayMaps,{ collapsed: false }).addTo(mapContainer.value)
-            //newGeoJSONLayer.addTo(mapContainer.value)
-            //oldGeoJSONLayer.addTo(mapContainer.value)
+            let layerC = L.control.layers(baseMaps,overlayMaps,{ collapsed: false }).addTo(mapContainer.value)
+            createResource({
+                url:'frappe.client.get',
+                params:{
+                    doctype:'Bing Maps Settings'
+                }
+            }).fetch().then(result => {const bingL = L.tileLayer.bing({
+                                                        bingMapsKey: result.api_key,
+                                                        imagerySet: result.imagery_set,
+                                                        culture: result.map_culture,
+                                                        type: 'AerialWithLabels',
+                                                        //style: 'wt|fc:28fa3c;lbc:a0a1a1;loc:111505_ar|fc:474747_trs|fc:222527;lbc:a0a1a1;loc:000505;sc:0_g|lc:2f3133;srv:0;lbc:a0a1a1;loc:000505'
+                                                    })
+                                        layerC.addBaseLayer(bingL,"Modern Map")
+                                        })
         }
         else {
             console.error('Map container not found');
