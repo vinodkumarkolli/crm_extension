@@ -112,8 +112,10 @@ function initMap() {
             },
             onEachFeature: function (feature, layer) {
                 let win_url = "https://www.google.com/maps/place/"+feature.geometry.coordinates[1]+','+feature.geometry.coordinates[0]
-                layer.bindTooltip(L.Util.template(`<b>${feature.properties.name}</b><br /> ${feature.properties.crm_lead_id}<br /> ${feature.properties.fieldassist_id}<br /> ${feature.properties.fieldmate_id}<br /> ${feature.properties.workmate_id}`));
-                layer.bindPopup(L.Util.template(`<br/><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a>`))
+                //layer.bindTooltip(L.Util.template(`<b>${feature.properties.name}</b><br /> ${feature.properties.crm_lead_id}<br /> ${feature.properties.fieldassist_id}<br /> ${feature.properties.fieldmate_id}<br /> ${feature.properties.workmate_id}`));
+                //layer.bindPopup(L.Util.template(`<br/><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a>`))
+                //<tr><td></td><td></td></tr>
+                layer.bindPopup(L.Util.template(`<table><tr><td><b>Location ID</b></td><td>${feature.properties.name}</td></tr><tr><td><b>Location Name</b></td><td>${feature.properties.location_name}</td></tr><tr><td><b>CRM Lead ID</b></td><td>${feature.properties.crm_lead_id}</td></tr><tr><td><b>Field Assist ID</b></td><td>${feature.properties.fieldassist_id}</td></tr><tr><td><b>Fieldmate ID</b></td><td>${feature.properties.fieldmate_id}</td></tr><tr><td><b>Workmate ID</b></td><td>${feature.properties.workmate_id}</td></tr><tr><td><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a></td></tr></table>`))
             }})
             const oldGeoJSONLayer = L.geoJson(oldGeoJsonFeatureCollection, {
             //add code to convert pointTo Circle
@@ -130,8 +132,9 @@ function initMap() {
             onEachFeature: function (feature, layer) {
                 let win_url = "https://www.google.com/maps/place/"+feature.geometry.coordinates[1]+','+feature.geometry.coordinates[0]
                 //console.log(win_url)
-                layer.bindTooltip(L.Util.template(`<b>${feature.properties.name}</b><br /> ${feature.properties.crm_lead_id}<br /> ${feature.properties.fieldassist_id}<br /> ${feature.properties.fieldmate_id}<br /> ${feature.properties.workmate_id}`));
-                layer.bindPopup(L.Util.template(`<br/><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a>`))
+                //layer.bindTooltip(L.Util.template(`<b>${feature.properties.name}</b><br /> ${feature.properties.crm_lead_id}<br /> ${feature.properties.fieldassist_id}<br /> ${feature.properties.fieldmate_id}<br /> ${feature.properties.workmate_id}`));
+                //layer.bindPopup(L.Util.template(`<br/><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a>`))
+                layer.bindPopup(L.Util.template(`<table><tr><td><b>Location ID</b></td><td>${feature.properties.name}</td></tr><tr><td><b>Location Name</b></td><td>${feature.properties.location_name}</td></tr><tr><td><b>CRM Lead ID</b></td><td>${feature.properties.crm_lead_id}</td></tr><tr><td><b>Field Assist ID</b></td><td>${feature.properties.fieldassist_id}</td></tr><tr><td><b>Fieldmate ID</b></td><td>${feature.properties.fieldmate_id}</td></tr><tr><td><b>Workmate ID</b></td><td>${feature.properties.workmate_id}</td></tr><tr><td><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a></td></tr></table>`))
             }})
             // const newPOISearch = L.Control.Search({
             //     position: 'topleft',
