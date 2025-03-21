@@ -1,0 +1,231 @@
+{
+ "actions": [
+  {
+   "action": "crm_extension.crm_extension",
+   "action_type": "Server Action",
+   "group": "Approvals",
+   "label": "Approve"
+  },
+  {
+   "action": "crm_extension.crm_extension",
+   "action_type": "Server Action",
+   "group": "Approvals",
+   "label": "Reject"
+  },
+  {
+   "action": "crm_extension.crm_extension",
+   "action_type": "Server Action",
+   "group": "Approvals",
+   "label": "Hold"
+  },
+  {
+   "action": "crm_extension.crm_extension",
+   "action_type": "Server Action",
+   "label": "Re-open"
+  }
+ ],
+ "autoname": "hash",
+ "creation": "2025-03-21 11:43:47.868182",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_jhtq",
+  "from_poi",
+  "from_poi_location_name",
+  "from_poi_location_lat",
+  "from_poi_location_longitude",
+  "merge_request_date",
+  "requested_by",
+  "request_status",
+  "column_break_qfkb",
+  "to_poi",
+  "to_poi_location_name",
+  "to_poi_location_lat",
+  "to_poi_location_longitude",
+  "radial_difference_in_mtrs",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_jhtq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "POI Merge Request",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "from_poi",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "From POI",
+   "link_filters": "[[\"CRM POI\",\"poi_status\",\"=\",\"Active\"]]",
+   "options": "CRM POI",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fetch_from": "from_poi.location_name",
+   "fetch_if_empty": 1,
+   "fieldname": "from_poi_location_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "From POI Location Name",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "merge_request_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Merge Request Date",
+   "read_only": 1,
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "default": "User",
+   "fieldname": "requested_by",
+   "fieldtype": "Data",
+   "label": "Requested By",
+   "read_only": 1,
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "column_break_qfkb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "to_poi",
+   "fieldtype": "Link",
+   "label": "To POI",
+   "link_filters": "[[\"CRM POI\",\"poi_status\",\"=\",\"Active\"]]",
+   "options": "CRM POI",
+   "reqd": 1
+  },
+  {
+   "fieldname": "to_poi_location_name",
+   "fieldtype": "Data",
+   "label": "To POI Location Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "radial_difference_in_mtrs",
+   "fieldtype": "Float",
+   "label": "Radial Difference in Mtrs"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Submitted",
+   "fieldname": "request_status",
+   "fieldtype": "Select",
+   "label": "Request Status",
+   "options": "Submitted\nApproved\nRejected\nHold",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "from_poi.latitude",
+   "fetch_if_empty": 1,
+   "fieldname": "from_poi_location_lat",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "From POI Location Latitude",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "from_poi.longitude",
+   "fieldname": "from_poi_location_longitude",
+   "fieldtype": "Data",
+   "label": "From POI Location Longitude",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "to_poi.latitude",
+   "fetch_if_empty": 1,
+   "fieldname": "to_poi_location_lat",
+   "fieldtype": "Data",
+   "label": "To POI Location Latitude",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "to_poi.longitude",
+   "fetch_if_empty": 1,
+   "fieldname": "to_poi_location_longitude",
+   "fieldtype": "Data",
+   "label": "To POI Location Longitude",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-03-21 16:28:25.725009",
+ "modified_by": "Administrator",
+ "module": "Crm Extension",
+ "name": "POI Merge Request",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CRM Viewer",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CRM Viewer",
+   "share": 1
+  }
+ ],
+ "queue_in_background": 1,
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

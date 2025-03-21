@@ -190,5 +190,29 @@
   "share": 1,
   "submit": 0,
   "write": 1
+ },
+ {
+  "amend": 0,
+  "cancel": 0,
+  "create": 0,
+  "delete": 0,
+  "docstatus": 0,
+  "doctype": "Custom DocPerm",
+  "email": 0,
+  "export": 1,
+  "if_owner": 0,
+  "import": 0,
+  "modified": "2025-03-21 11:27:52.190953",
+  "name": "vm2sogl9gr",
+  "parent": "Bing Maps Settings",
+  "permlevel": 1,
+  "print": 0,
+  "read": 1,
+  "report": 0,
+  "role": "CRM Viewer",
+  "select": 0,
+  "share": 0,
+  "submit": 0,
+  "write": 0
  }
 ]
