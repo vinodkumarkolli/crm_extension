@@ -54,7 +54,7 @@ let territories = ref([])
 createListResource({
         doctype: "User Territory Mapping",
         fields:["*"],
-        filters:[["user","=",sessionUser()]],
+        filters:[["user","=",sessionUser()],["docstatus","=",1]],
         pageLength: "None",
         auto: true
 }).reload().then(response => {
