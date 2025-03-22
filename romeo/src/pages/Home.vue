@@ -1,8 +1,9 @@
 <!--Generate code vue code using leaflet.js Openstreet Maps map interface-->
 <template>
   <div class=" grid place-items-center px-10 py-10 bg-gray-100 h-screen">  
+    <router-view></router-view>
     <div class=" bg-white h-1/2 md:h-quarter w-1/2 rounded-md shadow-md">
-      <h1 class="text-black flex flex-col items-center justify-center bg-blue-500 rounded-md shadow-md text-4xl font-bold mb-4">Romeo</h1>
+      <h1 class="text-white flex flex-col items-center justify-center unique-color-map rounded-md shadow-md text-4xl font-bold mb-4">Bazooka</h1>
       <h4 class="text-gray-500 flex flex-col items-center">Lets find our juliet. First, select the city</h4>
       <div class="flex flex-col items-center">
       <DotLottieVue style="height: 150px; width: 150px" autoplay loop src="https://lottie.host/af681258-e29a-4769-b738-e7c2038fd634/sv9sNIp7cO.lottie" />
@@ -14,7 +15,7 @@
             {{ option.crm_territory }}
           </option>
         </select>
-        <button type="button" id="launchMap" @click="launchMapSetting" title="Lets Touchdown" class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <button type="button" id="launchMap" @click="launchMapSetting" title="Lets Touchdown" class="text-white unique-color-map hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
         </svg>
@@ -25,7 +26,24 @@
   </div>
   
 </template>
-
+<script>
+export default {
+  name: "Bazooka",
+  methods: {
+    launchMapSetting(){
+      let selectedCity =  document.getElementById("selectedCity").value
+      if(selectedCity == 'Choose City')
+      {
+        alert("Select a proper city")
+      }
+      else{
+        const geo = geography.filter(geo => geo.name === selectedCity)[0]
+        this.$router.push({path:'/bazooka',query: { lat:geo.lat,long:geo.long } })
+      }
+    }
+  }
+}
+</script>
 <script setup>
 import { geography } from '../data/geo';
 import {DotLottieVue} from '@lottiefiles/dotlottie-vue'
@@ -46,16 +64,10 @@ createListResource({
     // console.log(i)
   }
 })
-function launchMapSetting(){
-  let selectedCity =  document.getElementById("selectedCity").value
- if(selectedCity == 'Choose City')
- {
-  alert("Select a proper city")
- }
- else{
-  console.log(geography.filter(geo => geo.name === selectedCity))
- }
-}
+
 </script>
 <style scoped>
+.unique-color-map{
+  background-color: var(--sidebar-bg-color);
+}
 </style>

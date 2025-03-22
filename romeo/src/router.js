@@ -9,9 +9,9 @@ const routes = [
     component: () => import('@/pages/Home.vue'),
   },
   {
-    path: '/chennai',
-    name: 'Data',
-    component: async () => import('@/pages/Data.vue'),
+    path: '/bazooka',
+    name: 'Bazooka',
+    component: async () => import('@/pages/Bazooka.vue'),
   }
 ]
 

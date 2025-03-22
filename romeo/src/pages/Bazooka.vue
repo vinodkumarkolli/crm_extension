@@ -10,11 +10,18 @@ import {LocateControl} from 'leaflet.locatecontrol';
 import "leaflet.locatecontrol/dist/L.Control.Locate.min.css"; 
 //import "leaflet-search/dist/leaflet-search.src.css"
 import bingLayer from 'leaflet-bing-layer'
-
+import {useRoute} from 'vue-router'
 const mapContainer = ref(null);
+const url = new URL(window.location.href);
+const params = new URLSearchParams(url.search);
+const latLong = JSON.parse(JSON.stringify(Object.fromEntries(params)));
+
 onMounted(() => {
-    initMap();
+    if(latLong){
+        initMap(latLong.lat,latLong.long);
+    }
 })
+
 function getBoundsFromLatLng(latlng, radius) {
     const earthRadius = 6378137; // Earth's radius in meters
   const lat = latlng.lat;
@@ -34,7 +41,7 @@ function getBoundsFromLatLng(latlng, radius) {
 function generateHTMLTemplate(feature,win_url){
     return L.Util.template(`<table><tr><td><b>Location ID</b></td><td>${feature.properties.name}</td></tr><tr><td><b>Location Name</b></td><td>${feature.properties.location_name}</td></tr><tr><td><b>CRM Lead ID</b></td><td>${feature.properties.crm_lead_id}</td></tr><tr><td><b>Field Assist ID</b></td><td>${feature.properties.fieldassist_id}</td></tr><tr><td><b>Fieldmate ID</b></td><td>${feature.properties.fieldmate_id}</td></tr><tr><td><b>Workmate ID</b></td><td>${feature.properties.workmate_id}</td></tr><tr><td><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a></td></tr></table>`)
 }
-function initMap() {
+function initMap(setlat,setlong) {
     const mapResource = createListResource({
         doctype: "CRM POI",
         fields:["*"],
@@ -88,8 +95,8 @@ function initMap() {
             })
         }
         if(mapContainer.value){
-            const centerLatLng = L.latLng(13.009409, 80.151071);
-            mapContainer.value = L.map('map', { zoomControl: false }).setView([13.009409, 80.151071], 12);
+            const centerLatLng = L.latLng(setlat, setlong);
+            mapContainer.value = L.map('map', { zoomControl: false }).setView([setlat, setlong], 12);
             const bounds = getBoundsFromLatLng(centerLatLng, 30 * 1000); // 80 km in meters
             //console.log(bounds)
             mapContainer.value.setMaxBounds(bounds);
