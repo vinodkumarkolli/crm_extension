@@ -107,7 +107,7 @@ function initMap(setlat,setlong) {
             const osmTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            });
+            }).addTo(mapContainer.value);
             const newGeoJSONLayer = L.geoJson(newGeoJsonFeatureCollection, {
             //add code to convert pointTo Circle
             pointToLayer: function(feature,latlng){
