@@ -14,11 +14,11 @@ import {useRoute} from 'vue-router'
 const mapContainer = ref(null);
 const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
-const latLong = JSON.parse(JSON.stringify(Object.fromEntries(params)));
-
+const queryParams = JSON.parse(JSON.stringify(Object.fromEntries(params)));
+//console.log(JSON.parse(queryParams.places))
 onMounted(() => {
-    if(latLong){
-        initMap(latLong.lat,latLong.long);
+    if(queryParams){
+        initMap(queryParams.lat,queryParams.long,JSON.parse(queryParams.places));
     }
 })
 
@@ -41,10 +41,12 @@ function getBoundsFromLatLng(latlng, radius) {
 function generateHTMLTemplate(feature,win_url){
     return L.Util.template(`<table><tr><td><b>Location ID</b></td><td>${feature.properties.name}</td></tr><tr><td><b>Location Name</b></td><td>${feature.properties.location_name}</td></tr><tr><td><b>CRM Lead ID</b></td><td>${feature.properties.crm_lead_id}</td></tr><tr><td><b>Field Assist ID</b></td><td>${feature.properties.fieldassist_id}</td></tr><tr><td><b>Fieldmate ID</b></td><td>${feature.properties.fieldmate_id}</td></tr><tr><td><b>Workmate ID</b></td><td>${feature.properties.workmate_id}</td></tr><tr><td><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a></td></tr></table>`)
 }
-function initMap(setlat,setlong) {
+function initMap(setlat,setlong,pincodes) {
+    //console.log(pincodes)
     const mapResource = createListResource({
         doctype: "CRM POI",
         fields:["*"],
+        filters:[["pincode","in",pincodes]],
         pageLength: "None",
     })
 

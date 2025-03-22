@@ -38,7 +38,7 @@ export default {
       }
       else{
         const geo = geography.filter(geo => geo.name === selectedCity)[0]
-        this.$router.push({path:'/bazooka',query: { lat:geo.lat,long:geo.long } })
+        this.$router.push({path:'/bazooka',query: { lat:geo.lat,long:geo.long,places:JSON.stringify(geo.places) } })
       }
     }
   }
