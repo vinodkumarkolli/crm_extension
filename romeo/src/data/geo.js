@@ -1,0 +1,1 @@
+export const geography =[{name:'Chennai', lat:13.009409, long: 80.151071},{name:'Coimbatore',lat:11.014743, long:76.967599}]

@@ -10,8 +10,8 @@ import {LocateControl} from 'leaflet.locatecontrol';
 import "leaflet.locatecontrol/dist/L.Control.Locate.min.css"; 
 //import "leaflet-search/dist/leaflet-search.src.css"
 import bingLayer from 'leaflet-bing-layer'
-const mapContainer = ref(null);
 
+const mapContainer = ref(null);
 onMounted(() => {
     initMap();
 })
