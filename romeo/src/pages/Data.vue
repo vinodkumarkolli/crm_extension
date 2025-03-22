@@ -5,10 +5,10 @@
 import { onMounted, ref } from 'vue';
 import L, { map } from 'leaflet';
 import {createListResource,createResource} from 'frappe-ui'
-import {leafletSearch} from 'leaflet-search/src/leaflet-search';
+import 'leaflet-search'
 import {LocateControl} from 'leaflet.locatecontrol';
 import "leaflet.locatecontrol/dist/L.Control.Locate.min.css"; 
-import "leaflet-search/dist/leaflet-search.src.css"
+//import "leaflet-search/dist/leaflet-search.src.css"
 import bingLayer from 'leaflet-bing-layer'
 const mapContainer = ref(null);
 
@@ -133,32 +133,22 @@ function initMap() {
                 let win_url = "https://www.google.com/maps/place/"+feature.geometry.coordinates[1]+','+feature.geometry.coordinates[0]
                 layer.bindPopup(generateHTMLTemplate(feature,win_url))
             }})
-            // const newPOISearch = L.Control.Search({
-            //     position: 'topleft',
-            //     layer: newGeoJSONLayer,
-            //     placeholder: 'Search FieldAssist Locations',
-            //     propertyName: 'name',
-            //     zoomToResult: true,
-            // })
-            // newPOISearch.addTo(mapContainer.value)
-            //.addTo(newGeoJSONLayer)
-            // const oldPOISearch = L.control.leafletSearch({
-            //     position: 'topleft',
-            //     layer: oldGeoJSONLayer,
-            //     placeholder: 'Search by name or crm_lead_id',
-            //     propertyName: 'name',
-            //     zoomToResult: true,
-            // })
-            const newPOImap = L.layerGroup([newGeoJSONLayer])
-            const oldPOImap = L.layerGroup([oldGeoJSONLayer])
-            //.addTo(oldGeoJSONLayer)
+            
+            const newPOISearch = new L.Control.Search({
+                position: 'topleft',
+                layer: L.layerGroup([newGeoJSONLayer,oldGeoJSONLayer]),
+                placeholder: 'Search Locations',
+                propertyName: 'location_name',
+                zoomToResult: true,
+            })
+            newPOISearch.addTo(mapContainer.value)
             const baseMaps = {
                 "Classic Map": osmTileLayer,
                 //"Modern Map": bingL
             }
             const overlayMaps = {
-                "Field Assist": newPOImap,
-                "Old Fieldmate": oldPOImap
+                "Field Assist": newGeoJSONLayer,
+                "Old Fieldmate": oldGeoJSONLayer
             }
             let layerC = L.control.layers(baseMaps,overlayMaps,{ collapsed: false }).addTo(mapContainer.value)
             createResource({
