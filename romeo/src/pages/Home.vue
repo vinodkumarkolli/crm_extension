@@ -27,6 +27,10 @@
   
 </template>
 <script>
+
+const cookies = document.cookie.split("; ");
+const csrfCookie = cookies.find(row => row.startsWith("csrf_token="));
+console.log(document.cookie)
 export default {
   name: "Bazooka",
   methods: {
@@ -50,6 +54,7 @@ import {DotLottieVue} from '@lottiefiles/dotlottie-vue'
 import {sessionUser} from '../data/session'
 import {createListResource} from 'frappe-ui'
 import { ref } from 'vue';
+
 let territories = ref([])
 createListResource({
         doctype: "User Territory Mapping",
