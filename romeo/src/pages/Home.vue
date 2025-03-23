@@ -27,10 +27,6 @@
   
 </template>
 <script>
-
-const cookies = document.cookie.split("; ");
-const csrfCookie = cookies.find(row => row.startsWith("csrf_token="));
-console.log(document.cookie)
 export default {
   name: "Bazooka",
   methods: {
