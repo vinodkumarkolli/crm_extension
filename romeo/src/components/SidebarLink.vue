@@ -1,7 +1,7 @@
 <script>
 import {computed} from 'vue'
 import {useRoute} from 'vue-router'
-import { collapsed } from '../data/sidebarstate';
+import { collapsed } from '@/store/sidebarstate';
 export default {
     props:{
         to:{type:String, required:true},

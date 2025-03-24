@@ -17,6 +17,7 @@
     "leaflet-search": "^4.0.0",
     "leaflet.locatecontrol": "^0.83.1",
     "leaflet-bing-layer":"^3.3.1",
+    "@vue-leaflet/vue-leaflet": "^0.10.1",
     "@lottiefiles/dotlottie-vue": "0.5.8"
   },
   "devDependencies": {

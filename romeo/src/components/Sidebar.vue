@@ -1,6 +1,6 @@
 <script>
 import SidebarLink from './SidebarLink.vue'
-import { collapsed,toggleSidebar,sidebarWidth } from '../data/sidebarstate';
+import { collapsed,toggleSidebar,sidebarWidth } from '@/store/sidebarstate';
 export default{
     props:{},
     components: {SidebarLink},

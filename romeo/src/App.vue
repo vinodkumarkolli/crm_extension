@@ -1,6 +1,6 @@
 <script>
-import Sidebar from './pages/Sidebar.vue';
-import { sidebarWidth } from './data/sidebarstate';
+import Sidebar from '@/components/Sidebar.vue';
+import { sidebarWidth } from '@/store/sidebarstate';
 export default {
   components:{Sidebar},
   setup(){

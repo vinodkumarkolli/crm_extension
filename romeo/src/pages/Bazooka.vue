@@ -1,5 +1,5 @@
 <template>
-  <div id="map" ref="mapContainer" class="map"></div>
+<div id="map" ref="mapContainer" class="map"></div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
@@ -9,38 +9,21 @@ import 'leaflet-search'
 import {LocateControl} from 'leaflet.locatecontrol';
 import "leaflet.locatecontrol/dist/L.Control.Locate.min.css"; 
 //import "leaflet-search/dist/leaflet-search.src.css"
+import { generateHTMLTemplate,getBoundsFromLatLng } from '../data/geo';
 import bingLayer from 'leaflet-bing-layer'
-import {useRoute} from 'vue-router'
+import {useRouter} from 'vue-router'
 const mapContainer = ref(null);
-const url = new URL(window.location.href);
-const params = new URLSearchParams(url.search);
-const queryParams = JSON.parse(JSON.stringify(Object.fromEntries(params)));
-//console.log(JSON.parse(queryParams.places))
+// const url = new URL(window.location.href);
+// const params = new URLSearchParams(url.search);
+// const queryParams = JSON.parse(JSON.stringify(Object.fromEntries(params)));
+const router = useRouter()
+const queryParams = router.currentRoute.value.query
 onMounted(() => {
     if(queryParams){
         initMap(queryParams.lat,queryParams.long,JSON.parse(queryParams.places));
     }
 })
 
-function getBoundsFromLatLng(latlng, radius) {
-    const earthRadius = 6378137; // Earth's radius in meters
-  const lat = latlng.lat;
-  const lng = latlng.lng;
-
-  // Convert radius from meters to degrees
-  const latOffset = (radius / earthRadius) * (180 / Math.PI);
-  const lngOffset = (radius / (earthRadius * Math.cos(Math.PI * lat / 180))) * (180 / Math.PI);
-
-  // Calculate the bounding box coordinates
-  const northEast = L.latLng(lat + latOffset, lng + lngOffset);
-  const southWest = L.latLng(lat - latOffset, lng - lngOffset);
-
-  // Create a Leaflet LatLngBounds object
-  return L.latLngBounds(southWest, northEast);
-}
-function generateHTMLTemplate(feature,win_url){
-    return L.Util.template(`<table><tr><td><b>Location ID</b></td><td>${feature.properties.name}</td></tr><tr><td><b>Location Name</b></td><td>${feature.properties.location_name}</td></tr><tr><td><b>CRM Lead ID</b></td><td>${feature.properties.crm_lead_id}</td></tr><tr><td><b>Field Assist ID</b></td><td>${feature.properties.fieldassist_id}</td></tr><tr><td><b>Fieldmate ID</b></td><td>${feature.properties.fieldmate_id}</td></tr><tr><td><b>Workmate ID</b></td><td>${feature.properties.workmate_id}</td></tr><tr><td><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a></td></tr></table>`)
-}
 function initMap(setlat,setlong,pincodes) {
     //console.log(pincodes)
     const mapResource = createListResource({
@@ -97,9 +80,9 @@ function initMap(setlat,setlong,pincodes) {
             })
         }
         if(mapContainer.value){
-            const centerLatLng = L.latLng(setlat, setlong);
+            //const centerLatLng = L.latLng(setlat, setlong);
             mapContainer.value = L.map('map', { zoomControl: false }).setView([setlat, setlong], 12);
-            const bounds = getBoundsFromLatLng(centerLatLng, 30 * 1000); // 80 km in meters
+            const bounds = getBoundsFromLatLng(setlat,setlong, 30 * 1000); // 80 km in meters
             //console.log(bounds)
             mapContainer.value.setMaxBounds(bounds);
             // Optionally, fit the map view to these bounds
@@ -107,6 +90,7 @@ function initMap(setlat,setlong,pincodes) {
             const geoLocate = new LocateControl().addTo(mapContainer.value)
             const zoomControl = L.control.zoom({ position: 'topleft' }).addTo(mapContainer.value)
             const osmTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            minZoom: 8,
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(mapContainer.value);
@@ -183,7 +167,7 @@ function initMap(setlat,setlong,pincodes) {
 </script>
 <style scoped>
 .map{
-    width: "100%";
+    width: 100%;
     height: 100vh;
 }
 .leaflet-popup-content-wrapper {
