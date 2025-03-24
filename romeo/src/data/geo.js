@@ -23,7 +23,7 @@ export function getBoundsFromLatLng(setLat,setLng, radius) {
   return L.latLngBounds(southWest, northEast);
 }
 export function generateHTMLTemplate(feature,navigateUrl){
-    const poiUrl = '/bazooka/'+feature.properties.name+'?location_name='+feature.properties.location_name+'&crm_lead_id='+feature.properties.crm_lead_id+'&fieldassist_id='+feature.properties.fieldassist_id+'&fieldmate_id='+feature.properties.fieldmate_id+'&workmate_id='+feature.properties.workmate_id+'&latitude='+feature.geometry.coordinates[1]+'&longitude='+feature.geometry.coordinates[0];
+    const poiUrl = '/romeo/bazooka/'+feature.properties.name+'?location_name='+feature.properties.location_name+'&crm_lead_id='+feature.properties.crm_lead_id+'&fieldassist_id='+feature.properties.fieldassist_id+'&fieldmate_id='+feature.properties.fieldmate_id+'&workmate_id='+feature.properties.workmate_id+'&latitude='+feature.geometry.coordinates[1]+'&longitude='+feature.geometry.coordinates[0];
     return L.Util.template(`<table>
       <tr><td><b>Location ID</b></td><td>${feature.properties.name}</td></tr>
       <tr><td><b>Location Name</b></td><td>${feature.properties.location_name}</td></tr>
