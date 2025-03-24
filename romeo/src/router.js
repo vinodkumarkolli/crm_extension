@@ -12,6 +12,12 @@ const routes = [
     path: '/bazooka',
     name: 'Bazooka',
     component: async () => import('@/pages/Bazooka.vue'),
+  },
+  {
+    path:'/bazooka/:id',
+    name:'POI',
+    component:async () => import('@/pages/POI.vue'),
+    props:true
   }
 ]
 

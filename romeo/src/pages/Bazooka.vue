@@ -1,21 +1,43 @@
 <template>
 <div id="map" ref="mapContainer" class="map"></div>
 </template>
+<script>
+export default {
+    name: "Bazooka"
+}
+</script>
 <script setup>
 import { onMounted, ref } from 'vue';
+import {useRouter} from 'vue-router'
 import L, { map } from 'leaflet';
-import {createListResource,createResource} from 'frappe-ui'
+
 import 'leaflet-search'
 import {LocateControl} from 'leaflet.locatecontrol';
 import "leaflet.locatecontrol/dist/L.Control.Locate.min.css"; 
-//import "leaflet-search/dist/leaflet-search.src.css"
-import { generateHTMLTemplate,getBoundsFromLatLng } from '../data/geo';
+import "leaflet-search/dist/leaflet-search.src.css"
+import "leaflet/dist/leaflet.css";
 import bingLayer from 'leaflet-bing-layer'
-import {useRouter} from 'vue-router'
+import { convertPOIPointsToGeoJson,generateHTMLTemplate,getBoundsFromLatLng } from '../data/geo';
+import {createListResource,createResource} from 'frappe-ui'
+
 const mapContainer = ref(null);
-// const url = new URL(window.location.href);
-// const params = new URLSearchParams(url.search);
-// const queryParams = JSON.parse(JSON.stringify(Object.fromEntries(params)));
+const faCircleStyle={
+    radius: 8,
+    fillColor: 'green',
+    color: '#000',
+    weight: 2,
+    opacity: 1,
+    fillOpacity: 0.5
+}
+const fmCircleStyle={
+    radius: 8,
+    fillColor: 'red',
+    color: '#000',
+    weight: 2,
+    opacity: 1,
+    fillOpacity: 0.5
+}
+
 const router = useRouter()
 const queryParams = router.currentRoute.value.query
 onMounted(() => {
@@ -25,7 +47,7 @@ onMounted(() => {
 })
 
 function initMap(setlat,setlong,pincodes) {
-    //console.log(pincodes)
+
     const mapResource = createListResource({
         doctype: "CRM POI",
         fields:["*"],
@@ -35,55 +57,11 @@ function initMap(setlat,setlong,pincodes) {
 
     mapResource.reload().then(response => {
         const pois = JSON.parse(JSON.stringify(response))
-        const oldPOIs = pois.filter(poi => poi.fieldassist_id === null)
-        const newPOIs = pois.filter(poi => poi.fieldassist_id !== null)
-        //convert pois variable to geoJSON
-        let newGeoJsonFeatureCollection = {
-            type: "FeatureCollection",
-            crs: {
-                "type": "name",
-                "properties": {
-                    "name": "urn:ogc:def:crs:EPSG::3857"
-                }
-            },
-            features: []
-        }
-        let oldGeoJsonFeatureCollection = {
-            type: "FeatureCollection",
-            crs: {
-                "type": "name",
-                "properties": {
-                    "name": "urn:ogc:def:crs:EPSG::3857"
-                }
-            },
-            features: []
-        }
-        //loop through newpois to add features to geoJSON
-        for (let poi of newPOIs) {
-            newGeoJsonFeatureCollection.features.push({
-                type: "Feature",
-                geometry: {
-                    type: "Point",
-                    coordinates: [poi.longitude, poi.latitude]
-                },
-                properties: poi
-            })
-        }
-        for (let poi of oldPOIs) {
-            oldGeoJsonFeatureCollection.features.push({
-                type: "Feature",
-                geometry: {
-                    type: "Point",
-                    coordinates: [poi.longitude, poi.latitude]
-                },
-                properties: poi
-            })
-        }
+        const oldGeoJsonFeatureCollection = convertPOIPointsToGeoJson(pois.filter(poi => poi.fieldassist_id === null))
+        const newGeoJsonFeatureCollection = convertPOIPointsToGeoJson(pois.filter(poi => poi.fieldassist_id !== null))
         if(mapContainer.value){
-            //const centerLatLng = L.latLng(setlat, setlong);
             mapContainer.value = L.map('map', { zoomControl: false }).setView([setlat, setlong], 12);
-            const bounds = getBoundsFromLatLng(setlat,setlong, 30 * 1000); // 80 km in meters
-            //console.log(bounds)
+            const bounds = getBoundsFromLatLng(setlat,setlong, 30 * 1000); // 30 Km Radius
             mapContainer.value.setMaxBounds(bounds);
             // Optionally, fit the map view to these bounds
             mapContainer.value.fitBounds(bounds);
@@ -97,14 +75,7 @@ function initMap(setlat,setlong,pincodes) {
             const newGeoJSONLayer = L.geoJson(newGeoJsonFeatureCollection, {
             //add code to convert pointTo Circle
             pointToLayer: function(feature,latlng){
-                return L.circle(latlng,{
-                    radius: 8,
-                fillColor: 'green',
-                color: '#000',
-                weight: 2,
-                opacity: 1,
-                fillOpacity: 0.5
-                })
+                return L.circle(latlng,faCircleStyle)
             },
             onEachFeature: function (feature, layer) {
                 let win_url = "https://www.google.com/maps/place/"+feature.geometry.coordinates[1]+','+feature.geometry.coordinates[0]
@@ -113,28 +84,21 @@ function initMap(setlat,setlong,pincodes) {
             const oldGeoJSONLayer = L.geoJson(oldGeoJsonFeatureCollection, {
             //add code to convert pointTo Circle
             pointToLayer: function(feature,latlng){
-                return L.circle(latlng,{
-                    radius: 8,
-                fillColor: 'red',
-                color: '#000',
-                weight: 2,
-                opacity: 1,
-                fillOpacity: 0.5
-                })
+                return L.circle(latlng,fmCircleStyle)
             },
             onEachFeature: function (feature, layer) {
                 let win_url = "https://www.google.com/maps/place/"+feature.geometry.coordinates[1]+','+feature.geometry.coordinates[0]
                 layer.bindPopup(generateHTMLTemplate(feature,win_url))
             }})
             
-            const newPOISearch = new L.Control.Search({
+            const poiSearch = new L.Control.Search({
                 position: 'topleft',
                 layer: L.layerGroup([newGeoJSONLayer,oldGeoJSONLayer]),
                 placeholder: 'Search Locations',
                 propertyName: 'location_name',
                 zoomToResult: true,
             })
-            newPOISearch.addTo(mapContainer.value)
+            poiSearch.addTo(mapContainer.value)
             const baseMaps = {
                 "Classic Map": osmTileLayer,
                 //"Modern Map": bingL
@@ -149,15 +113,16 @@ function initMap(setlat,setlong,pincodes) {
                 params:{
                     doctype:'Bing Maps Settings'
                 }
-            }).fetch().then(result => {const bingL = L.tileLayer.bing({
-                                                        bingMapsKey: result.api_key,
-                                                        imagerySet: result.imagery_set,
-                                                        culture: result.map_culture,
-                                                        type: 'AerialWithLabels',
-                                                        //style: 'wt|fc:28fa3c;lbc:a0a1a1;loc:111505_ar|fc:474747_trs|fc:222527;lbc:a0a1a1;loc:000505;sc:0_g|lc:2f3133;srv:0;lbc:a0a1a1;loc:000505'
-                                                    })
-                                        layerC.addBaseLayer(bingL,"Modern Map")
-                                        })
+            }).fetch().then(result => {
+                const bingL = L.tileLayer.bing({
+                bingMapsKey: result.api_key,
+                imagerySet: result.imagery_set,
+                culture: result.map_culture,
+                type: 'AerialWithLabels',
+                //style: 'wt|fc:28fa3c;lbc:a0a1a1;loc:111505_ar|fc:474747_trs|fc:222527;lbc:a0a1a1;loc:000505;sc:0_g|lc:2f3133;srv:0;lbc:a0a1a1;loc:000505'
+            })
+            layerC.addBaseLayer(bingL,"Modern Map")
+            })
         }
         else {
             console.error('Map container not found');

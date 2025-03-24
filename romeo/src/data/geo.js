@@ -22,8 +22,59 @@ export function getBoundsFromLatLng(setLat,setLng, radius) {
   // Create a Leaflet LatLngBounds object
   return L.latLngBounds(southWest, northEast);
 }
-export function generateHTMLTemplate(feature,win_url){
-    return L.Util.template(`<table><tr><td><b>Location ID</b></td><td>${feature.properties.name}</td></tr><tr><td><b>Location Name</b></td><td>${feature.properties.location_name}</td></tr><tr><td><b>CRM Lead ID</b></td><td>${feature.properties.crm_lead_id}</td></tr><tr><td><b>Field Assist ID</b></td><td>${feature.properties.fieldassist_id}</td></tr><tr><td><b>Fieldmate ID</b></td><td>${feature.properties.fieldmate_id}</td></tr><tr><td><b>Workmate ID</b></td><td>${feature.properties.workmate_id}</td></tr><tr><td><a href="${win_url}" target="_blank" rel="noopener noreferrer">Navigate</a></td></tr></table>`)
+export function generateHTMLTemplate(feature,navigateUrl){
+    const poiUrl = '/bazooka/'+feature.properties.name+'?location_name='+feature.properties.location_name+'&crm_lead_id='+feature.properties.crm_lead_id+'&fieldassist_id='+feature.properties.fieldassist_id+'&fieldmate_id='+feature.properties.fieldmate_id+'&workmate_id='+feature.properties.workmate_id+'&latitude='+feature.geometry.coordinates[1]+'&longitude='+feature.geometry.coordinates[0];
+    return L.Util.template(`<table>
+      <tr><td><b>Location ID</b></td><td>${feature.properties.name}</td></tr>
+      <tr><td><b>Location Name</b></td><td>${feature.properties.location_name}</td></tr>
+      <tr><td><b>CRM Lead ID</b></td><td>${feature.properties.crm_lead_id}</td></tr>
+      <tr><td><b>Field Assist ID</b></td><td>${feature.properties.fieldassist_id}</td></tr>
+      <tr><td><b>Fieldmate ID</b></td><td>${feature.properties.fieldmate_id}</td></tr>
+      <tr><td><b>Workmate ID</b></td><td>${feature.properties.workmate_id}</td></tr>
+      </table>
+      <table>
+      <tr>
+        <tr style="border-collapse: collapse;">
+          <td style="padding: 10px; margin: 5px; border: 1px solid #ddd; text-align: center;">
+            <a href="${navigateUrl}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; padding: 8px 12px; background-color: #f0f0f0; border-radius: 4px;">Navigate</a>
+          </td>
+          <td style="padding: 10px; margin: 5px; border: 1px solid #ddd; text-align: center;">
+            <a href="${poiUrl}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; padding: 8px 12px; background-color: #f0f0f0; border-radius: 4px;">Actions</a>
+          </td>
+          <td style="padding: 10px; margin: 5px; border: 1px solid #ddd; text-align: center;">
+            <a href="${poiUrl}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; padding: 8px 12px; background-color: #f0f0f0; border-radius: 4px;">Report</a>
+          </td>
+        </tr>
+      </table>`)
+}
+export function convertPOIPointsToGeoJson(pois){
+    const geoJson = {
+        type: 'FeatureCollection',
+        crs: {
+          "type": "name",
+          "properties": {
+              "name": "urn:ogc:def:crs:EPSG::3857"
+          }
+        },
+        features: pois.map(point => {
+            return {
+            type: 'Feature',
+            properties: {
+              name: point.name,
+              location_name: point.location_name,
+              crm_lead_id: point.crm_lead_id || 'NA',
+              fieldassist_id: point.fieldassist_id || 'NA',
+              fieldmate_id: point.fieldmate_id || 'NA',
+              workmate_id: point.workmate_id || 'NA'
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [point.longitude || 0, point.latitude || 0]
+            }
+            };
+        })
+      };
+      return geoJson;
 }
 export const geography =[
     {name:'Chennai', lat:13.009409, long: 80.151071, 
