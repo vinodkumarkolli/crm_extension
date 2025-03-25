@@ -51,7 +51,7 @@ function initMap(setlat,setlong,pincodes) {
     const mapResource = createListResource({
         doctype: "CRM POI",
         fields:["*"],
-        filters:[["pincode","in",pincodes]],
+        filters:[["pincode","in",pincodes],["poi_status","=","Active"]],
         pageLength: "None",
     })
 

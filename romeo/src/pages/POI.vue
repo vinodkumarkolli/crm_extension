@@ -5,7 +5,7 @@
         <div class="bg-white shadow-md rounded-lg p-4 mb-4">
             <h3 class="text-xl font-semibold mb-2">{{ id }}</h3>
             <h3 class="text-xl font-semibold mb-2">{{ location_name }}</h3>
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-3 gap-2">
                 <div>
                     <p class="text-gray-600">CRM Lead ID:</p>
                     <p>{{ crm_lead_id }}</p>
@@ -22,35 +22,163 @@
                     <p class="text-gray-600">WorkMate ID:</p>
                     <p>{{ workmate_id }}</p>
                 </div>
-                <div class="col-span-2">
+                <div>
                     <p class="text-gray-600">Location:</p>
                     <p>{{ latitude }}, {{ longitude }}</p>
                 </div>
+                <div>
+                    <p class="text-gray-600">POI Status:</p>
+                    <p>{{ poi_status }}</p>
+                </div>
+                <!--Generate Rubber Stamp effect-->
+                <span class="stamp is-approved col-span-2" v-if="source == 'Field Assist'">{{ source }}</span>
+                <span class="stamp is-nope col-span-2" v-else>{{ source }}</span>
             </div>
         </div>
-        <!--Generate Card Div to add Action buttons "Merge", "Report Distributor","Raise a Board Request"-->
-        <div class="bg-white shadow-md rounded-lg p-4 mb-4">
-            <h3 class="text-xl font-semibold mb-2">Actions</h3>
-            <div class="grid grid-cols-3 gap-2">
-                <button type="button" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                    Merge
-                </button>
-                <button type="button" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                    Add Distributor
-                </button>
-                <button type="button" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                    Raise a Board Request
-                </button>
-            </div>
+        <!--Generate Tab Control for Merge, Link Distributor, Raise a Board Request Forms-->
+        <div class="flex justify-center space-x-4">
+            <button @click="toggleMergeForm" v-if="(poi_status=='Active')&&(pois.length>0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Merge
+            </button>
+            <button @click="toggleDistributorForm" v-if="source == 'FieldAssist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Link Distributor
+            </button>
+            <button @click="toggleBoardForm" v-if="source == 'FieldAssist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Raise a Board Request
+            </button>
+        </div>
+        <!--Generate Merge Form-->
+        <div v-if="showMergeForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
+            <h3 class="text-xl font-semibold flex justify-center mb-2">Merge Request</h3>
+                <label for="toPOISelecteor" class="text-gray-600">Select a POI:</label>
+                <Autocomplete :options="pois" v-model="merge_to_location" id="toPOISelecteor"/>
+                <div v-if="merge_to_location" class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label for="toLocName" class="text-gray-600">Location ID:</label>
+                        <h3 id="toLocName" class="text-xl font-semibold mb-2">{{ merge_to_location.value }}</h3>
+                    </div>
+                    <div>
+                        <label for="toLocStoreName" class="text-gray-600">Store Name:</label>
+                        <h3 id="toLocStoreName" class="text-xl font-semibold mb-2"> {{ merge_to_location.label }}</h3>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">FieldAssist ID:</p>
+                        <p id="toLocFieldAssistID" > {{ merge_to_location.fieldassistId }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Distance:</p>
+                        <p id="toLocDistance" > {{ merge_to_location.radialDistance }} mts away</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Location:</p>
+                        <p id="toLocLocation" > {{ merge_to_location.latitude }}, {{ merge_to_location.longitude }}</p>
+                    </div>
+                    <div v-if="merge_to_location" class="col-span-2 flex justify-center ">
+                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                            Submit
+                        </button>
+                        <button type="button" @click="closeAllForms" class="text-white
+                        bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+        </div>
+        <!--Generate Link Distributor Form-->
+        <div v-if="showDistributorForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
+            <h3 class="text-xl font-semibold mb-2">Link Distributor</h3>
+            <form>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label for="distributor_name" class="text-gray-600">Distributor Name:</label>
+                        <label id="distributor_name" name="distributor_name" class="border border-gray-300 rounded-md p-2 w-full" required>{{ to_location_name }}</label>
+                    </div>
+                    <div>
+                        <label for="distributor_email" class="text-gray-600">Distributor Email:</label>
+                        <input type="email" id="distributor_email" name="distributor_email" class="border border-gray-300 rounded-md p-2 w-full" required>
+                    </div>
+                    <div>
+                        <label for="distributor_phone" class="text-gray-600">Distributor Phone:</label>
+                        <input type="tel" id="distributor_phone" name="distributor_phone" class="border border-gray-300 rounded-md p-2 w-full" required>
+                    </div>
+                    <div>
+                        <label for="distributor_address" class="text-gray-600">Distributor Address:</label>
+                        <input type="text" id="distributor_address" name="distributor_address" class="border border-gray-300 rounded-md p-2 w-full" required>
+                    </div>
+                    <div class="col-span-2 flex justify-center ">
+                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                            Submit
+                        </button>
+                        <button type="button" @click="closeAllForms" class="text-white
+                        bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--Generate Raise a Board Request Form-->
+        <div v-if="showBoardForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
+            <h3 class="text-xl font-semibold mb-2">Raise a Board Request</h3>
+            <form>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label for="board_name" class="text-gray-600">Board Name:</label>
+                        <input type="text" id="board_name" name="board_name" class="border border-gray-300 rounded-md p-2 w-full" required>
+                    </div>
+                    <div>
+                        <label for="board_description" class="text-gray-600">Board Description:</label>
+                        <textarea id="board_description" name="board_description" class="border border-gray-300 rounded-md p-2 w-full" required></textarea>
+                    </div>
+                    <div class="col-span-2 flex justify-center ">
+                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                            Submit
+                        </button>
+                        <button type="button" @click="closeAllForms" class="text-white
+                        bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </template>
 <script>
 //User window.location.search to get the query parameters
+import { createResource,createListResource } from 'frappe-ui';
 const route = window.location.search
+import { calculateDistance } from '../data/geo';
 //Extract the query parameters from the route
 const urlParams = new URLSearchParams(route)
 //Get the value of the query parameters
+import { ref } from 'vue'
+
+const pois = ref([])
+createListResource({
+    doctype: "CRM POI",
+    fields:["name","location_name","latitude","longitude","fieldassist_id"],
+    //filters:[["poi_status","=","Active"]],
+    filters:[["poi_status","=","Active"],["fieldassist_id","!=",""]],
+    pageLength: "None",
+}).reload().then(response => {
+    for(let i of response){
+        const radialDistance = calculateDistance({latitude:Number(urlParams.get('latitude')),longitude:Number(urlParams.get('longitude'))},{latitude:i.latitude,longitude:i.longitude})
+        // console.log(radialDistance,' mts away from present location')
+        if(radialDistance < 500 && radialDistance > 0){
+            pois.value.push({
+                label:i.location_name,
+                value:i.name,
+                description:radialDistance+' mts away',
+                radialDistance:Number(radialDistance),
+                latitude:i.latitude,
+                longitude:i.longitude,
+                fieldassistId:i.fieldassist_id
+            })
+        }
+    }
+})
+
 export default {
     name: "POI",
     props:{
@@ -68,8 +196,85 @@ export default {
             fieldmate_id: urlParams.get('fieldmate_id'),
             workmate_id: urlParams.get('workmate_id'),
             latitude: urlParams.get('latitude'),
-            longitude: urlParams.get('longitude')
+            longitude: urlParams.get('longitude'),
+            poi_status: urlParams.get('poi_status'),
+            showMergeForm : false,
+            showBoardForm : false,
+            showDistributorForm : false,
+            source: urlParams.get('source'),
+            pois: pois,
+            merge_to_location:null
         }
+    },
+    methods: {
+        toggleMergeForm() {
+            this.showMergeForm = !this.showMergeForm;
+            this.showDistributorForm = false;
+            this.showBoardForm = false;
+        },
+        toggleDistributorForm() {
+            this.showDistributorForm = !this.showDistributorForm;
+            this.showMergeForm = false;
+            this.showBoardForm = false;
+        },
+        toggleBoardForm() {
+            this.showBoardForm = !this.showBoardForm;
+            this.showMergeForm = false;
+            this.showDistributorForm = false;
+        },
+        closeAllForms() {
+            this.showMergeForm = false;
+            this.merge_to_location = null;
+            this.showDistributorForm = false;
+            this.showBoardForm = false;
+        },
+        locationSelected(event){
+            createResource({
+                doctype: "CRM POI",
+                fields:["*"],
+                name: event.target.value
+            }).read().then(response => {
+                console.log(response)
+            })
+        },
     }
 }
 </script>
+<script setup>
+import {Autocomplete} from 'frappe-ui'
+</script>
+<style scoped>
+.stamp {
+    transform: rotate(12deg);
+	color: #555;
+	font-size: 3rem;
+	font-weight: 700;
+	border: 0.25rem solid #555;
+	display: inline-block;
+	padding: 0.25rem 1rem;
+	text-transform: uppercase;
+	border-radius: 1rem;
+	font-family: 'Courier';
+    -webkit-mask-image: url('@/assets/grunge.png');
+    mask-image: url('@/assets/grunge.png');
+    -webkit-mask-size: 500px 350px;
+    mask-size: 500px 350px;
+    mix-blend-mode: multiply;
+}
+.is-approved {
+	color: #0A9928;
+	border: 0.5rem solid #0A9928;
+	-webkit-mask-position: 13rem 6rem;
+    mask-position: 13rem 6rem;
+	transform: rotate(-14deg);
+  border-radius: 0;
+}
+.is-nope {
+  color: #D23;
+  border: 0.5rem double #D23;
+  transform: rotate(3deg);
+	-webkit-mask-position: 2rem 3rem;
+    mask-position: 2rem 3rem;
+  font-size: 2rem;  
+}
+</style>
