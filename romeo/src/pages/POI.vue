@@ -46,6 +46,9 @@
             <button @click="toggleBoardForm" v-if="source == 'FieldAssist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Raise a Board Request
             </button>
+            <button @click="toggleGlobeActivity" v-if="source == 'FieldAssist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Globe
+            </button>
         </div>
         <!--Generate Merge Form-->
         <div v-if="showMergeForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
@@ -142,6 +145,10 @@
                 </div>
             </form>
         </div>
+        <!--Generate Code for Showing Activities in List Form-->
+        <div v-if="showGlobeActivity" class="bg-white shadow-md rounded-lg p-4 mb-4">
+            <h3>Globe Activity</h3>
+        </div>
     </div>
 </template>
 <script>
@@ -201,6 +208,7 @@ export default {
             showMergeForm : false,
             showBoardForm : false,
             showDistributorForm : false,
+            showGlobeActivity:false,
             source: urlParams.get('source'),
             pois: pois,
             merge_to_location:null
@@ -211,14 +219,23 @@ export default {
             this.showMergeForm = !this.showMergeForm;
             this.showDistributorForm = false;
             this.showBoardForm = false;
+            this.showGlobeActivity=false;
         },
         toggleDistributorForm() {
             this.showDistributorForm = !this.showDistributorForm;
             this.showMergeForm = false;
             this.showBoardForm = false;
+            this.showGlobeActivity=false;
         },
         toggleBoardForm() {
             this.showBoardForm = !this.showBoardForm;
+            this.showMergeForm = false;
+            this.showDistributorForm = false;
+            this.showGlobeActivity=false;
+        },
+        toggleGlobeActivity(){
+            this.showGlobeActivity=!this.showGlobeActivity;
+            this.showBoardForm = false;
             this.showMergeForm = false;
             this.showDistributorForm = false;
         },

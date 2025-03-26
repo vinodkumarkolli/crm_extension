@@ -6,4 +6,5 @@ from frappe.model.document import Document
 
 
 class MarketingMaterialRequest(Document):
-	pass
+	def before_save(self):
+		print(self.poi_id.location_name)

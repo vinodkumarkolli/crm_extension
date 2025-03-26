@@ -50,24 +50,26 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_chj2",
-  "amended_from",
-  "crm_lead_id",
-  "crm_lead_name",
+  "poi_id",
+  "poi_name",
   "request_material",
   "requested_date",
   "column_break_gehr",
   "request_status",
-  "approveddeclinedon_hold_date",
+  "approved_declined_hold_date",
   "completed_date",
+  "installation_status",
   "process_stage",
   "require_proofs",
-  "installation_status",
   "section_break_zvea",
-  "latitude",
-  "column_break_jrnh",
-  "longitude",
-  "column_break_gzyy",
+  "legacy_details_column",
+  "crm_lead_id",
+  "crm_lead_name",
   "field_assist_id",
+  "column_break_jrnh",
+  "latitude",
+  "longitude",
+  "amended_from",
   "details_section",
   "request_notes",
   "proofs_tab",
@@ -93,7 +95,13 @@
   "installation_image_2",
   "installation_verified_by",
   "column_break_lswg",
-  "installation_notes"
+  "installation_notes",
+  "vendor_tab",
+  "vendor",
+  "vendor_location",
+  "column_break_jvby",
+  "vendor_name",
+  "distance_bw_poi_and_vendor"
  ],
  "fields": [
   {
@@ -116,8 +124,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "CRM Lead ID",
-   "options": "CRM Lead",
-   "reqd": 1
+   "options": "CRM Lead"
   },
   {
    "fieldname": "crm_lead_name",
@@ -143,11 +150,6 @@
    "label": "Request Status",
    "options": "\nDraft\nShortlisted\nCompleted\nDeclined\nHold",
    "reqd": 1
-  },
-  {
-   "fieldname": "approveddeclinedon_hold_date",
-   "fieldtype": "Date",
-   "label": "Approved/Declined/On Hold Date"
   },
   {
    "fieldname": "completed_date",
@@ -271,10 +273,12 @@
    "label": "Require Proofs"
   },
   {
+   "default": "Not Shortlisted",
    "fieldname": "installation_status",
    "fieldtype": "Select",
    "label": "Installation Status",
-   "options": "Under Process\nAccepted\nDisputed\nDeclined"
+   "options": "Not Shortlisted\nShortlisted\nAccepted\nDisputed\nDeclined",
+   "reqd": 1
   },
   {
    "allow_on_submit": 1,
@@ -326,7 +330,8 @@
   },
   {
    "fieldname": "column_break_jrnh",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "label": "POI Details"
   },
   {
    "fieldname": "longitude",
@@ -335,19 +340,74 @@
    "reqd": 1
   },
   {
-   "fieldname": "column_break_gzyy",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "field_assist_id",
    "fieldtype": "Data",
    "label": "Field Assist ID"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "poi_id",
+   "fieldtype": "Link",
+   "label": "POI Id",
+   "options": "CRM POI",
+   "reqd": 1
+  },
+  {
+   "fieldname": "poi_name",
+   "fieldtype": "Data",
+   "label": "POI Name",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "approved_declined_hold_date",
+   "fieldtype": "Date",
+   "label": "Approved/Declined/On Hold Date"
+  },
+  {
+   "fieldname": "vendor_tab",
+   "fieldtype": "Tab Break",
+   "label": "Vendor"
+  },
+  {
+   "fieldname": "vendor",
+   "fieldtype": "Link",
+   "label": "Vendor",
+   "options": "Vendor"
+  },
+  {
+   "fieldname": "vendor_location",
+   "fieldtype": "Data",
+   "label": "Vendor Location",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_jvby",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "vendor_name",
+   "fieldtype": "Data",
+   "label": "Vendor Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "distance_bw_poi_and_vendor",
+   "fieldtype": "Data",
+   "label": "Distance bw POI and Vendor",
+   "read_only": 1
+  },
+  {
+   "fieldname": "legacy_details_column",
+   "fieldtype": "Column Break",
+   "label": "Legacy Details"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-19 16:24:21.000682",
+ "modified": "2025-03-26 15:31:38.299683",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
@@ -380,6 +440,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [
