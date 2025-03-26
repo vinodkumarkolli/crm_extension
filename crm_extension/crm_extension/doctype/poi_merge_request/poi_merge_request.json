@@ -77,6 +77,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "From POI Location Name",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -111,9 +112,12 @@
    "reqd": 1
   },
   {
+   "fetch_from": "to_poi.location_name",
+   "fetch_if_empty": 1,
    "fieldname": "to_poi_location_name",
    "fieldtype": "Data",
    "label": "To POI Location Name",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -128,6 +132,7 @@
    "fieldtype": "Select",
    "label": "Request Status",
    "options": "Submitted\nApproved\nRejected\nHold",
+   "permlevel": 1,
    "reqd": 1
   },
   {
@@ -137,13 +142,16 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "From POI Location Latitude",
+   "read_only": 1,
    "reqd": 1
   },
   {
    "fetch_from": "from_poi.longitude",
+   "fetch_if_empty": 1,
    "fieldname": "from_poi_location_longitude",
    "fieldtype": "Data",
    "label": "From POI Location Longitude",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -152,6 +160,7 @@
    "fieldname": "to_poi_location_lat",
    "fieldtype": "Data",
    "label": "To POI Location Latitude",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -160,6 +169,7 @@
    "fieldname": "to_poi_location_longitude",
    "fieldtype": "Data",
    "label": "To POI Location Longitude",
+   "read_only": 1,
    "reqd": 1
   }
  ],
@@ -167,7 +177,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-21 16:28:25.725009",
+ "modified": "2025-03-26 20:49:16.144953",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "POI Merge Request",

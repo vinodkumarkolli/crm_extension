@@ -59,6 +59,7 @@ export function convertPOIPointsToGeoJson(pois){
           }
         },
         features: pois.map(point => {
+            //console.log(point)
             return {
             type: 'Feature',
             properties: {

@@ -37,16 +37,16 @@
         </div>
         <!--Generate Tab Control for Merge, Link Distributor, Raise a Board Request Forms-->
         <div class="flex justify-center space-x-4">
-            <button @click="toggleMergeForm" v-if="(poi_status=='Active')&&(pois.length>0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                Merge
+            <button @click="toggleMergeForm" v-if="(poi_status=='Active')&&(pois.length>0)&&(mergeRequests.length==0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Merge Request
             </button>
-            <button @click="toggleDistributorForm" v-if="source == 'FieldAssist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button @click="toggleDistributorForm" v-if="source == 'Field Assist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Link Distributor
             </button>
-            <button @click="toggleBoardForm" v-if="source == 'FieldAssist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button @click="toggleBoardForm" v-if="source == 'Field Assist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Raise a Board Request
             </button>
-            <button @click="toggleGlobeActivity" v-if="source == 'FieldAssist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button @click="toggleGlobeActivity" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Globe
             </button>
         </div>
@@ -77,8 +77,8 @@
                         <p id="toLocLocation" > {{ merge_to_location.latitude }}, {{ merge_to_location.longitude }}</p>
                     </div> -->
                     <div v-if="merge_to_location" class="col-span-2 flex justify-center ">
-                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                            Submit
+                        <button type="submit" @click="submitMergeRequest" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                           Submit Request
                         </button>
                         <button type="button" @click="closeAllForms" class="text-white
                         bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
@@ -147,13 +147,20 @@
         </div>
         <!--Generate Code for Showing Activities in List Form-->
         <div v-if="showGlobeActivity" class="bg-white shadow-md rounded-lg p-4 mb-4">
-            <h3>Globe Activity</h3>
+            
+            <h3 class="flex justify-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><mark class="px-2 text-white bg-blue-600 rounded-sm dark:bg-blue-500">Globe</mark> Activity</h3>
+            <ol>
+                <li v-for="request in mergeRequests.items" :key="request.name" class="bg-white shadow-md rounded-lg p-4 mb-4">
+                    <p>Request ID: <strong>{{ request.name }}</strong> is in <strong> {{ request.request_status }} </strong> 
+                        stage that merges present location with <strong>{{ request.to_poi_location_name }}</strong> which is at <strong>{{ request.radial_difference_in_mtrs }}</strong> mts away</p>
+                </li>
+            </ol>
         </div>
     </div>
 </template>
 <script>
 //User window.location.search to get the query parameters
-import { createResource,createListResource } from 'frappe-ui';
+import {createResource,createListResource } from 'frappe-ui';
 const route = window.location.search
 import { calculateDistance } from '../data/geo';
 //Extract the query parameters from the route
@@ -162,6 +169,7 @@ const urlParams = new URLSearchParams(route)
 import { ref } from 'vue'
 
 const pois = ref([])
+
 createListResource({
     doctype: "CRM POI",
     fields:["name","location_name","latitude","longitude","fieldassist_id"],
@@ -208,11 +216,24 @@ export default {
             showMergeForm : false,
             showBoardForm : false,
             showDistributorForm : false,
-            showGlobeActivity:false,
+            showGlobeActivity:true,
             source: urlParams.get('source'),
             pois: pois,
+            mergeRequests:ref([]),
             merge_to_location:null
         }
+    },
+    mounted(){
+        this.mergeRequests = createListResource({
+            doctype:'POI Merge Request',
+            fields:["*"],
+            filters:[['from_poi','=',this.id]]
+        })
+        this.mergeRequests.reload().then(response => {
+            this.mergeRequests.items = response; // Assuming response contains the items
+            }).catch(error => {
+            console.error("Failed to load merge requests:", error);
+        });
     },
     methods: {
         toggleMergeForm() {
@@ -238,6 +259,7 @@ export default {
             this.showBoardForm = false;
             this.showMergeForm = false;
             this.showDistributorForm = false;
+            // console.log()
         },
         closeAllForms() {
             this.showMergeForm = false;
@@ -254,11 +276,24 @@ export default {
                 console.log(response)
             })
         },
+        submitMergeRequest(){
+            // console.log(this.merge_to_location)
+            if(this.merge_to_location.value!=this.id){
+                this.mergeRequests.insert.submit({
+                from_poi:this.id,
+                to_poi:this.merge_to_location.value,
+                radial_difference_in_mtrs: this.merge_to_location.radialDistance,
+                docstatus:1
+            })
+            }
+            // console.log(this.mergeRequests)
+        }
     }
 }
 </script>
 <script setup>
 import {Autocomplete} from 'frappe-ui'
+
 </script>
 <style scoped>
 .stamp {
