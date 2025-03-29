@@ -37,7 +37,7 @@
         </div>
         <!--Generate Tab Control for Merge, Link Distributor, Raise a Board Request Forms-->
         <div class="flex justify-center space-x-4">
-            <button @click="toggleMergeForm" v-if="(poi_status=='Active')&&(pois.length>0)&&(mergeRequests.length==0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button @click="toggleMergeForm" v-if="(poi_status=='Active')&&(pois.length>0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Merge Request
             </button>
             <button @click="toggleDistributorForm" v-if="source == 'Field Assist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
@@ -71,6 +71,10 @@
                     <div>
                         <p class="text-gray-600">Distance:</p>
                         <p id="toLocDistance" > {{ merge_to_location.radialDistance }} mts away</p>
+                    </div>
+                    <div class="text-gray-600">
+                        <label class="required">Notes:</label>
+                        <input v-model="mergeNotes" required/>
                     </div>
                     <!-- <div>
                         <p class="text-gray-600">Location:</p>
@@ -150,6 +154,10 @@
             
             <h3 class="flex justify-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><mark class="px-2 text-white bg-blue-600 rounded-sm dark:bg-blue-500">Globe</mark> Activity</h3>
             <ol>
+                <li v-for="request in rejectedMergeRequests.items" :key="request.name" class="bg-white shadow-md rounded-lg p-4 mb-4">
+                    <p>Request ID: <strong>{{ request.name }}</strong> is in <strong> {{ request.request_status }} </strong> 
+                        stage that tried merging present location with <strong>{{ request.to_poi_location_name }}</strong> which is at <strong>{{ request.radial_difference_in_mtrs }}</strong> mts away</p>
+                </li>
                 <li v-for="request in mergeRequests.items" :key="request.name" class="bg-white shadow-md rounded-lg p-4 mb-4">
                     <p>Request ID: <strong>{{ request.name }}</strong> is in <strong> {{ request.request_status }} </strong> 
                         stage that merges present location with <strong>{{ request.to_poi_location_name }}</strong> which is at <strong>{{ request.radial_difference_in_mtrs }}</strong> mts away</p>
@@ -163,6 +171,9 @@
 import {createResource,createListResource } from 'frappe-ui';
 const route = window.location.search
 import { calculateDistance } from '../data/geo';
+import {sessionUser} from '@/data/session';
+if(sessionUser==null){window.location.href="/login"}
+else{console.log(sessionUser)}
 //Extract the query parameters from the route
 const urlParams = new URLSearchParams(route)
 //Get the value of the query parameters
@@ -220,6 +231,8 @@ export default {
             source: urlParams.get('source'),
             pois: pois,
             mergeRequests:ref([]),
+            rejectedMergeRequests:ref([]),   
+            mergeNotes:"",
             merge_to_location:null
         }
     },
@@ -227,12 +240,22 @@ export default {
         this.mergeRequests = createListResource({
             doctype:'POI Merge Request',
             fields:["*"],
-            filters:[['from_poi','=',this.id]]
+            filters:[['from_poi','=',this.id],['docstatus','=',1]]
         })
         this.mergeRequests.reload().then(response => {
             this.mergeRequests.items = response; // Assuming response contains the items
             }).catch(error => {
             console.error("Failed to load merge requests:", error);
+        });
+        this.rejectedMergeRequests = createListResource({
+            doctype:'POI Merge Request',
+            fields:["*"],
+            filters:[['from_poi','=',this.id],['docstatus','=',2]]  
+        })
+        this.rejectedMergeRequests.reload().then(response => {
+            this.rejectedMergeRequests.items = response; // Assuming response contains the items
+            }).catch(error => {
+            console.error("Failed to load rejected merge requests:", error);
         });
     },
     methods: {
@@ -271,22 +294,22 @@ export default {
             createResource({
                 doctype: "CRM POI",
                 fields:["*"],
-                name: event.target.value
+                name: event.target.value,
             }).read().then(response => {
                 console.log(response)
             })
         },
         submitMergeRequest(){
-            // console.log(this.merge_to_location)
             if(this.merge_to_location.value!=this.id){
-                this.mergeRequests.insert.submit({
-                from_poi:this.id,
-                to_poi:this.merge_to_location.value,
-                radial_difference_in_mtrs: this.merge_to_location.radialDistance,
-                docstatus:1
+                 this.mergeRequests.insert.submit({
+                 from_poi:this.id,
+                 to_poi:this.merge_to_location.value,
+                 radial_difference_in_mtrs: this.merge_to_location.radialDistance,
+                 merge_notes:this.mergeNotes,
+                 requested_by:sessionUser(),
+                 docstatus:1
             })
             }
-            // console.log(this.mergeRequests)
         }
     }
 }
@@ -329,4 +352,8 @@ import {Autocomplete} from 'frappe-ui'
     mask-position: 2rem 3rem;
   font-size: 2rem;  
 }
+.required:after {
+    content:" *";
+    color: red;
+  }
 </style>

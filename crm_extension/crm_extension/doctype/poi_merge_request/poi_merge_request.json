@@ -1,29 +1,5 @@
 {
- "actions": [
-  {
-   "action": "crm_extension.crm_extension",
-   "action_type": "Server Action",
-   "group": "Approvals",
-   "label": "Approve"
-  },
-  {
-   "action": "crm_extension.crm_extension",
-   "action_type": "Server Action",
-   "group": "Approvals",
-   "label": "Reject"
-  },
-  {
-   "action": "crm_extension.crm_extension",
-   "action_type": "Server Action",
-   "group": "Approvals",
-   "label": "Hold"
-  },
-  {
-   "action": "crm_extension.crm_extension",
-   "action_type": "Server Action",
-   "label": "Re-open"
-  }
- ],
+ "actions": [],
  "autoname": "hash",
  "creation": "2025-03-21 11:43:47.868182",
  "doctype": "DocType",
@@ -37,12 +13,14 @@
   "merge_request_date",
   "requested_by",
   "request_status",
+  "admin_comments",
   "column_break_qfkb",
   "to_poi",
   "to_poi_location_name",
   "to_poi_location_lat",
   "to_poi_location_longitude",
   "radial_difference_in_mtrs",
+  "merge_notes",
   "amended_from"
  ],
  "fields": [
@@ -126,16 +104,6 @@
    "label": "Radial Difference in Mtrs"
   },
   {
-   "allow_on_submit": 1,
-   "default": "Submitted",
-   "fieldname": "request_status",
-   "fieldtype": "Select",
-   "label": "Request Status",
-   "options": "Submitted\nApproved\nRejected\nHold",
-   "permlevel": 1,
-   "reqd": 1
-  },
-  {
    "fetch_from": "from_poi.latitude",
    "fetch_if_empty": 1,
    "fieldname": "from_poi_location_lat",
@@ -171,14 +139,37 @@
    "label": "To POI Location Longitude",
    "read_only": 1,
    "reqd": 1
+  },
+  {
+   "fieldname": "merge_notes",
+   "fieldtype": "Small Text",
+   "label": "Merge Notes",
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Submitted",
+   "fieldname": "request_status",
+   "fieldtype": "Select",
+   "label": "Request Status",
+   "options": "Submitted\nApproved\nHold\nRejected",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "admin_comments",
+   "fieldtype": "Small Text",
+   "label": "Admin Comments",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-26 20:49:16.144953",
- "modified_by": "Administrator",
+ "modified": "2025-03-29 22:27:51.323401",
+ "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "POI Merge Request",
  "naming_rule": "Random",
@@ -191,10 +182,20 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "CRM Viewer",
+   "role": "Bazooka User",
    "share": 1,
    "submit": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Bazooka User",
+   "share": 1
   },
   {
    "cancel": 1,
@@ -205,7 +206,8 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "System Manager",
+   "role": "Romeo Admin",
+   "select": 1,
    "share": 1,
    "submit": 1,
    "write": 1
@@ -218,24 +220,31 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "System Manager",
+   "role": "Romeo Admin",
    "share": 1,
    "write": 1
-  },
-  {
-   "email": 1,
-   "export": 1,
-   "permlevel": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "CRM Viewer",
-   "share": 1
   }
  ],
  "queue_in_background": 1,
  "row_format": "Dynamic",
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [
+  {
+   "color": "Blue",
+   "title": "Submitted"
+  },
+  {
+   "color": "Green",
+   "title": "Approved"
+  },
+  {
+   "color": "Orange",
+   "title": "Hold"
+  },
+  {
+   "color": "Red",
+   "title": "Rejected"
+  }
+ ]
 }
