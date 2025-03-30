@@ -315,7 +315,7 @@ export default {
                      this.closeAllForms();
                  }
                  ).catch((error)=>{
-                     alert(`Error occured while submitting merge request`)
+                     alert(`Error occured while submitting merge request`,error.message)
                  })
             }
         }
