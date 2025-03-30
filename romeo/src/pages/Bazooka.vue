@@ -60,7 +60,7 @@ function initMap(setlat,setlong,pincodes) {
         const oldGeoJsonFeatureCollection = convertPOIPointsToGeoJson(pois.filter(poi => poi.fieldassist_id === null))
         const newGeoJsonFeatureCollection = convertPOIPointsToGeoJson(pois.filter(poi => poi.fieldassist_id !== null))
         if(mapContainer.value){
-            mapContainer.value = L.map('map', { zoomControl: false }).setView([setlat, setlong], 12);
+            mapContainer.value = L.map('map', { zoomControl: false }).setView([setlat, setlong], 12,{animate: true});
             const bounds = getBoundsFromLatLng(setlat,setlong, 30 * 1000); // 30 Km Radius
             mapContainer.value.setMaxBounds(bounds);
             // Optionally, fit the map view to these bounds

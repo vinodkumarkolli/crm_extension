@@ -37,7 +37,10 @@
         </div>
         <!--Generate Tab Control for Merge, Link Distributor, Raise a Board Request Forms-->
         <div class="flex justify-center space-x-4">
-            <button  @click="toggleMergeForm" v-if="(poi_status=='Active')&&(pois.length>0)&&(mergeRequests.items.length===0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button @click="toggleGlobeActivity" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Globe
+            </button>
+            <button  @click="toggleMergeForm" v-if="(poi_status=='Active')&&(pois.items?.length>0)&&(mergeRequests.items?.length===0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Merge Request
             </button>
             <button @click="toggleDistributorForm" v-if="source == 'Field Assist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
@@ -46,15 +49,12 @@
             <button @click="toggleBoardForm" v-if="source == 'Field Assist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Raise a Board Request
             </button>
-            <button @click="toggleGlobeActivity" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                Globe
-            </button>
         </div>
         <!--Generate Merge Form-->
         <div v-if="showMergeForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
             <h3 class="text-xl font-semibold flex justify-center mb-2">Merge Request</h3>
                 <label for="toPOISelecteor" class="text-gray-600">Select a POI:</label>
-                <Autocomplete :options="pois" v-model="merge_to_location" id="toPOISelecteor"/>
+                <Autocomplete :options="pois.items" v-model="merge_to_location" id="toPOISelecteor"/>
                 <div v-if="merge_to_location" class="grid grid-cols-2 gap-2">
                     <div>
                         <label for="toLocName" class="text-gray-600">Location ID:</label>
@@ -152,11 +152,15 @@
         <!--Generate Code for Showing Activities in List Form-->
         <div v-if="showGlobeActivity" class="bg-white shadow-md rounded-lg p-4 mb-4">
             
-            <h3 class="flex justify-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><mark class="px-2 text-white bg-blue-600 rounded-sm dark:bg-blue-500">Globe</mark> Activity</h3>
+            <!-- <h3 class="flex justify-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><mark class="px-2 text-white bg-blue-600 rounded-sm dark:bg-blue-500">Globe</mark> Activity</h3> -->
+             <h3 class="flex justify-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Activity</h3>
             <ol>
                 <li v-for="request in rejectedMergeRequests.items" :key="request.name" class="bg-white shadow-md rounded-lg p-4 mb-4">
                     <p>Request ID: <strong>{{ request.name }}</strong> is in <strong> {{ request.request_status }} </strong> 
-                        stage that tried merging present location with <strong>{{ request.to_poi_location_name }}</strong> which is at <strong>{{ request.radial_difference_in_mtrs }}</strong> mts away</p>
+                        stage that tried merging present location with <strong>{{ request.to_poi_location_name }}</strong> which is at <strong>{{ request.radial_difference_in_mtrs }}</strong> mts away.</p><br/>
+                        <div v-if="request.admin_comments">
+                            <p><strong>Admin Comments:</strong> {{ request.admin_comments }}</p>
+                        </div>
                 </li>
                 <li v-for="request in mergeRequests.items" :key="request.name" class="bg-white shadow-md rounded-lg p-4 mb-4">
                     <p>Request ID: <strong>{{ request.name }}</strong> is in <strong> {{ request.request_status }} </strong> 
@@ -175,37 +179,10 @@ const route = window.location.search
 import { calculateDistance } from '../data/geo';
 import {sessionUser} from '@/data/session';
 if(sessionUser==null){window.location.href="/login"}
-else{console.log(sessionUser)}
 //Extract the query parameters from the route
 const urlParams = new URLSearchParams(route)
 //Get the value of the query parameters
 import { ref } from 'vue'
-
-const pois = ref([])
-
-createListResource({
-    doctype: "CRM POI",
-    fields:["name","location_name","latitude","longitude","fieldassist_id"],
-    //filters:[["poi_status","=","Active"]],
-    filters:[["poi_status","=","Active"],["fieldassist_id","!=",""]],
-    pageLength: "None",
-}).reload().then(response => {
-    for(let i of response){
-        const radialDistance = calculateDistance({latitude:Number(urlParams.get('latitude')),longitude:Number(urlParams.get('longitude'))},{latitude:i.latitude,longitude:i.longitude})
-        // console.log(radialDistance,' mts away from present location')
-        if(radialDistance < 500 && radialDistance > 0){
-            pois.value.push({
-                label:i.location_name,
-                value:i.name,
-                description:radialDistance+' mts away',
-                radialDistance:Number(radialDistance),
-                latitude:i.latitude,
-                longitude:i.longitude,
-                fieldassistId:i.fieldassist_id
-            })
-        }
-    }
-})
 
 export default {
     name: "POI",
@@ -215,7 +192,6 @@ export default {
             required: true
         }
     },
-    
     data(){
         return {
             location_name: urlParams.get('location_name'),
@@ -231,21 +207,46 @@ export default {
             showDistributorForm : false,
             showGlobeActivity:true,
             source: urlParams.get('source'),
-            pois: pois,
+            pois: ref([]),
             mergeRequests:ref([]),
             rejectedMergeRequests:ref([]),   
-            mergeNotes:"",
-            merge_to_location:null
+            merge_to_location:null,
+            mergeNotes:null
         }
     },
     mounted(){
+        this.pois = createListResource({
+            doctype: "CRM POI",
+            fields:["name","location_name","latitude","longitude","fieldassist_id"],
+            filters:[["poi_status","=","Active"],["fieldassist_id","!=",""]],
+            pageLength: "None",
+        })
+        this.pois.reload().then(response => {
+            const items = [];
+            for(let i of response){
+                const radialDistance = calculateDistance({latitude:Number(urlParams.get('latitude')),longitude:Number(urlParams.get('longitude'))},{latitude:i.latitude,longitude:i.longitude})
+                // console.log(radialDistance,' mts away from present location')
+                if(radialDistance < 500 && radialDistance > 0){
+                    items.push({
+                        label:i.location_name,
+                        value:i.name,
+                        description:radialDistance+' mts away',
+                        radialDistance:Number(radialDistance),
+                        latitude:i.latitude,
+                        longitude:i.longitude,
+                        fieldassistId:i.fieldassist_id
+                    })
+                }
+            }
+            this.pois.items=items;
+        })
         this.mergeRequests = createListResource({
             doctype:'POI Merge Request',
             fields:["*"],
             filters:[['from_poi','=',this.id],['docstatus','=',1]]
         })
         this.mergeRequests.reload().then(response => {
-            this.mergeRequests.items = response; // Assuming response contains the items
+            this.mergeRequests.items = response; 
             }).catch(error => {
             console.error("Failed to load merge requests:", error);
         });
@@ -302,21 +303,29 @@ export default {
             })
         },
         submitMergeRequest(){
-            if(this.merge_to_location.value!=this.id){
-                 this.mergeRequests.insert.submit({
-                 from_poi:this.id,
-                 to_poi:this.merge_to_location.value,
-                 radial_difference_in_mtrs: this.merge_to_location.radialDistance,
-                 merge_notes:this.mergeNotes,
-                 requested_by:sessionUser(),
-                 docstatus:1
-                 }).then((response) =>{
-                     alert(`Successfully submitted merge request ${response.name}`)
-                     this.closeAllForms();
-                 }
-                 ).catch((error)=>{
-                     alert(`Error occured while submitting merge request`,error.message)
-                 })
+            // Access the input element's value
+            if (!this.mergeNotes || this.mergeNotes.trim() === '') {
+                alert('Please enter notes before submitting the request.');
+                return;
+            }
+            else{
+                if(this.merge_to_location.value!=this.id){
+                    this.mergeRequests.insert.submit({
+                    from_poi:this.id,
+                    to_poi:this.merge_to_location.value,
+                    radial_difference_in_mtrs: this.merge_to_location.radialDistance,
+                    merge_notes:this.mergeNotes,
+                    requested_by:sessionUser(),
+                    docstatus:1
+                    }).then((response) =>{
+                        alert(`Successfully submitted merge request ${response.name}`)
+                        this.closeAllForms();
+                        window.location.reload();
+                    }
+                    ).catch((error)=>{
+                        alert(`Error occured while submitting merge request`,error.message)
+                    })
+                }
             }
         }
     }

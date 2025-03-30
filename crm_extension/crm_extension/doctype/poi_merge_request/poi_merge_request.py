@@ -3,11 +3,21 @@
 
 import frappe
 from frappe.model.document import Document
-import json
+from frappe.utils import now
 
 
 class POIMergeRequest(Document):
-	# pass
+	def before_submit(self):
+		linkedPOIs = frappe.db.get_list('CRM POI',filters={'parent_poi_latest':self.from_poi},fields=["name","parent_poi_latest"])
+		if len(linkedPOIs) >0 :
+			for i in linkedPOIs:
+				self.append('tab_subrequests',{'sub_request_type':'CRM POI','audit_document':i.name,'past_parent_poi':i.parent_poi_latest,'latest_parent_poi':self.to_poi,'modified_date':now(),'execution_status':'Planned'})
+		try:
+			self.append('tab_subrequests',{'sub_request_type':'CRM POI','audit_document':self.from_poi,'past_parent_poi':self.from_poi,'latest_parent_poi':self.to_poi,'modified_date':now(),'execution_status':'Planned'})
+		except Exception as e:
+			print(e)
+			return {"error":e}
+		return {"success":"Success"}
 	def on_submit(self):
 		self.request_status="Submitted"
 		frappe.db.set_value('CRM POI', self.from_poi,'poi_status','Merge Request Raised')

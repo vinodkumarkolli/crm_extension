@@ -21,7 +21,9 @@
   "to_poi_location_longitude",
   "radial_difference_in_mtrs",
   "merge_notes",
-  "amended_from"
+  "amended_from",
+  "subrequests_section",
+  "tab_subrequests"
  ],
  "fields": [
   {
@@ -162,14 +164,24 @@
    "fieldtype": "Small Text",
    "label": "Admin Comments",
    "read_only": 1
+  },
+  {
+   "fieldname": "subrequests_section",
+   "fieldtype": "Section Break",
+   "label": "Subrequests"
+  },
+  {
+   "fieldname": "tab_subrequests",
+   "fieldtype": "Table",
+   "options": "POI Merge Sub Requests"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-29 22:27:51.323401",
- "modified_by": "vinodkumarkolli@gmail.com",
+ "modified": "2025-03-30 16:10:36.298538",
+ "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "POI Merge Request",
  "naming_rule": "Random",

@@ -15,6 +15,7 @@ frappe.ui.form.on("POI Merge Request", {
         }
 	},
     on_cancel(frm){
+        frappe.msgprint({message:"I am in Cancel"})
         cancelMergeRequest(frm);
     }
 });
