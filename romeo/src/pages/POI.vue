@@ -37,7 +37,7 @@
         </div>
         <!--Generate Tab Control for Merge, Link Distributor, Raise a Board Request Forms-->
         <div class="flex justify-center space-x-4">
-            <button @click="toggleMergeForm" v-if="(poi_status=='Active')&&(pois.length>0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button  @click="toggleMergeForm" v-if="(poi_status=='Active')&&(pois.length>0)&&(mergeRequests.items.length===0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Merge Request
             </button>
             <button @click="toggleDistributorForm" v-if="source == 'Field Assist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
@@ -160,7 +160,9 @@
                 </li>
                 <li v-for="request in mergeRequests.items" :key="request.name" class="bg-white shadow-md rounded-lg p-4 mb-4">
                     <p>Request ID: <strong>{{ request.name }}</strong> is in <strong> {{ request.request_status }} </strong> 
-                        stage that merges present location with <strong>{{ request.to_poi_location_name }}</strong> which is at <strong>{{ request.radial_difference_in_mtrs }}</strong> mts away</p>
+                        stage that merges present location with <strong>{{ request.to_poi_location_name }}</strong> which is at <strong>{{ request.radial_difference_in_mtrs }}</strong> mts away.</p> <div v-if="request.admin_comments">
+                            <p><strong>Admin Comments:</strong> {{ request.admin_comments }}</p>
+                        </div>
                 </li>
             </ol>
         </div>
@@ -308,7 +310,13 @@ export default {
                  merge_notes:this.mergeNotes,
                  requested_by:sessionUser(),
                  docstatus:1
-            })
+                 }).then((response) =>{
+                     alert(`Successfully submitted merge request ${response.name}`)
+                     this.closeAllForms();
+                 }
+                 ).catch((error)=>{
+                     alert(`Error occured while submitting merge request`)
+                 })
             }
         }
     }

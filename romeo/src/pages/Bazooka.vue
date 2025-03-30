@@ -97,6 +97,7 @@ function initMap(setlat,setlong,pincodes) {
                 placeholder: 'Search Locations',
                 propertyName: 'location_name',
                 zoomToResult: true,
+                zoom:16
             })
             poiSearch.addTo(mapContainer.value)
             const baseMaps = {

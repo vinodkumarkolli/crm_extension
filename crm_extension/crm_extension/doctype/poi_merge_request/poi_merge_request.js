@@ -14,7 +14,7 @@ frappe.ui.form.on("POI Merge Request", {
             addRejectButton(frm);
         }
 	},
-    before_cancel(frm){
+    on_cancel(frm){
         cancelMergeRequest(frm);
     }
 });
@@ -49,7 +49,9 @@ function cancelMergeRequest(frm){
 }
 function addRejectButton(frm){
     frm.add_custom_button(__('Reject'), 
-    cancelMergeRequest(frm)
+    function(){
+        cancelMergeRequest(frm)
+    } 
     ,__("Approvals")
     )
 }
