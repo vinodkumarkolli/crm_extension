@@ -171,6 +171,7 @@
    "label": "Subrequests"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "tab_subrequests",
    "fieldtype": "Table",
    "options": "POI Merge Sub Requests"
@@ -180,8 +181,8 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-30 16:10:36.298538",
- "modified_by": "Administrator",
+ "modified": "2025-03-31 11:10:15.398781",
+ "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "POI Merge Request",
  "naming_rule": "Random",
@@ -252,7 +253,7 @@
   },
   {
    "color": "Orange",
-   "title": "Hold"
+   "title": "On Hold"
   },
   {
    "color": "Red",

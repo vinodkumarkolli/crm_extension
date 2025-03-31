@@ -4,19 +4,49 @@
 frappe.ui.form.on("POI Merge Request", {
 	refresh(frm) {
         if(frm.doc.docstatus === 1){
-            if(frm.doc.request_status!='Approved')
-            {
-                addApproveButton(frm);
-            }
-            if(frm.doc.request_status!='Hold'){
-                addHoldButton(frm);
-            }
-            addRejectButton(frm);
+            frappe.call({
+                method:'frappe.client.get_list',
+                args:{
+                    doctype:'POI Merge Request',
+                    filters:{'from_poi':frm.doc.to_poi},
+                    fields:['name']
+                },
+                callback:function(r){
+                    if(r.message.length>0){
+                        // console.log(r.message[0].name)
+                        let msg = 'Superceded by Merge Requests : '
+                        for(let i=0;i<r.message.length;i++){
+                            if(i==r.message.length-1){
+                                msg+=r.message[i].name+". "
+                            }
+                            else{
+                                msg+=r.message[i].name+", "
+                            }
+                            
+                        }
+                        msg+= "You can't do any action on this until they are deleted from the system"
+                        frappe.msgprint(msg)
+                    }
+                    else{
+                        if(frm.doc.request_status!='Approved')
+                            {
+                                addApproveButton(frm);
+                            }
+                            if(frm.doc.request_status!='Hold'){
+                                addHoldButton(frm);
+                            }
+                            addRejectButton(frm);   
+                    }
+                }
+            })
+            
+            //Hiding Cancel Button
+            frm.page.btn_secondary.hide();
         }
 	},
-    on_cancel(frm){
-        frappe.msgprint({message:"I am in Cancel"})
-        cancelMergeRequest(frm);
+    before_cancel:function(frm){
+        //cancelMergeRequest(frm);
+        frappe.throw("You cannot cancel this merge request. Please Reject or Hold the merge request.")
     }
 });
 function cancelMergeRequest(frm){

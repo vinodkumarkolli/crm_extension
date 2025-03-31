@@ -1,34 +1,93 @@
 <template>
     <div class="poi-container">
-        
         <!-- Generate a Card HTML -->
-        <div class="bg-white shadow-md rounded-lg p-4 mb-4">
+        <div v-if="poi_details.doc" class="bg-white shadow-md rounded-lg p-4 mb-4">
             <h3 class="text-xl font-semibold mb-2">{{ id }}</h3>
-            <h3 class="text-xl font-semibold mb-2">{{ location_name }}</h3>
+            <h3 class="text-xl font-semibold mb-2">{{ poi_details.doc.location_name }}</h3>
             <div class="grid grid-cols-3 gap-2">
                 <div>
-                    <p class="text-gray-600">CRM Lead ID:</p>
-                    <p>{{ crm_lead_id }}</p>
+                    <!-- <p class="text-gray-600">CRM Lead ID:</p> -->
+                    <label for="det_crm_lead_id" class="block text-gray-700 text-sm font-bold mb-2">
+                    CRM Lead ID:
+                    </label>
+                    <TextInput id="det_crm_lead_id"
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="Placeholder"
+                        :disabled="true"
+                        v-model="poi_details.doc.crm_lead_id"
+                    />
+                    <!-- <p>{{ poi_details.doc.crm_lead_id }}</p> -->
                 </div>
                 <div>
-                    <p class="text-gray-600">FieldAssist ID:</p>
-                    <p>{{ fieldassist_id }}</p>
+                    <!-- <p class="text-gray-600">FieldAssist ID:</p> -->
+                    <label for="det_fieldassist_id" class="block text-gray-700 text-sm font-bold mb-2">
+                    FieldAssist ID:
+                    </label>
+                    <TextInput id="det_fieldassist_id"
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="Placeholder"
+                        :disabled="true"
+                        v-model="poi_details.doc.fieldassist_id"
+                    />
+                    <!-- <p>{{ poi_details.doc.fieldassist_id }}</p> -->
                 </div>
                 <div>
-                    <p class="text-gray-600">FieldMate ID:</p>
-                    <p>{{ fieldmate_id }}</p>
+                    <label for="det_fieldmate_id" class="block text-gray-700 text-sm font-bold mb-2">
+                    Fieldmate ID:
+                    </label>
+                    <TextInput id="det_fieldmate_id"
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="poi_details.doc.fieldmate_id"
+                    />
+                    <!-- <p class="text-gray-600">FieldMate ID:</p>
+                    <p>{{ poi_details.doc.fieldmate_id }}</p> -->
                 </div>
                 <div>
-                    <p class="text-gray-600">WorkMate ID:</p>
-                    <p>{{ workmate_id }}</p>
+                    <label for="det_workmate_id" class="block text-gray-700 text-sm font-bold mb-2">
+                    Workmate ID:
+                    </label>
+                    <TextInput id="det_workmate_id"
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="poi_details.doc.workmate_id"
+                    />
+                    <!-- <p class="text-gray-600">WorkMate ID:</p>
+                    <p>{{ poi_details.doc.workmate_id }}</p> -->
                 </div>
                 <!-- <div>
                     <p class="text-gray-600">Location:</p>
                     <p>{{ latitude }}, {{ longitude }}</p>
                 </div> -->
                 <div>
-                    <p class="text-gray-600">POI Status:</p>
-                    <p>{{ poi_status }}</p>
+                    <label for="det_poi_status" class="block text-gray-700 text-sm font-bold mb-2">
+                    POI Status:
+                    </label>
+                    <TextInput id="det_poi_status"
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="poi_details.doc.poi_status"
+                    />
+                    <!-- <p class="text-gray-600">POI Status:</p>
+                    <p>{{ poi_details.doc.poi_status }}</p> -->
                 </div>
                 <!--Generate Rubber Stamp effect-->
                 <span class="stamp is-approved col-span-2" v-if="source == 'Field Assist'">{{ source }}</span>
@@ -36,45 +95,104 @@
             </div>
         </div>
         <!--Generate Tab Control for Merge, Link Distributor, Raise a Board Request Forms-->
-        <div class="flex justify-center space-x-4">
+        <div v-if="poi_details.doc" class="flex justify-center space-x-4">
             <button @click="toggleGlobeActivity" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Globe
             </button>
-            <button  @click="toggleMergeForm" v-if="(poi_status=='Active')&&(pois.items?.length>0)&&(mergeRequests.items?.length===0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button  @click="toggleMergeForm" v-if="(poi_details.doc.poi_status=='Active')&&(pois.items?.length>0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Merge Request
             </button>
-            <button @click="toggleDistributorForm" v-if="source == 'Field Assist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button @click="toggleDistributorForm" v-if="(poi_details.doc.poi_status=='Active')&&(source == 'Field Assist')" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Link Distributor
             </button>
-            <button @click="toggleBoardForm" v-if="source == 'Field Assist'" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button @click="toggleBoardForm" v-if="(poi_details.doc.poi_status=='Active')&&(source == 'Field Assist')" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Raise a Board Request
             </button>
         </div>
         <!--Generate Merge Form-->
         <div v-if="showMergeForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
             <h3 class="text-xl font-semibold flex justify-center mb-2">Merge Request</h3>
-                <label for="toPOISelecteor" class="text-gray-600">Select a POI:</label>
-                <Autocomplete :options="pois.items" v-model="merge_to_location" id="toPOISelecteor"/>
+                <!-- <label for="toPOISelecteor" class="text-gray-600">Select a POI:</label> -->
+                <Autocomplete :options="pois.items" v-model="merge_to_location" placeholder="Select a POI" id="toPOISelecteor"/>
                 <div v-if="merge_to_location" class="grid grid-cols-2 gap-2">
                     <div>
-                        <label for="toLocName" class="text-gray-600">Location ID:</label>
-                        <h3 id="toLocName" class="text-xl font-semibold mb-2">{{ merge_to_location.value }}</h3>
+                        <label for="merge_locationId" class="block text-gray-700 text-sm font-bold mb-2">
+                            Location ID:
+                        </label>
+                        <TextInput id="merge_locationId"
+                            :type="'text'"
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true"
+                            v-model="merge_to_location.value"
+                        />
+                        <!-- <label for="toLocName" class="text-gray-600">Location ID:</label>
+                        <h3 id="toLocName" class="text-xl font-semibold mb-2">{{ merge_to_location.value }}</h3> -->
                     </div>
                     <div>
-                        <label for="toLocStoreName" class="text-gray-600">Store Name:</label>
-                        <h3 id="toLocStoreName" class="text-xl font-semibold mb-2"> {{ merge_to_location.label }}</h3>
+                        <label for="merge_storename" class="block text-gray-700 text-sm font-bold mb-2">
+                            Store Name:
+                        </label>
+                        <TextInput id="merge_storename"
+                            :type="'text'"
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true"
+                            v-model="merge_to_location.label"
+                        />
+                        <!-- <label for="toLocStoreName" class="text-gray-600">Store Name:</label>
+                        <h3 id="toLocStoreName" class="text-xl font-semibold mb-2"> {{ merge_to_location.label }}</h3> -->
                     </div>
                     <div>
-                        <p class="text-gray-600">FieldAssist ID:</p>
-                        <p id="toLocFieldAssistID" > {{ merge_to_location.fieldassistId }}</p>
+                        <label for="merge_fieldassistId" class="block text-gray-700 text-sm font-bold mb-2">
+                        FieldAssist ID:
+                        </label>
+                        <TextInput id="merge_fieldassistId"
+                            :type="'text'"
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true"
+                            v-model="merge_to_location.fieldassistId"
+                        />
+                        <!-- <p class="text-gray-600">FieldAssist ID:</p>
+                        <p id="toLocFieldAssistID" > {{ merge_to_location.fieldassistId }}</p> -->
                     </div>
                     <div>
-                        <p class="text-gray-600">Distance:</p>
-                        <p id="toLocDistance" > {{ merge_to_location.radialDistance }} mts away</p>
+                        <label for="merge_radialDistance" class="block text-gray-700 text-sm font-bold mb-2">
+                        Distance:
+                        </label>
+                        <TextInput id="merge_radialDistance"
+                            :type="'text'"
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true" v-model="merge_to_location.description"/>
+                        <!-- <p class="text-gray-600">Distance:</p>
+                        <p id="toLocDistance" > {{ merge_to_location.radialDistance }} mts away</p> -->
                     </div>
-                    <div class="text-gray-600">
+                    <!-- <div class="text-gray-600">
                         <label class="required">Notes:</label>
-                        <input v-model="mergeNotes" required/>
+                        <input class="rounded-lg" v-model="mergeNotes" required/>
+                    </div> -->
+                    <div class="col-span-2">
+                        <label for="merge_comment" class="block text-gray-700 text-sm font-bold mb-2">
+                        Comments:
+                        </label>
+                        <Textarea id="merge_comment"
+                            :variant="'subtle'"
+                            :ref_for="true"
+                            size="sm"
+                            placeholder="Observations or Notes"
+                            :disabled="false"
+                            v-model="mergeNotes"
+                            required="true"/>
                     </div>
                     <!-- <div>
                         <p class="text-gray-600">Location:</p>
@@ -174,7 +292,7 @@
 </template>
 <script>
 //User window.location.search to get the query parameters
-import {createResource,createListResource } from 'frappe-ui';
+import {createResource,createDocumentResource,createListResource } from 'frappe-ui';
 const route = window.location.search
 import { calculateDistance } from '../data/geo';
 import {sessionUser} from '@/data/session';
@@ -194,14 +312,15 @@ export default {
     },
     data(){
         return {
-            location_name: urlParams.get('location_name'),
-            crm_lead_id: urlParams.get('crm_lead_id'),
-            fieldassist_id: urlParams.get('fieldassist_id'),
-            fieldmate_id: urlParams.get('fieldmate_id'),
-            workmate_id: urlParams.get('workmate_id'),
-            latitude: urlParams.get('latitude'),
-            longitude: urlParams.get('longitude'),
-            poi_status: urlParams.get('poi_status'),
+            // location_name: urlParams.get('location_name'),
+            // crm_lead_id: urlParams.get('crm_lead_id'),
+            // fieldassist_id: urlParams.get('fieldassist_id'),
+            // fieldmate_id: urlParams.get('fieldmate_id'),
+            // workmate_id: urlParams.get('workmate_id'),
+            // latitude: urlParams.get('latitude'),
+            // longitude: urlParams.get('longitude'),
+            // poi_status: urlParams.get('poi_status'),
+            poi_details: ref({}),
             showMergeForm : false,
             showBoardForm : false,
             showDistributorForm : false,
@@ -215,6 +334,18 @@ export default {
         }
     },
     mounted(){
+        this.poi_details= createResource({
+            url:'frappe.client.get',
+            params:{
+                doctype:"CRM POI",
+                name: this.id,
+                fields:['*']
+            },
+        }).fetch().then(response => {
+            // console.log(response);
+            this.poi_details.doc = response;
+            // console.log(this.poi_details.doc);
+        })
         this.pois = createListResource({
             doctype: "CRM POI",
             fields:["name","location_name","latitude","longitude","fieldassist_id"],
@@ -224,7 +355,7 @@ export default {
         this.pois.reload().then(response => {
             const items = [];
             for(let i of response){
-                const radialDistance = calculateDistance({latitude:Number(urlParams.get('latitude')),longitude:Number(urlParams.get('longitude'))},{latitude:i.latitude,longitude:i.longitude})
+                const radialDistance = calculateDistance({latitude:Number(this.poi_details.doc.latitude),longitude:Number(this.poi_details.doc.longitude)},{latitude:i.latitude,longitude:i.longitude})
                 // console.log(radialDistance,' mts away from present location')
                 if(radialDistance < 500 && radialDistance > 0){
                     items.push({
@@ -332,7 +463,7 @@ export default {
 }
 </script>
 <script setup>
-import {Autocomplete} from 'frappe-ui'
+import {Autocomplete, Textarea, TextInput} from 'frappe-ui'
 
 </script>
 <style scoped>

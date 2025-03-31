@@ -30,15 +30,16 @@
    "reqd": 1
   },
   {
-   "allow_on_submit": 1,
    "fieldname": "modified_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
    "label": "Modified Date",
    "mandatory_depends_on": "eval: doc.execution_status === 'Executed'",
+   "read_only": 1,
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "execution_status",
    "fieldtype": "Select",
    "label": "Execution Status",
@@ -64,7 +65,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-30 19:21:11.072455",
+ "modified": "2025-03-31 11:10:38.639457",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "POI Merge Sub Requests",

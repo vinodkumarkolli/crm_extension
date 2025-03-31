@@ -131,7 +131,8 @@
    "fieldname": "parent_poi_name",
    "fieldtype": "Data",
    "label": "Parent POI Name",
-   "mandatory_depends_on": "eval:doc.poi_status === 'Merged'"
+   "mandatory_depends_on": "eval:doc.poi_status === 'Merged'",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.poi_status === 'Merged'",
@@ -139,14 +140,15 @@
    "fieldtype": "Link",
    "label": "Parent POI",
    "mandatory_depends_on": "eval:doc.poi_status === 'Merged'",
-   "options": "CRM POI"
+   "options": "CRM POI",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-30 19:02:07.815370",
- "modified_by": "Administrator",
+ "modified": "2025-03-30 20:37:56.934514",
+ "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "CRM POI",
  "naming_rule": "Expression",
