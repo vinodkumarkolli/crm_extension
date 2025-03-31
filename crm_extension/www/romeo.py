@@ -1,6 +1,6 @@
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
-
+#Defining host_name in config.json file to enable the site name as hostname
 
 import frappe
 from frappe.utils.telemetry import capture
@@ -15,7 +15,7 @@ def get_context():
 	context.boot = get_boot()
 	context.boot.csrf_token = csrf_token
 	if frappe.session.user != "Guest":
-		capture("active_site", "gameplan")
+		capture("active_site", "romeo")
 	return context
 
 
@@ -30,7 +30,7 @@ def get_boot():
 	return frappe._dict(
 		{
 			"frappe_version": frappe.__version__,
-			"site_name": frappe.local.site,
+			"site_name": frappe.local.conf.host_name,
 			"read_only_mode": frappe.flags.read_only,
 		}
 	)
