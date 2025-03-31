@@ -19,7 +19,7 @@ import "leaflet/dist/leaflet.css";
 import bingLayer from 'leaflet-bing-layer'
 import { convertPOIPointsToGeoJson,generateHTMLTemplate,getBoundsFromLatLng } from '../data/geo';
 import {createListResource,createResource} from 'frappe-ui'
-
+import { geography } from '../store/locations';
 const mapContainer = ref(null);
 const faCircleStyle={
     radius: 8,
@@ -37,21 +37,22 @@ const fmCircleStyle={
     opacity: 1,
     fillOpacity: 0.5
 }
-
+const geo = ref({})
 const router = useRouter()
 const queryParams = router.currentRoute.value.query
 onMounted(() => {
     if(queryParams){
-        initMap(queryParams.lat,queryParams.long,JSON.parse(queryParams.places));
+        geo.value = geography.filter(geo => geo.name === queryParams.location)[0]
+        initMap(geo.value.lat,geo.value.long,geo.value.districts);
     }
 })
 
-function initMap(setlat,setlong,pincodes) {
+function initMap(setlat,setlong,districts) {
 
     const mapResource = createListResource({
         doctype: "CRM POI",
         fields:["*"],
-        filters:[["pincode","in",pincodes],["poi_status","=","Active"]],
+        filters:[["custom_district","in",districts],["poi_status","=","Active"]],
         pageLength: "None",
     })
 
