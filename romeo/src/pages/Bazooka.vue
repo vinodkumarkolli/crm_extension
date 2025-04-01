@@ -20,6 +20,7 @@ import bingLayer from 'leaflet-bing-layer'
 import { convertPOIPointsToGeoJson,generateHTMLTemplate,getBoundsFromLatLng } from '../data/geo';
 import {createListResource,createResource} from 'frappe-ui'
 import { geography } from '../store/locations';
+import {sessionUser} from '@/data/session.js'
 const mapContainer = ref(null);
 const faCircleStyle={
     radius: 8,
@@ -38,12 +39,31 @@ const fmCircleStyle={
     fillOpacity: 0.5
 }
 const geo = ref({})
+const territory = ref([])
 const router = useRouter()
 const queryParams = router.currentRoute.value.query
 onMounted(() => {
+    
     if(queryParams){
-        geo.value = geography.filter(geo => geo.name === queryParams.location)[0]
-        initMap(geo.value.lat,geo.value.long,geo.value.districts);
+        let territory = createListResource({
+                doctype: "User Territory Mapping",
+                fields:["*"],
+                filters:[["user","=",sessionUser()],["docstatus","=",1],["app","=","Bazooka"]],
+                pageLength: "None",
+                auto: true
+        })
+        territory.reload().then(response =>{    
+            territory.value = response
+            const match = territory.value.find(userPerm => userPerm.crm_territory === queryParams.location)
+            if(match){
+                geo.value = geography.filter(geo => geo.name === queryParams.location)[0]
+                initMap(geo.value.lat,geo.value.long,geo.value.districts);
+            }
+            else{
+                alert("You are not authorized for this location")
+                router.push("/")
+            }
+        })
     }
 })
 
