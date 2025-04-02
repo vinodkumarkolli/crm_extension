@@ -242,30 +242,10 @@
                 </div>
             </form>
         </div>
-        <!--Generate Raise a Board Request Form-->
+        <!--Generate Raise a Marketing Material Request Form-->
         <div v-if="showBoardForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
-            <h3 class="text-xl font-semibold mb-2">Raise a Board Request</h3>
-            <form>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label for="board_name" class="text-gray-600">Board Name:</label>
-                        <input type="text" id="board_name" name="board_name" class="border border-gray-300 rounded-md p-2 w-full" required>
-                    </div>
-                    <div>
-                        <label for="board_description" class="text-gray-600">Board Description:</label>
-                        <textarea id="board_description" name="board_description" class="border border-gray-300 rounded-md p-2 w-full" required></textarea>
-                    </div>
-                    <div class="col-span-2 flex justify-center ">
-                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                            Submit
-                        </button>
-                        <button type="button" @click="closeAllForms" class="text-white
-                        bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            </form>
+            <h3 class="text-xl font-semibold flex justify-center mb-2">Raise a Marketing Material Request</h3>
+            <Autocomplete :options="marketingMaterialOptions.options" v-model="selectedMarketingMaterial" placeholder="Select a Marketing Material"/>
         </div>
         <!--Generate Code for Showing Activities in List Form-->
         <div v-if="showGlobeActivity" class="bg-white shadow-md rounded-lg p-4 mb-4">
@@ -330,7 +310,9 @@ export default {
             mergeRequests:ref([]),
             rejectedMergeRequests:ref([]),   
             merge_to_location:null,
-            mergeNotes:null
+            mergeNotes:null,
+            marketingMaterialOptions:ref([]),
+            selectedMarketingMaterial:null
         }
     },
     mounted(){
@@ -346,6 +328,14 @@ export default {
             this.poi_details.doc = response;
             // console.log(this.poi_details.doc);
         })
+        this.marketingMaterialOptions=createResource({
+            url:'crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.get_doctype_meta',
+            params:{
+                doctype:"Marketing Material Request"
+            }
+        }).fetch().then(response => {
+            this.marketingMaterialOptions.options = response.fields.find(docField => docField.fieldname==="request_material").options.split("\n");
+        })
         this.pois = createListResource({
             doctype: "CRM POI",
             fields:["name","location_name","latitude","longitude","fieldassist_id"],
@@ -356,7 +346,7 @@ export default {
             const items = [];
             for(let i of response){
                 const radialDistance = calculateDistance({latitude:Number(this.poi_details.doc.latitude),longitude:Number(this.poi_details.doc.longitude)},{latitude:i.latitude,longitude:i.longitude})
-                // console.log(radialDistance,' mts away from present location')
+                //console.log(radialDistance,' mts away from present location')
                 if(radialDistance < 500 && radialDistance > 0){
                     items.push({
                         label:i.location_name,

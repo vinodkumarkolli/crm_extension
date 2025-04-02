@@ -54,6 +54,7 @@
   "poi_name",
   "request_material",
   "requested_date",
+  "request_raised_by",
   "column_break_gehr",
   "request_status",
   "approved_declined_hold_date",
@@ -72,6 +73,12 @@
   "amended_from",
   "details_section",
   "request_notes",
+  "vendor_tab",
+  "vendor",
+  "vendor_location",
+  "column_break_jvby",
+  "vendor_name",
+  "distance_bw_poi_and_vendor",
   "proofs_tab",
   "pre_installation_section",
   "recce_image_1__installation_place_image_1",
@@ -95,13 +102,7 @@
   "installation_image_2",
   "installation_verified_by",
   "column_break_lswg",
-  "installation_notes",
-  "vendor_tab",
-  "vendor",
-  "vendor_location",
-  "column_break_jvby",
-  "vendor_name",
-  "distance_bw_poi_and_vendor"
+  "installation_notes"
  ],
  "fields": [
   {
@@ -143,12 +144,12 @@
    "fieldtype": "Column Break"
   },
   {
-   "default": "Draft",
+   "default": "Submitted",
    "fieldname": "request_status",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Request Status",
-   "options": "\nDraft\nShortlisted\nCompleted\nDeclined\nHold",
+   "options": "Submitted\nShortlisted\nCompleted\nDeclined\nHold",
    "reqd": 1
   },
   {
@@ -277,7 +278,7 @@
    "fieldname": "installation_status",
    "fieldtype": "Select",
    "label": "Installation Status",
-   "options": "Not Shortlisted\nShortlisted\nAccepted\nDisputed\nDeclined",
+   "options": "Not Shortlisted\nShortlisted\nAccepted\nDisputed",
    "reqd": 1
   },
   {
@@ -370,6 +371,7 @@
    "label": "Vendor"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "vendor",
    "fieldtype": "Link",
    "label": "Vendor",
@@ -401,14 +403,21 @@
    "fieldname": "legacy_details_column",
    "fieldtype": "Column Break",
    "label": "Legacy Details"
+  },
+  {
+   "fieldname": "request_raised_by",
+   "fieldtype": "Link",
+   "label": "Request Raised By",
+   "options": "User",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-26 15:31:38.299683",
- "modified_by": "Administrator",
+ "modified": "2025-04-01 16:50:33.554609",
+ "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
  "naming_rule": "Expression",
