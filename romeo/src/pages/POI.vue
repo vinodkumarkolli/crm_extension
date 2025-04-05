@@ -15,7 +15,7 @@
                         :ref_for="true"
                         size="sm"
                         variant="subtle"
-                        placeholder="Placeholder"
+                        placeholder="NA"
                         :disabled="true"
                         v-model="poi_details.doc.crm_lead_id"
                     />
@@ -31,7 +31,7 @@
                         :ref_for="true"
                         size="sm"
                         variant="subtle"
-                        placeholder="Placeholder"
+                        placeholder="NA"
                         :disabled="true"
                         v-model="poi_details.doc.fieldassist_id"
                     />
