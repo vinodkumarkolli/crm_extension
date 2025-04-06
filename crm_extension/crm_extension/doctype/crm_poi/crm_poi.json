@@ -122,7 +122,6 @@
    "fieldtype": "Select",
    "label": "POI Status",
    "options": "Active\nIncorrect\nMerge Request Raised\nMerged",
-   "permlevel": 1,
    "read_only": 1,
    "reqd": 1
   },
@@ -147,7 +146,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-30 20:37:56.934514",
+ "modified": "2025-04-06 20:26:10.173313",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "CRM POI",
