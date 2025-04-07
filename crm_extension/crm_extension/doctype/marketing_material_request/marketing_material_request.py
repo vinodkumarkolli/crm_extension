@@ -3,11 +3,11 @@
 
 import frappe
 from frappe.model.document import Document
-
+from frappe.utils import now
 
 class MarketingMaterialRequest(Document):
-	def before_save(self):
-		print(self.poi_id.location_name)
+	def before_submit(self):
+		self.requested_date = now()
 
 @frappe.whitelist()
 def get_doctype_meta(doctype):

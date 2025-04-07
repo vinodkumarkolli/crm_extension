@@ -65,8 +65,7 @@
   "section_break_zvea",
   "legacy_details_column",
   "crm_lead_id",
-  "crm_lead_name",
-  "field_assist_id",
+  "fieldassist_id",
   "column_break_jrnh",
   "latitude",
   "longitude",
@@ -128,11 +127,6 @@
    "options": "CRM Lead"
   },
   {
-   "fieldname": "crm_lead_name",
-   "fieldtype": "Data",
-   "label": "CRM Lead Name"
-  },
-  {
    "fieldname": "requested_date",
    "fieldtype": "Date",
    "in_list_view": 1,
@@ -161,7 +155,7 @@
    "fieldname": "process_stage",
    "fieldtype": "Select",
    "label": "Process Stage",
-   "options": "Under Manufacture\nManufactured & Placed in Goodown\nUnder Transit\nMounted\nDe-Mounted"
+   "options": "Not Shortlisted\nUnder Manufacture\nManufactured & Placed in Goodown\nUnder Transit\nMounted\nDe-Mounted"
   },
   {
    "fieldname": "request_material",
@@ -183,7 +177,8 @@
   {
    "fieldname": "request_notes",
    "fieldtype": "Small Text",
-   "label": "Request Notes"
+   "label": "Request Notes",
+   "reqd": 1
   },
   {
    "fieldname": "proofs_tab",
@@ -324,10 +319,11 @@
    "label": "Rate per UOM"
   },
   {
+   "fetch_from": "poi_id.latitude",
+   "fetch_if_empty": 1,
    "fieldname": "latitude",
    "fieldtype": "Data",
-   "label": "Latitude",
-   "reqd": 1
+   "label": "Latitude"
   },
   {
    "fieldname": "column_break_jrnh",
@@ -335,15 +331,11 @@
    "label": "POI Details"
   },
   {
+   "fetch_from": "poi_id.longitude",
+   "fetch_if_empty": 1,
    "fieldname": "longitude",
    "fieldtype": "Data",
-   "label": "Longitude",
-   "reqd": 1
-  },
-  {
-   "fieldname": "field_assist_id",
-   "fieldtype": "Data",
-   "label": "Field Assist ID"
+   "label": "Longitude"
   },
   {
    "allow_on_submit": 1,
@@ -410,13 +402,18 @@
    "label": "Request Raised By",
    "options": "User",
    "reqd": 1
+  },
+  {
+   "fieldname": "fieldassist_id",
+   "fieldtype": "Data",
+   "label": "Field Assist ID"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-01 16:50:33.554609",
+ "modified": "2025-04-07 19:54:21.268356",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",

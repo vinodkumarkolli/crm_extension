@@ -106,15 +106,15 @@
                 Link Distributor
             </button>
             <button @click="toggleBoardForm" v-if="(poi_details.doc.poi_status=='Active')&&(source == 'Field Assist')" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                Raise a Board Request
+                Raise a Marketing Material Request
             </button>
         </div>
         <!--Generate Merge Form-->
         <div v-if="showMergeForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
             <h3 class="text-xl font-semibold flex justify-center mb-2">Merge Request</h3>
                 <!-- <label for="toPOISelecteor" class="text-gray-600">Select a POI:</label> -->
-                <Autocomplete :options="pois.items" v-model="merge_to_location" placeholder="Select a POI" id="toPOISelecteor"/>
-                <div v-if="merge_to_location" class="grid grid-cols-2 gap-2">
+                <Autocomplete :options="pois.items" v-model="mergeToLocation" placeholder="Select a POI" id="toPOISelecteor"/>
+                <div v-if="mergeToLocation" class="grid grid-cols-2 gap-2 py-4">
                     <div>
                         <label for="merge_locationId" class="block text-gray-700 text-sm font-bold mb-2">
                             Location ID:
@@ -126,10 +126,10 @@
                             variant="subtle"
                             placeholder="NA"
                             :disabled="true"
-                            v-model="merge_to_location.value"
+                            v-model="mergeToLocation.value"
                         />
                         <!-- <label for="toLocName" class="text-gray-600">Location ID:</label>
-                        <h3 id="toLocName" class="text-xl font-semibold mb-2">{{ merge_to_location.value }}</h3> -->
+                        <h3 id="toLocName" class="text-xl font-semibold mb-2">{{ mergeToLocation.value }}</h3> -->
                     </div>
                     <div>
                         <label for="merge_storename" class="block text-gray-700 text-sm font-bold mb-2">
@@ -142,10 +142,10 @@
                             variant="subtle"
                             placeholder="NA"
                             :disabled="true"
-                            v-model="merge_to_location.label"
+                            v-model="mergeToLocation.label"
                         />
                         <!-- <label for="toLocStoreName" class="text-gray-600">Store Name:</label>
-                        <h3 id="toLocStoreName" class="text-xl font-semibold mb-2"> {{ merge_to_location.label }}</h3> -->
+                        <h3 id="toLocStoreName" class="text-xl font-semibold mb-2"> {{ mergeToLocation.label }}</h3> -->
                     </div>
                     <div>
                         <label for="merge_fieldassistId" class="block text-gray-700 text-sm font-bold mb-2">
@@ -158,10 +158,10 @@
                             variant="subtle"
                             placeholder="NA"
                             :disabled="true"
-                            v-model="merge_to_location.fieldassistId"
+                            v-model="mergeToLocation.fieldassistId"
                         />
                         <!-- <p class="text-gray-600">FieldAssist ID:</p>
-                        <p id="toLocFieldAssistID" > {{ merge_to_location.fieldassistId }}</p> -->
+                        <p id="toLocFieldAssistID" > {{ mergeToLocation.fieldassistId }}</p> -->
                     </div>
                     <div>
                         <label for="merge_radialDistance" class="block text-gray-700 text-sm font-bold mb-2">
@@ -173,9 +173,9 @@
                             size="sm"
                             variant="subtle"
                             placeholder="NA"
-                            :disabled="true" v-model="merge_to_location.description"/>
+                            :disabled="true" v-model="mergeToLocation.description"/>
                         <!-- <p class="text-gray-600">Distance:</p>
-                        <p id="toLocDistance" > {{ merge_to_location.radialDistance }} mts away</p> -->
+                        <p id="toLocDistance" > {{ mergeToLocation.radialDistance }} mts away</p> -->
                     </div>
                     <!-- <div class="text-gray-600">
                         <label class="required">Notes:</label>
@@ -196,9 +196,9 @@
                     </div>
                     <!-- <div>
                         <p class="text-gray-600">Location:</p>
-                        <p id="toLocLocation" > {{ merge_to_location.latitude }}, {{ merge_to_location.longitude }}</p>
+                        <p id="toLocLocation" > {{ mergeToLocation.latitude }}, {{ mergeToLocation.longitude }}</p>
                     </div> -->
-                    <div v-if="merge_to_location" class="col-span-2 flex justify-center ">
+                    <div v-if="mergeToLocation" class="col-span-2 flex justify-center py-4">
                         <button type="submit" @click="submitMergeRequest" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                            Submit Request
                         </button>
@@ -246,6 +246,30 @@
         <div v-if="showBoardForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
             <h3 class="text-xl font-semibold flex justify-center mb-2">Raise a Marketing Material Request</h3>
             <Autocomplete :options="marketingMaterialOptions.options" v-model="selectedMarketingMaterial" placeholder="Select a Marketing Material"/>
+            <div v-if="selectedMarketingMaterial" class="py-4">
+                <div>
+                    <label for="material_comment" class="block text-gray-700 text-sm font-bold mb-2">
+                        Comment:
+                    </label>
+                    <Textarea v-if="selectedMarketingMaterial" id="material_comment"
+                            :variant="'subtle'"
+                            :ref_for="true"
+                            size="sm"
+                            placeholder="Observations or Notes"
+                            :disabled="false"
+                            v-model="materialNotes"
+                            required="true"/>
+                </div>
+            </div>
+            <div v-if="selectedMarketingMaterial" class="col-span-2 flex justify-center py-4">
+                <button type="submit" @click="submitMarketingMaterialRequest" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    Submit Request
+                </button>
+                <button type="button" @click="closeAllForms" class="text-white
+                bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                    Cancel
+                </button>
+            </div>
         </div>
         <!--Generate Code for Showing Activities in List Form-->
         <div v-if="showGlobeActivity" class="bg-white shadow-md rounded-lg p-4 mb-4">
@@ -292,14 +316,6 @@ export default {
     },
     data(){
         return {
-            // location_name: urlParams.get('location_name'),
-            // crm_lead_id: urlParams.get('crm_lead_id'),
-            // fieldassist_id: urlParams.get('fieldassist_id'),
-            // fieldmate_id: urlParams.get('fieldmate_id'),
-            // workmate_id: urlParams.get('workmate_id'),
-            // latitude: urlParams.get('latitude'),
-            // longitude: urlParams.get('longitude'),
-            // poi_status: urlParams.get('poi_status'),
             poi_details: ref({}),
             showMergeForm : false,
             showBoardForm : false,
@@ -308,11 +324,13 @@ export default {
             source: urlParams.get('source'),
             pois: ref([]),
             mergeRequests:ref([]),
-            rejectedMergeRequests:ref([]),   
-            merge_to_location:null,
+            rejectedMergeRequests:ref([]),
+            marketingRequests:ref([]),   
+            mergeToLocation:null,
             mergeNotes:null,
             marketingMaterialOptions:ref([]),
-            selectedMarketingMaterial:null
+            selectedMarketingMaterial:null,
+            materialNotes:null
         }
     },
     mounted(){
@@ -324,9 +342,7 @@ export default {
                 fields:['*']
             },
         }).fetch().then(response => {
-            // console.log(response);
             this.poi_details.doc = response;
-            // console.log(this.poi_details.doc);
         })
         this.marketingMaterialOptions=createResource({
             url:'crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.get_doctype_meta',
@@ -381,6 +397,16 @@ export default {
             }).catch(error => {
             console.error("Failed to load rejected merge requests:", error);
         });
+        this.marketingRequests = createListResource({
+            doctype:'Marketing Material Request',
+            fields:["*"],
+            filters:[['poi_id','=',this.id]]
+        })
+        this.marketingRequests.reload().then(response => {
+            this.marketingRequests.items=response;
+        }).catch(error => {
+            console.error("Failed to load marketing requests:", error);
+        });
     },
     methods: {
         toggleMergeForm() {
@@ -410,7 +436,10 @@ export default {
         },
         closeAllForms() {
             this.showMergeForm = false;
-            this.merge_to_location = null;
+            this.mergeToLocation = null;
+            this.selectedMarketingMaterial =null;
+            this.materialNotes=null;
+            this.mergeNotes=null;
             this.showDistributorForm = false;
             this.showBoardForm = false;
         },
@@ -430,11 +459,11 @@ export default {
                 return;
             }
             else{
-                if(this.merge_to_location.value!=this.id){
+                if(this.mergeToLocation.value!=this.id){
                     this.mergeRequests.insert.submit({
                     from_poi:this.id,
-                    to_poi:this.merge_to_location.value,
-                    radial_difference_in_mtrs: this.merge_to_location.radialDistance,
+                    to_poi:this.mergeToLocation.value,
+                    radial_difference_in_mtrs: this.mergeToLocation.radialDistance,
                     merge_notes:this.mergeNotes,
                     requested_by:sessionUser(),
                     docstatus:1
@@ -446,6 +475,44 @@ export default {
                     ).catch((error)=>{
                         alert(`Error occured while submitting merge request`,error.message)
                     })
+                }
+            }
+        },
+        submitMarketingMaterialRequest(){
+            if (!this.materialNotes || this.materialNotes.trim() === '') {
+                alert('Please enter notes before submitting the request.');
+                return;
+            }
+            else{
+                // alert(JSON.stringify(this.selectedMarketingMaterial))
+                if(this.selectedMarketingMaterial.value==='Backlit Boards'||this.selectedMarketingMaterial.value==='Frontlit Boards'){
+                    let marketing = {
+                        poi_id:this.id,
+                        poi_name:this.poi_details.doc.location_name,
+                        request_material:this.selectedMarketingMaterial.value,
+                        request_raised_by:sessionUser(),
+                        request_status: 'Submitted',
+                        installation_status: 'Not Shortlisted',
+                        require_proofs: 1,
+                        crm_lead_id: this.poi_details.doc.crm_lead_id,
+                        latitude: this.poi_details.doc.latitude,
+                        longitude: this.poi_details.doc.longitude,
+                        request_notes: this.materialNotes,
+                        fieldassist_id: this.poi_details.doc.fieldassist_id,
+                        docstatus:1
+                    }
+                    //console.log(JSON.stringify(marketing));
+                    this.marketingRequests.insert.submit(marketing).then((response) =>{
+                        alert(`Successfully submitted merge request ${response.name}`)
+                        this.closeAllForms();
+                        window.location.reload();
+                    }
+                    ).catch((error)=>{
+                        alert(`Error occured while submitting merge request`,error.message)
+                    })
+                }
+                else{
+                    alert('Asshole')
                 }
             }
         }
