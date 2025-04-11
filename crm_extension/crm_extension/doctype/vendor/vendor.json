@@ -1,11 +1,12 @@
 {
  "actions": [],
- "autoname": "format:{vendor_name}-{territory}",
+ "autoname": "format:{vendor_name}-{marketing_material_type}",
  "creation": "2025-03-26 14:53:16.911854",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "vendor_name",
+  "marketing_material_type",
   "latitude",
   "longitude",
   "column_break_bycl",
@@ -20,20 +21,6 @@
    "label": "Vendor Name",
    "reqd": 1,
    "unique": 1
-  },
-  {
-   "fieldname": "latitude",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Latitude",
-   "reqd": 1
-  },
-  {
-   "fieldname": "longitude",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Longitude",
-   "reqd": 1
   },
   {
    "fieldname": "column_break_bycl",
@@ -53,12 +40,37 @@
    "label": "Address",
    "options": "Address",
    "read_only": 1
+  },
+  {
+   "fieldname": "marketing_material_type",
+   "fieldtype": "Link",
+   "label": "Marketing Material Type",
+   "options": "Marketing Material Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "latitude",
+   "fieldtype": "Data",
+   "label": "Latitude",
+   "reqd": 1
+  },
+  {
+   "fieldname": "longitude",
+   "fieldtype": "Data",
+   "label": "Longitude",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2025-03-26 15:21:11.187971",
+ "links": [
+  {
+   "group": "Orders",
+   "link_doctype": "Marketing Material Request",
+   "link_fieldname": "vendor"
+  }
+ ],
+ "modified": "2025-04-11 22:06:34.497770",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "Vendor",

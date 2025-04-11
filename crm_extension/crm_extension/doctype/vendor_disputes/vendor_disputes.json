@@ -1,0 +1,89 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-04-11 21:57:14.617967",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "procurement_stage",
+  "vendor",
+  "dispute_nature",
+  "dispute_detail",
+  "disputed_by",
+  "disputed_on",
+  "reviewed_by",
+  "review_comment"
+ ],
+ "fields": [
+  {
+   "fieldname": "procurement_stage",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Procurement Stage",
+   "options": "Material Procurement Stage",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vendor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vendor",
+   "options": "Vendor",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dispute_nature",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Dispute Nature",
+   "options": "Notice\nSevere",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dispute_detail",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Dispute Detail",
+   "reqd": 1
+  },
+  {
+   "fieldname": "disputed_by",
+   "fieldtype": "Link",
+   "label": "Disputed by",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "disputed_on",
+   "fieldtype": "Date",
+   "label": "Disputed On",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reviewed_by",
+   "fieldtype": "Link",
+   "label": "Reviewed by",
+   "options": "User"
+  },
+  {
+   "fieldname": "review_comment",
+   "fieldtype": "Small Text",
+   "label": "Review Comment"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-04-11 22:02:59.170170",
+ "modified_by": "Administrator",
+ "module": "Crm Extension",
+ "name": "Vendor Disputes",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

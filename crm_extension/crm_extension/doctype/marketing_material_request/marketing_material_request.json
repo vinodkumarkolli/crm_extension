@@ -15,7 +15,6 @@
   "request_status",
   "approved_declined_hold_date",
   "completed_date",
-  "installation_status",
   "process_stage",
   "require_proofs",
   "section_break_zvea",
@@ -31,11 +30,14 @@
   "request_notes",
   "admin_notes",
   "vendor_tab",
+  "information_section",
   "vendor",
   "vendor_location",
   "column_break_jvby",
   "vendor_name",
   "distance_bw_poi_and_vendor",
+  "dispute_section_section",
+  "table_ctac",
   "proofs_tab",
   "pre_installation_section",
   "recce_image_1__installation_place_image_1",
@@ -96,12 +98,14 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "default": "Submitted",
    "fieldname": "request_status",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Request Status",
-   "options": "Submitted\nShortlisted\nCompleted\nDeclined\nHold",
+   "options": "Submitted\nShortlisted\nCompleted\nDeclined\nOn Hold\nVendor Dispute",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -112,9 +116,8 @@
   },
   {
    "fieldname": "process_stage",
-   "fieldtype": "Select",
-   "label": "Process Stage",
-   "options": "Under Manufacture\nManufactured & Placed in Goodown\nUnder Transit\nMounted\nDe-Mounted"
+   "fieldtype": "Data",
+   "label": "Process Stage"
   },
   {
    "fieldname": "request_material",
@@ -139,9 +142,10 @@
    "label": "Request Notes"
   },
   {
+   "depends_on": "eval: ((doc.require_proofs) &&((doc.request_status =='Shortlisted')||(doc.request_status =='Completed')||(doc.request_status==='Vendor Dispute')))",
    "fieldname": "proofs_tab",
    "fieldtype": "Tab Break",
-   "label": "Proofs"
+   "label": "Process"
   },
   {
    "allow_on_submit": 1,
@@ -227,14 +231,6 @@
    "label": "Require Proofs"
   },
   {
-   "default": "Not Shortlisted",
-   "fieldname": "installation_status",
-   "fieldtype": "Select",
-   "label": "Installation Status",
-   "options": "Not Shortlisted\nShortlisted\nAccepted\nDisputed",
-   "reqd": 1
-  },
-  {
    "allow_on_submit": 1,
    "fieldname": "recce_verified_by",
    "fieldtype": "Data",
@@ -310,12 +306,14 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "approved_declined_hold_date",
    "fieldtype": "Date",
    "label": "Approved/Declined/On Hold Date",
    "read_only": 1
   },
   {
+   "depends_on": "eval: doc.vendor",
    "fieldname": "vendor_tab",
    "fieldtype": "Tab Break",
    "label": "Vendor"
@@ -325,9 +323,11 @@
    "fieldname": "vendor",
    "fieldtype": "Link",
    "label": "Vendor",
-   "options": "Vendor"
+   "options": "Vendor",
+   "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "vendor_location",
    "fieldtype": "Data",
    "label": "Vendor Location",
@@ -338,12 +338,14 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "vendor_name",
    "fieldtype": "Data",
    "label": "Vendor Name",
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "distance_bw_poi_and_vendor",
    "fieldtype": "Data",
    "label": "Distance bw POI and Vendor",
@@ -372,17 +374,34 @@
    "label": "Field Assist ID"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "admin_notes",
    "fieldtype": "Small Text",
-   "label": "Admin Notes"
+   "label": "Admin Notes",
+   "read_only": 1
+  },
+  {
+   "fieldname": "information_section",
+   "fieldtype": "Section Break",
+   "label": "Information"
+  },
+  {
+   "fieldname": "dispute_section_section",
+   "fieldtype": "Section Break",
+   "label": "Dispute Section"
+  },
+  {
+   "fieldname": "table_ctac",
+   "fieldtype": "Table",
+   "options": "Vendor Disputes"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-11 10:33:34.724224",
- "modified_by": "vinodkumarkolli@gmail.com",
+ "modified": "2025-04-11 22:10:32.751290",
+ "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
  "naming_rule": "Expression",
@@ -402,13 +421,14 @@
    "write": 1
   },
   {
+   "cancel": 1,
    "create": 1,
    "email": 1,
    "export": 1,
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "Sales Manager",
+   "role": "Romeo Admin",
    "share": 1,
    "submit": 1,
    "write": 1
@@ -417,30 +437,5 @@
  "row_format": "Dynamic",
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": [
-  {
-   "color": "Green",
-   "title": "Approved"
-  },
-  {
-   "color": "Gray",
-   "title": "Completed"
-  },
-  {
-   "color": "Red",
-   "title": "Rejected"
-  },
-  {
-   "color": "Yellow",
-   "title": "On Hold"
-  },
-  {
-   "color": "Blue",
-   "title": "Shortlisted"
-  },
-  {
-   "color": "Orange",
-   "title": "Manufactured"
-  }
- ]
+ "states": []
 }

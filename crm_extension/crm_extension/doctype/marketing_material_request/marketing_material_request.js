@@ -24,7 +24,28 @@ function openApprovalsPopup(frm,mode){
         case "Approve":
             d = new frappe.ui.Dialog({
                 title:'Approve Comment',
-                fields:[{fieldname:'reason_for_approval',fieldtype:'Small Text',label:'Comment'},{fieldname:'vendor',fieldtype:'Link',label:'Vendor',options:'Vendor'}],
+                fields:[
+                    {
+                        fieldname:'reason_for_approval',
+                        fieldtype:'Data',
+                        label:'Comment',
+                        reqd: 1
+                    },
+                    {
+                        fieldname:'vendor',
+                        fieldtype:'Link',
+                        label:'Vendor',
+                        options:'Vendor', 
+                        reqd: 1,
+                        get_query:function(){
+                            return {
+                                filters:{
+                                    'marketing_material_type':frm.doc.marketing_material_type
+                                }
+                            }
+                        }
+                    }
+                ],
                 primary_action:function(){
                     var approve_comment = d.get_value('reason_for_approval');
                     frappe.call({
@@ -32,10 +53,12 @@ function openApprovalsPopup(frm,mode){
                         args:{
                             "doc": frm.doc.name,
                             "comment":approve_comment,
+                            "vendor":d.get_value('vendor')
                         },
                         callback:function(r){
                             if(!r.exc){
-                                refresh_field('status');
+                                //refresh_field('status');
+                                d.hide();
                             }
                         }
                     });
@@ -46,7 +69,7 @@ function openApprovalsPopup(frm,mode){
         case "Hold":
             d = new frappe.ui.Dialog({
                 title: 'Hold Comment',
-                fields:[{fieldname:'reason_for_hold',fieldtype:'Small Text',label:'Comment'}],
+                fields:[{fieldname:'reason_for_hold',fieldtype:'Small Text',label:'Comment',reqd:1}],
                 primary_action: function(){
                     var hold_comment = d.get_value('reason_for_hold');
                     frappe.call({
@@ -57,7 +80,8 @@ function openApprovalsPopup(frm,mode){
                         },
                         callback:function(r){
                             if(!r.exc){
-                                refresh_field('status');
+                                //refresh_field('status');
+                                d.hide();
                             }
                         }
                     })
@@ -68,18 +92,19 @@ function openApprovalsPopup(frm,mode){
         case "Reject":
             d = new frappe.ui.Dialog({
                 title: 'Reject Comment',
-                fields:[{fieldname:'reason_for_rejection',fieldtype:'Small Text',label:'Comment'}],
+                fields:[{fieldname:'reason_for_rejection',fieldtype:'Small Text',label:'Comment',reqd:1}],
                 primary_action: function(){
                     var reject_comment = d.get_value('reason_for_rejection');
                     frappe.call({
-                        method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.hold_request",
+                        method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.reject_request",
                         args:{
                             "doc": frm.doc.name,
                             "comment":reject_comment
                         },
                         callback:function(r){
                             if(!r.exc){
-                                refresh_field('status');
+                                //refresh_field('status');
+                                d.hide();
                             }
                         }
                     })

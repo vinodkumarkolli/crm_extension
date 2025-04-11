@@ -290,6 +290,13 @@
                             <p><strong>Admin Comments:</strong> {{ request.admin_comments }}</p>
                         </div>
                 </li>
+                <li v-for="request in marketingRequests.items" :key="request.name" class="bg-white shadow-md rounded-lg p-4 mb-4">
+                    <p>
+                        Request ID: <strong>{{ request.name }}</strong> is in <strong> {{ request.request_status }}</strong> stage that has requested <strong>{{ request.request_material }}</strong>.
+                    </p>
+                    <p><strong>Admin Comments:</strong> {{ request.admin_notes  }}</p>
+                    
+                </li>
             </ol>
         </div>
     </div>
@@ -494,35 +501,32 @@ export default {
             }
             else{
                 // alert(JSON.stringify(this.selectedMarketingMaterial))
-                if(this.selectedMarketingMaterial.value==='Backlit Boards'||this.selectedMarketingMaterial.value==='Frontlit Boards'){
-                    let marketing = {
-                        poi_id:this.id,
-                        poi_name:this.poi_details.doc.location_name,
-                        request_material:this.selectedMarketingMaterial.value,
-                        request_raised_by:sessionUser(),
-                        request_status: 'Submitted',
-                        installation_status: 'Not Shortlisted',
-                        require_proofs: 1,
-                        crm_lead_id: this.poi_details.doc.crm_lead_id,
-                        latitude: this.poi_details.doc.latitude,
-                        longitude: this.poi_details.doc.longitude,
-                        request_notes: this.materialNotes,
-                        fieldassist_id: this.poi_details.doc.fieldassist_id,
-                        docstatus:1
-                    }
-                    //console.log(JSON.stringify(marketing));
-                    this.marketingRequests.insert.submit(marketing).then((response) =>{
-                        alert(`Successfully submitted merge request ${response.name}`)
-                        this.closeAllForms();
-                        window.location.reload();
-                    }
-                    ).catch((error)=>{
-                        alert(`Error occured while submitting merge request`,error.message)
-                    })
+                
+                let marketing = {
+                    poi_id:this.id,
+                    poi_name:this.poi_details.doc.location_name,
+                    request_material:this.selectedMarketingMaterial.value,
+                    request_raised_by:sessionUser(),
+                    // request_status: 'Submitted',
+                    // installation_status: 'Not Shortlisted',
+                    // require_proofs: 1,
+                    crm_lead_id: this.poi_details.doc.crm_lead_id,
+                    latitude: this.poi_details.doc.latitude,
+                    longitude: this.poi_details.doc.longitude,
+                    request_notes: this.materialNotes,
+                    fieldassist_id: this.poi_details.doc.fieldassist_id,
+                    docstatus:1
                 }
-                else{
-                    alert('Asshole')
+                //console.log(JSON.stringify(marketing));
+                this.marketingRequests.insert.submit(marketing).then((response) =>{
+                    alert(`Successfully submitted merge request ${response.name}`)
+                    this.closeAllForms();
+                    window.location.reload();
                 }
+                ).catch((error)=>{
+                    alert(`Error occured while submitting merge request`,error.message)
+                })
+                
             }
         }
     }

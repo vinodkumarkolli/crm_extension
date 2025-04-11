@@ -5,7 +5,10 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "material_name"
+  "material_name",
+  "require_proofs",
+  "procurement_stages_section",
+  "table_kyeq"
  ],
  "fields": [
   {
@@ -15,12 +18,39 @@
    "label": "Material Name",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "require_proofs",
+   "fieldtype": "Check",
+   "label": "Require Vendor Upload Proofs"
+  },
+  {
+   "fieldname": "procurement_stages_section",
+   "fieldtype": "Section Break",
+   "label": "Procurement Stages"
+  },
+  {
+   "fieldname": "table_kyeq",
+   "fieldtype": "Table",
+   "options": "Procurement Steps"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2025-04-11 10:36:11.866961",
+ "links": [
+  {
+   "group": "Vendors",
+   "link_doctype": "Vendor",
+   "link_fieldname": "marketing_material_type"
+  },
+  {
+   "group": "Material Requests",
+   "link_doctype": "Marketing Material Request",
+   "link_fieldname": "request_material"
+  }
+ ],
+ "modified": "2025-04-11 21:37:44.263835",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "Marketing Material Type",

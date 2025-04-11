@@ -1,0 +1,51 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-04-11 21:34:35.517254",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "procurement_stage",
+  "sequence_no",
+  "optional"
+ ],
+ "fields": [
+  {
+   "fieldname": "procurement_stage",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Procurement Stage",
+   "options": "Material Procurement Stage",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sequence_no",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Sequence No",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "optional",
+   "fieldtype": "Check",
+   "label": "Optional?"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-04-11 21:58:18.849792",
+ "modified_by": "Administrator",
+ "module": "Crm Extension",
+ "name": "Procurement Steps",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
