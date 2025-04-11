@@ -1,49 +1,5 @@
 {
- "actions": [
-  {
-   "action": "/",
-   "action_type": "Server Action",
-   "label": "Approve"
-  },
-  {
-   "action": "/",
-   "action_type": "Server Action",
-   "label": "Reject"
-  },
-  {
-   "action": "/",
-   "action_type": "Server Action",
-   "label": "On Hold"
-  },
-  {
-   "action": "/",
-   "action_type": "Server Action",
-   "label": "Completed"
-  },
-  {
-   "action": "/",
-   "action_type": "Server Action",
-   "label": "Shortlisted"
-  },
-  {
-   "action": "/",
-   "action_type": "Server Action",
-   "group": "Proofs",
-   "label": "Verify Recce"
-  },
-  {
-   "action": "/",
-   "action_type": "Server Action",
-   "group": "Proofs",
-   "label": "Verify Manufacture"
-  },
-  {
-   "action": "/",
-   "action_type": "Server Action",
-   "group": "Proofs",
-   "label": "Verify Installation"
-  }
- ],
+ "actions": [],
  "autoname": "format:MAT-REQ-{######}",
  "creation": "2025-02-18 21:13:12.568557",
  "doctype": "DocType",
@@ -65,6 +21,7 @@
   "section_break_zvea",
   "legacy_details_column",
   "crm_lead_id",
+  "crm_lead_name",
   "fieldassist_id",
   "column_break_jrnh",
   "latitude",
@@ -72,6 +29,7 @@
   "amended_from",
   "details_section",
   "request_notes",
+  "admin_notes",
   "vendor_tab",
   "vendor",
   "vendor_location",
@@ -149,19 +107,20 @@
   {
    "fieldname": "completed_date",
    "fieldtype": "Date",
-   "label": "Completed Date"
+   "label": "Completed Date",
+   "read_only": 1
   },
   {
    "fieldname": "process_stage",
    "fieldtype": "Select",
    "label": "Process Stage",
-   "options": "Not Shortlisted\nUnder Manufacture\nManufactured & Placed in Goodown\nUnder Transit\nMounted\nDe-Mounted"
+   "options": "Under Manufacture\nManufactured & Placed in Goodown\nUnder Transit\nMounted\nDe-Mounted"
   },
   {
    "fieldname": "request_material",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Request Material",
-   "options": "Backlit Boards\nFrontlit Boards\nStationary Dairies\nStationary Calendars\nStationary Canvas Bags\nStationary Medical Covers",
+   "options": "Marketing Material Type",
    "reqd": 1
   },
   {
@@ -177,8 +136,7 @@
   {
    "fieldname": "request_notes",
    "fieldtype": "Small Text",
-   "label": "Request Notes",
-   "reqd": 1
+   "label": "Request Notes"
   },
   {
    "fieldname": "proofs_tab",
@@ -319,11 +277,10 @@
    "label": "Rate per UOM"
   },
   {
-   "fetch_from": "poi_id.latitude",
-   "fetch_if_empty": 1,
    "fieldname": "latitude",
    "fieldtype": "Data",
-   "label": "Latitude"
+   "label": "Latitude",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_jrnh",
@@ -331,11 +288,10 @@
    "label": "POI Details"
   },
   {
-   "fetch_from": "poi_id.longitude",
-   "fetch_if_empty": 1,
    "fieldname": "longitude",
    "fieldtype": "Data",
-   "label": "Longitude"
+   "label": "Longitude",
+   "reqd": 1
   },
   {
    "allow_on_submit": 1,
@@ -343,6 +299,7 @@
    "fieldtype": "Link",
    "label": "POI Id",
    "options": "CRM POI",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -355,7 +312,8 @@
   {
    "fieldname": "approved_declined_hold_date",
    "fieldtype": "Date",
-   "label": "Approved/Declined/On Hold Date"
+   "label": "Approved/Declined/On Hold Date",
+   "read_only": 1
   },
   {
    "fieldname": "vendor_tab",
@@ -404,16 +362,26 @@
    "reqd": 1
   },
   {
+   "fieldname": "crm_lead_name",
+   "fieldtype": "Data",
+   "label": "CRM Lead Name"
+  },
+  {
    "fieldname": "fieldassist_id",
    "fieldtype": "Data",
    "label": "Field Assist ID"
+  },
+  {
+   "fieldname": "admin_notes",
+   "fieldtype": "Small Text",
+   "label": "Admin Notes"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-07 19:54:21.268356",
+ "modified": "2025-04-11 10:33:34.724224",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",

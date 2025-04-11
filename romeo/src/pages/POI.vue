@@ -344,13 +344,22 @@ export default {
         }).fetch().then(response => {
             this.poi_details.doc = response;
         })
-        this.marketingMaterialOptions=createResource({
-            url:'crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.get_doctype_meta',
-            params:{
-                doctype:"Marketing Material Request"
-            }
-        }).fetch().then(response => {
-            this.marketingMaterialOptions.options = response.fields.find(docField => docField.fieldname==="request_material").options.split("\n");
+        // this.marketingMaterialOptions=createResource({
+        //     url:'crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.get_doctype_meta',
+        //     params:{
+        //         doctype:"Marketing Material Request"
+        //     }
+        // }).fetch().then(response => {
+        //     this.marketingMaterialOptions.options = response.fields.find(docField => docField.fieldname==="request_material").options.split("\n");
+        // })
+        this.marketingMaterialOptions= createListResource({
+            doctype:'Marketing Material Type',
+            fields:['name'],
+            pageLength: "None",
+        })
+        this.marketingMaterialOptions.reload().then(response => {
+            //console.log(response['name']);
+            this.marketingMaterialOptions.options = response.map(item => ({value:item.name,label:item.name}));
         })
         this.pois = createListResource({
             doctype: "CRM POI",
