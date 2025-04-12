@@ -19,8 +19,8 @@ export default{
             <span v-else>Vue Sidebar</span>
         </h1> -->
         <SidebarLink to="/" icon="fas fa-bolt">Bazooka</SidebarLink>
-    <SidebarLink to="/dashboard" icon="fas fa-lightbulb">Lamp</SidebarLink>
-    <SidebarLink to="/analytics" icon="fas fa-globe">Globe</SidebarLink>
+    <SidebarLink to="/lamp" icon="fas fa-lightbulb">Lamp</SidebarLink>
+    <!-- <SidebarLink to="/analytics" icon="fas fa-globe">Globe</SidebarLink> -->
     <!-- <SidebarLink to="/friends" icon="fas fa-users">Friends</SidebarLink>
     <SidebarLink to="/image" icon="fas fa-image">Images</SidebarLink> -->
         <span class="collapse-icon" 

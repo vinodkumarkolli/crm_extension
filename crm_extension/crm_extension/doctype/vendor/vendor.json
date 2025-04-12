@@ -82,7 +82,7 @@
    "link_fieldname": "vendor"
   }
  ],
- "modified": "2025-04-12 17:07:49.266896",
+ "modified": "2025-04-12 19:18:54.291427",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Vendor",
@@ -98,6 +98,27 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Lamp User",
+   "share": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Romeo Admin",
    "share": 1,
    "write": 1
   }
