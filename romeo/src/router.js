@@ -18,6 +18,17 @@ const routes = [
     name:'POI',
     component:async () => import('@/pages/POI.vue'),
     props:true
+  },
+  {
+    path:'/lamp',
+    name:'Lamp',
+    component:async () => import('@/pages/Lamp.vue')
+  },
+  {
+    path:'/lamp/:id',
+    name:'Vendor',
+    component:async () => import('@/pages/Vendor.vue'),
+    props:true
   }
 ]
 
