@@ -4,20 +4,79 @@
 frappe.ui.form.on("Marketing Material Request", {
 	refresh(frm) {
         if(frm.doc.docstatus === 1){
-            frm.add_custom_button(__("Approve"), function () {
-                openApprovalsPopup(frm,"Approve")         
-            },__("Approvals"))
-            frm.add_custom_button(__("Hold"), function () {
-                openApprovalsPopup(frm,"Hold")         
-            },__("Approvals"))
-            frm.add_custom_button(__("Reject"), function () {
-                openApprovalsPopup(frm,"Reject")
-            },__("Approvals"))
+            if(frm.doc.request_status === "Submitted" || frm.doc.request_status === "On Hold" ){
+                frm.add_custom_button(__("Approve"), function () {
+                    openApprovalsPopup(frm,"Approve")         
+                },__("Approvals"))
+            }
+            if(frm.doc.request_status === "Submitted" || frm.doc.request_status === "Shortlisted" ){
+                frm.add_custom_button(__("Hold"), function () {
+                    openApprovalsPopup(frm,"Hold")         
+                },__("Approvals"))
+            }
+            if(frm.doc.request_status === "On Hold"){
+                frm.add_custom_button(__("Reject"), function () {
+                    openApprovalsPopup(frm,"Reject")
+                },__("Approvals"))
+            }
+            if(frm.doc.request_status === "Completed" || frm.doc.request_status === "Shortlisted" || frm.doc.request_status === "Vendor Dispute" ){
+                frm.add_custom_button(__("Raise a Dispute"), function () {
+                    
+                },__("Vendors"))
+            }
+            if(frm.doc.request_status === 'Shortlisted'){
+                //Procurement Stages Options
+                if(frm.doc.process_stage === 'Procurement'){
+                    
+                    frm.add_custom_button(__("Mark Request as Completed"), function () {
+                        openCompletionFormPopup(frm)
+                        // frappe.msgprint({message:__('Please select the vendor from the list below to shortlist'),indicator:'yellow'})
+                    },__("Vendors"))
+                }
+            }
             //Hiding Cancel Button
             frm.page.btn_secondary.hide();
         }
 	},
 });
+function openCompletionFormPopup(frm){
+    const d = new frappe.ui.Dialog({
+        title:'Completion Form',
+        fields:[
+            {
+                fieldname:'completed_date',
+                fieldtype:'Date',
+                reqd:1,
+                label:'Completed Date'
+            },
+            {
+                fieldname:'completion_reason',
+                fieldtype:'Small Text',
+                label:'Reason for Completion',
+                reqd:1
+            }
+        ],
+        primary_action:function(){
+            var completed_date = d.get_value('completed_date')
+            var completion_reason = d.get_value('completion_reason')
+            frappe.call({
+                method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.mark_request_as_completed",
+                args:{
+                    "doc": frm.doc.name,
+                    "completed_date":completed_date,
+                    "completion_reason":completion_reason
+                },
+                callback:function(r){
+                    if(!r.exc){
+                        //refresh_field('status');
+                        d.hide();
+                    }
+                }
+            })
+        }
+    })
+    d.show();
+}
 function openApprovalsPopup(frm,mode){
     var d;
     switch(mode){
@@ -40,7 +99,7 @@ function openApprovalsPopup(frm,mode){
                         get_query:function(){
                             return {
                                 filters:{
-                                    'marketing_material_type':frm.doc.marketing_material_type
+                                    marketing_material_type:frm.doc.marketing_material_type
                                 }
                             }
                         }

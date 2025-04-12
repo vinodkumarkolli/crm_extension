@@ -9,8 +9,9 @@ class MarketingMaterialRequest(Document):
 	def before_submit(self):
 		self.requested_date = now()
 		self.request_status = "Submitted"
-		self.installation_status ="Not Shortlisted"
+		#self.installation_status ="Not Shortlisted"
 		request_material = frappe.get_doc("Marketing Material Type",self.request_material)
+		#self.add_comment("Created","Request for "+self.request_material+" has been submitted by "+self.request_raised_by)
 		self.require_proofs = request_material.require_proofs
 
 @frappe.whitelist()
@@ -26,16 +27,27 @@ def approve_request(doc,comment,vendor):
 	req_doc.vendor_location = vendor_doc.latitude + ","+ vendor_doc.longitude
 	req_doc.distance_bw_poi_and_vendor = haversine(vendor_doc.latitude,vendor_doc.longitude,req_doc.latitude,req_doc.longitude)
 	req_doc.request_status = "Shortlisted"
-	req_doc.installation_status = "Shortlisted"
-	req_doc.admin_notes = comment
+	#req_doc.installation_status = "Shortlisted"
+	req_doc.approval_comment = comment
+	req_doc.hold_comment = ""
+	req_doc.add_comment("Comment","The request has been approved & shortlisted with following comments <b>"+comment+"</b>") 
 	req_doc.approved_declined_hold_date= now()
+	req_doc.save()
+	if req_doc.require_proofs:
+		request_material = frappe.get_doc("Marketing Material Type",req_doc.request_material)
+		req_doc.process_stage = request_material.procurement_steps[0].procurement_stage
+		#req_doc.process_stage = 
+	else:
+		req_doc.process_stage = "Procurement"
 	req_doc.save()
 	frappe.db.commit()
 @frappe.whitelist()
 def hold_request(doc,comment):
 	req_doc = frappe.get_doc("Marketing Material Request",doc)
 	req_doc.request_status = "On Hold"
-	req_doc.admin_notes = comment
+	req_doc.approval_comment = ""
+	req_doc.hold_comment = comment
+	req_doc.add_comment("Comment","Request has been put on hold becoz of <b>"+comment+"</b>")
 	req_doc.approved_declined_hold_date= now()
 	req_doc.save()
 	frappe.db.commit()
@@ -43,7 +55,8 @@ def hold_request(doc,comment):
 def reject_request(doc,comment):
 	req_doc = frappe.get_doc("Marketing Material Request",doc)
 	req_doc.request_status = "Declined"
-	req_doc.admin_notes = comment
+	req_doc.add_comment("Comment","Request has been rejected becoz of <b>"+comment+"</b>")
+	# req_doc.admin_notes = comment
 	req_doc.approved_declined_hold_date= now() 
 	req_doc.save()
 	frappe.db.commit()
@@ -76,5 +89,14 @@ def haversine(lat1, lon1, lat2, lon2):
     a = math.sin(delta_lat / 2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(delta_lon / 2)**2
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-    distance = R * c
+    distance = round(R*c,2)
     return distance
+
+@frappe.whitelist()
+def mark_request_as_completed(doc,completed_date,completion_reason):
+	req_doc = frappe.get_doc("Marketing Material Request",doc)
+	req_doc.request_status = "Completed"
+	req_doc.completed_date = completed_date
+	req_doc.add_comment("Comment","Request has been marked as completed "+completion_reason)
+	req_doc.save()
+	frappe.db.commit()

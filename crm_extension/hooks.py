@@ -263,6 +263,12 @@ fixtures = [
     },
     {
         "doctype":"Role","filters":[["role_name","in",["CRM Viewer"]]]
+    },
+    {
+        "doctype": "Marketing Material Type"
+    },
+    {
+        "doctype": "Material Procurement Stage"
     }
 ]
 

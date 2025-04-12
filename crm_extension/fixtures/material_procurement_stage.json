@@ -1,0 +1,92 @@
+[
+ {
+  "activity_evaluator": "None",
+  "activity_performer": "None",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-12 16:51:29.446304",
+  "name": "Procurement",
+  "stage_name": "Procurement"
+ },
+ {
+  "activity_evaluator": "Vendor",
+  "activity_performer": "Company Management",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-11 21:41:15.533376",
+  "name": "Purchase Order Placement",
+  "stage_name": "Purchase Order Placement"
+ },
+ {
+  "activity_evaluator": "Company",
+  "activity_performer": "Vendor Employee",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-11 21:43:10.199764",
+  "name": "Evaluating POI Exact Requirements",
+  "stage_name": "Evaluating POI Exact Requirements"
+ },
+ {
+  "activity_evaluator": "None",
+  "activity_performer": "Company Management",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-11 21:43:46.384396",
+  "name": "Accepting generated Requirements",
+  "stage_name": "Accepting generated Requirements"
+ },
+ {
+  "activity_evaluator": "Company",
+  "activity_performer": "Vendor",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-11 21:44:26.490150",
+  "name": "Preparing Quotations for Requirements",
+  "stage_name": "Preparing Quotations for Requirements"
+ },
+ {
+  "activity_evaluator": "Company",
+  "activity_performer": "Company Employee",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-11 21:54:30.408378",
+  "name": "Attesting Manufacture Process",
+  "stage_name": "Attesting Manufacture Process"
+ },
+ {
+  "activity_evaluator": "Vendor",
+  "activity_performer": "Vendor Employee",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-11 21:49:23.304798",
+  "name": "Delivering the Goods by Vendor",
+  "stage_name": "Delivering the Goods by Vendor"
+ },
+ {
+  "activity_evaluator": "Company",
+  "activity_performer": "Company Employee",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-11 21:50:02.002240",
+  "name": "Attesting Completion of Job handled by Vendor",
+  "stage_name": "Attesting Completion of Job handled by Vendor"
+ },
+ {
+  "activity_evaluator": "Company",
+  "activity_performer": "Vendor",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-11 21:50:37.682925",
+  "name": "Raising Service Request",
+  "stage_name": "Raising Service Request"
+ },
+ {
+  "activity_evaluator": "Company",
+  "activity_performer": "Company Employee",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-11 21:53:54.492410",
+  "name": "Attesting Completion of Service Job",
+  "stage_name": "Attesting Completion of Service Job"
+ }
+]

@@ -8,7 +8,7 @@
   "material_name",
   "require_proofs",
   "procurement_stages_section",
-  "table_kyeq"
+  "procurement_steps"
  ],
  "fields": [
   {
@@ -26,13 +26,15 @@
    "label": "Require Vendor Upload Proofs"
   },
   {
+   "depends_on": "eval:doc.require_proofs",
    "fieldname": "procurement_stages_section",
    "fieldtype": "Section Break",
    "label": "Procurement Stages"
   },
   {
-   "fieldname": "table_kyeq",
+   "fieldname": "procurement_steps",
    "fieldtype": "Table",
+   "mandatory_depends_on": "eval:doc.require_proofs",
    "options": "Procurement Steps"
   }
  ],
@@ -50,8 +52,8 @@
    "link_fieldname": "request_material"
   }
  ],
- "modified": "2025-04-11 21:37:44.263835",
- "modified_by": "Administrator",
+ "modified": "2025-04-12 14:22:21.141642",
+ "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Type",
  "naming_rule": "By fieldname",

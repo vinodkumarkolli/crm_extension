@@ -28,7 +28,8 @@
   "amended_from",
   "details_section",
   "request_notes",
-  "admin_notes",
+  "approval_comment",
+  "hold_comment",
   "vendor_tab",
   "information_section",
   "vendor",
@@ -109,15 +110,19 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "completed_date",
    "fieldtype": "Date",
    "label": "Completed Date",
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "process_stage",
-   "fieldtype": "Data",
-   "label": "Process Stage"
+   "fieldtype": "Link",
+   "label": "Process Stage",
+   "options": "Material Procurement Stage",
+   "read_only": 1
   },
   {
    "fieldname": "request_material",
@@ -346,9 +351,10 @@
   },
   {
    "allow_on_submit": 1,
+   "description": "Distance between POI and Vendor",
    "fieldname": "distance_bw_poi_and_vendor",
    "fieldtype": "Data",
-   "label": "Distance bw POI and Vendor",
+   "label": "Radial Distance in Km",
    "read_only": 1
   },
   {
@@ -374,13 +380,6 @@
    "label": "Field Assist ID"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "admin_notes",
-   "fieldtype": "Small Text",
-   "label": "Admin Notes",
-   "read_only": 1
-  },
-  {
    "fieldname": "information_section",
    "fieldtype": "Section Break",
    "label": "Information"
@@ -394,14 +393,28 @@
    "fieldname": "table_ctac",
    "fieldtype": "Table",
    "options": "Vendor Disputes"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "approval_comment",
+   "fieldtype": "Small Text",
+   "label": "Approval Comment",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "hold_comment",
+   "fieldtype": "Small Text",
+   "label": "Hold Comment",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-11 22:10:32.751290",
- "modified_by": "Administrator",
+ "modified": "2025-04-12 18:44:12.409999",
+ "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
  "naming_rule": "Expression",
@@ -429,6 +442,17 @@
    "read": 1,
    "report": 1,
    "role": "Romeo Admin",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Lamp Vendor Employee",
    "share": 1,
    "submit": 1,
    "write": 1

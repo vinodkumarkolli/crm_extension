@@ -294,8 +294,8 @@
                     <p>
                         Request ID: <strong>{{ request.name }}</strong> is in <strong> {{ request.request_status }}</strong> stage that has requested <strong>{{ request.request_material }}</strong>.
                     </p>
-                    <p><strong>Admin Comments:</strong> {{ request.admin_notes  }}</p>
-                    
+                    <p v-if="request.approval_comment && request.request_status === 'Shortlisted'"><strong>Approval Comments:</strong> {{ request.approval_comment  }}</p>
+                    <p v-if="request.hold_comment && request.request_status === 'On Hold'"><strong>Held Comments:</strong> {{ request.hold_comment  }}</p>
                 </li>
             </ol>
         </div>
@@ -420,6 +420,10 @@ export default {
         })
         this.marketingRequests.reload().then(response => {
             this.marketingRequests.items=response;
+            //loop through this.marketingRequests.items
+            for (let item of this.marketingRequests.items) {
+                
+            }
         }).catch(error => {
             console.error("Failed to load marketing requests:", error);
         });
