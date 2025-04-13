@@ -30,6 +30,28 @@ def get_users_list(doctype, txt, searchfield, start, page_len, filters):
 	sql_array_string = '\',\''.join(map(str, userEmail))
 	return frappe.db.sql("""SELECT email,full_name from `tabUser` WHERE `tabUser`.email IN ('{a}')""".format(a=sql_array_string))
 
+@frappe.whitelist()
+def get_vendors_for_session_user(user):
+	query ="""SELECT DISTINCT parent from `tabVendor User` WHERE user = '{a}' AND parenttype = 'Vendor'""".format(a=user)
+	vendorList = convert_objects_to_strings(frappe.db.sql(query, as_dict=True),'parent')
+	sql_array_string = '\',\''.join(map(str, vendorList))
+	vendors = frappe.db.sql("""SELECT * FROM `tabVendor` WHERE name IN ('{a}')""".format(a=sql_array_string), as_dict=True)
+	return vendors
+
+@frappe.whitelist()
+def evaluate_user_for_vendor(vendor,user):
+	query = """SELECT * FROM `tabVendor User` WHERE parent='{a}' AND user='{b}' AND parenttype = 'Vendor'""".format(a=vendor,b=user)
+	permResult = frappe.db.sql(query, as_dict=True)
+	roles = []
+	for perm in permResult:
+		roles.append(perm.user_role)
+	query = """SELECT * from `tabVendor` WHERE name='{a}'""".format(a=vendor)
+	vendorResult = frappe.db.sql(query, as_dict=True)[0]
+	if vendorResult:
+		return {'vendor':vendorResult, 'userRoles': roles}
+	else:
+		frappe.throw("No such vendor exists")
+
 def convert_objects_to_strings(data, key):
   """
   Converts an array of objects to an array of strings based on a key.

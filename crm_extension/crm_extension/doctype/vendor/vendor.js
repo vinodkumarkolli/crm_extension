@@ -8,5 +8,17 @@ frappe.ui.form.on("Vendor", {
                 query:"crm_extension.crm_extension.doctype.vendor.vendor.get_users_list",
             }
         })
-	}
+	},
+    // refresh: function(frm){
+    //     // frappe.msgprint(frappe.session.user)
+    //     frappe.call({
+    //         method:"crm_extension.crm_extension.doctype.vendor.vendor.get_vendors_for_session_user",
+    //         args:{
+    //             "user":frappe.session.user,
+    //         },
+    //         callback:(r)=>{
+                
+    //         }
+    //     })
+    // }
 });

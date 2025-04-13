@@ -2,19 +2,11 @@
 <template>
   <div class=" grid place-items-center px-10 py-10 bg-gray-100 h-screen">  
     <router-view></router-view>
-    <div class=" bg-white h-1/2 md:h-quarter w-1/2 rounded-md shadow-md">
-      <h1 class="text-white flex flex-col items-center justify-center unique-color-map rounded-md shadow-md text-4xl font-bold mb-4">Bazooka</h1>
-      <h4 class="text-gray-500 flex flex-col items-center">Lets find our juliet. First, select the city</h4>
+    <Card title="Bazooka" subtitle="Lets Find Juliet!"  class="flex flex-col items-center">
       <div class="flex flex-col items-center">
-      <DotLottieVue style="height: 150px; width: 150px" autoplay loop src="https://lottie.host/af681258-e29a-4769-b738-e7c2038fd634/sv9sNIp7cO.lottie" />
-    </div>
+        <DotLottieVue style="height: 150px; width: 150px" autoplay loop src="https://lottie.host/af681258-e29a-4769-b738-e7c2038fd634/sv9sNIp7cO.lottie" />
+      </div>
       <div class="flex flex-row justify-center items-center ">
-        <!-- <select id="selectedCity" class="px-5 basis-128 rounded-md block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-          <option disabled selected :value="null">Choose City</option>
-          <option v-for="option in territories" :key="option.crm_territory" :value="option.crm_territory">
-            {{ option.crm_territory }}
-          </option>
-        </select> -->
         <Autocomplete
           :options="territories"
           v-model="selectedLocation"
@@ -26,8 +18,8 @@
         </svg>
         <span class="sr-only">Lets Touchdown</span>
         </button>
-    </div>
-  </div>
+      </div>
+    </Card>
   </div>
   
 </template>
