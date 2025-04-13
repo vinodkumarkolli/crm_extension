@@ -54,7 +54,8 @@ export default {
     this.vendors.fetch().then((res)=>{
       this.vendors.items = res.map(item =>({
           label:item.vendor_name,
-          value:item.name
+          value:item.name,
+          description:item.marketing_material_type
       }))
     })
   }

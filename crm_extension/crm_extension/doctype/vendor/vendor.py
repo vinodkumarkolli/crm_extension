@@ -48,7 +48,7 @@ def evaluate_user_for_vendor(vendor,user):
 	query = """SELECT * from `tabVendor` WHERE name='{a}'""".format(a=vendor)
 	vendorResult = frappe.db.sql(query, as_dict=True)[0]
 	if vendorResult:
-		return {'vendor':vendorResult, 'userRoles': roles}
+		return {'vendor':vendorResult, 'roles': roles}
 	else:
 		frappe.throw("No such vendor exists")
 
