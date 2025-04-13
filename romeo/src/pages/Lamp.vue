@@ -1,6 +1,7 @@
 <template>
   <div class=" grid place-items-center px-10 py-10 bg-gray-100 h-screen">
     <router-view></router-view>
+    <!-- Source for Card Component https://www.youtube.com/watch?v=djpXDquzrvQ & https://github.com/frappe/frappe-ui/blob/main/src/components/Card.vue -->
     <Card title="Lamp" subtitle="A guiding app for Vendors" class="flex flex-col items-center">
       <div class="flex flex-col items-center">
         <DotLottieVue style="height: 150px; width: 150px" autoplay loop src="https://lottie.host/e42df8d1-452a-4f40-b859-a4c0c5c89327/3km4ioB8r3.lottie" />
