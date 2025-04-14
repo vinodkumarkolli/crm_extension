@@ -12,8 +12,11 @@
   "column_break_bycl",
   "territory",
   "address",
+  "active",
   "users_section",
-  "vendor_users"
+  "vendor_users",
+  "batch_details_section",
+  "batch_process_items"
  ],
  "fields": [
   {
@@ -48,7 +51,8 @@
    "fieldtype": "Link",
    "label": "Marketing Material Type",
    "options": "Marketing Material Type",
-   "reqd": 1
+   "reqd": 1,
+   "set_only_once": 1
   },
   {
    "fieldname": "latitude",
@@ -71,6 +75,23 @@
    "fieldname": "vendor_users",
    "fieldtype": "Table",
    "options": "Vendor User"
+  },
+  {
+   "fieldname": "batch_details_section",
+   "fieldtype": "Section Break",
+   "label": "Batch Details"
+  },
+  {
+   "fieldname": "batch_process_items",
+   "fieldtype": "Table",
+   "options": "Batch Process",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "active",
+   "fieldtype": "Check",
+   "label": "Active"
   }
  ],
  "grid_page_length": 50,
@@ -82,8 +103,8 @@
    "link_fieldname": "vendor"
   }
  ],
- "modified": "2025-04-13 14:27:09.347933",
- "modified_by": "vinodkumarkolli@gmail.com",
+ "modified": "2025-04-14 07:35:59.728608",
+ "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "Vendor",
  "naming_rule": "Random",

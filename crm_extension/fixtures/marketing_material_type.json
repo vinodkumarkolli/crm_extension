@@ -2,8 +2,9 @@
  {
   "docstatus": 0,
   "doctype": "Marketing Material Type",
+  "manufacture": 1,
   "material_name": "Frontlit Boards",
-  "modified": "2025-04-12 14:35:24.260692",
+  "modified": "2025-04-14 11:02:20.121287",
   "name": "Frontlit Boards",
   "procurement_steps": [
    {
@@ -12,6 +13,10 @@
    },
    {
     "optional": 0,
+    "procurement_stage": "Batch id Allocated"
+   },
+   {
+    "optional": 0,
     "procurement_stage": "Evaluating POI Exact Requirements"
    },
    {
@@ -42,50 +47,50 @@
     "optional": 0,
     "procurement_stage": "Attesting Completion of Service Job"
    }
-  ],
-  "require_proofs": 1
+  ]
  },
  {
   "docstatus": 0,
   "doctype": "Marketing Material Type",
+  "manufacture": 0,
   "material_name": "Stationary - Dairies",
   "modified": "2025-04-11 10:31:21.198663",
   "name": "Stationary - Dairies",
-  "procurement_steps": [],
-  "require_proofs": 0
+  "procurement_steps": []
  },
  {
   "docstatus": 0,
   "doctype": "Marketing Material Type",
-  "material_name": "Stationary - Calendars",
-  "modified": "2025-04-11 10:31:39.805452",
-  "name": "Stationary - Calendars",
-  "procurement_steps": [],
-  "require_proofs": 0
- },
- {
-  "docstatus": 0,
-  "doctype": "Marketing Material Type",
+  "manufacture": 0,
   "material_name": "Stationary - Canvas Bags",
   "modified": "2025-04-11 10:32:25.824915",
   "name": "Stationary - Canvas Bags",
-  "procurement_steps": [],
-  "require_proofs": 0
+  "procurement_steps": []
  },
  {
   "docstatus": 0,
   "doctype": "Marketing Material Type",
+  "manufacture": 0,
   "material_name": "Stationary - Medical Covers",
   "modified": "2025-04-11 10:32:44.511836",
   "name": "Stationary - Medical Covers",
-  "procurement_steps": [],
-  "require_proofs": 0
+  "procurement_steps": []
  },
  {
   "docstatus": 0,
   "doctype": "Marketing Material Type",
+  "manufacture": 0,
+  "material_name": "Stationary - Calendars",
+  "modified": "2025-04-11 10:31:39.805452",
+  "name": "Stationary - Calendars",
+  "procurement_steps": []
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Marketing Material Type",
+  "manufacture": 1,
   "material_name": "Backlit Boards",
-  "modified": "2025-04-12 14:37:47.173565",
+  "modified": "2025-04-14 11:01:42.888352",
   "name": "Backlit Boards",
   "procurement_steps": [
    {
@@ -94,6 +99,10 @@
    },
    {
     "optional": 0,
+    "procurement_stage": "Batch id Allocated"
+   },
+   {
+    "optional": 0,
     "procurement_stage": "Evaluating POI Exact Requirements"
    },
    {
@@ -124,7 +133,6 @@
     "optional": 0,
     "procurement_stage": "Attesting Completion of Service Job"
    }
-  ],
-  "require_proofs": 1
+  ]
  }
 ]

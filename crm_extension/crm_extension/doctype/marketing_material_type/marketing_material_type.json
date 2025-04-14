@@ -6,7 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "material_name",
-  "require_proofs",
+  "manufacture",
   "procurement_stages_section",
   "procurement_steps"
  ],
@@ -20,13 +20,7 @@
    "unique": 1
   },
   {
-   "default": "0",
-   "fieldname": "require_proofs",
-   "fieldtype": "Check",
-   "label": "Require Vendor Upload Proofs"
-  },
-  {
-   "depends_on": "eval:doc.require_proofs",
+   "depends_on": "eval:doc.manufacture",
    "fieldname": "procurement_stages_section",
    "fieldtype": "Section Break",
    "label": "Procurement Stages"
@@ -36,6 +30,12 @@
    "fieldtype": "Table",
    "mandatory_depends_on": "eval:doc.require_proofs",
    "options": "Procurement Steps"
+  },
+  {
+   "default": "0",
+   "fieldname": "manufacture",
+   "fieldtype": "Check",
+   "label": "Manufacture ?"
   }
  ],
  "grid_page_length": 50,
@@ -52,7 +52,7 @@
    "link_fieldname": "request_material"
   }
  ],
- "modified": "2025-04-12 14:22:21.141642",
+ "modified": "2025-04-14 07:09:39.953574",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Type",

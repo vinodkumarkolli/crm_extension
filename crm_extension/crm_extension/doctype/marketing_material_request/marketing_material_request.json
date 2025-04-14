@@ -16,7 +16,8 @@
   "approved_declined_hold_date",
   "completed_date",
   "process_stage",
-  "require_proofs",
+  "manufacture",
+  "batch_id",
   "section_break_zvea",
   "legacy_details_column",
   "crm_lead_id",
@@ -47,20 +48,26 @@
   "column_break_rbvq",
   "recce_notes",
   "quotation_section",
-  "quote_measurement",
+  "quantity",
   "quote_uom",
   "column_break_luas",
   "quote_rate_per_uom",
   "quotation_price",
+  "quotation_acceptance_section",
+  "quote_accepted_by",
+  "column_break_gcad",
+  "quote_accepted_on",
   "manufacturing_section",
   "manufactured_image",
   "manufacture_verified_by",
+  "manufacture_verified_on",
   "column_break_mids",
   "manufacturing_notes",
   "installed_details_section",
   "installation_image_1",
   "installation_image_2",
   "installation_verified_by",
+  "installtion_verified_on",
   "column_break_lswg",
   "installation_notes"
  ],
@@ -147,7 +154,7 @@
    "label": "Request Notes"
   },
   {
-   "depends_on": "eval: ((doc.require_proofs) &&((doc.request_status =='Shortlisted')||(doc.request_status =='Completed')||(doc.request_status==='Vendor Dispute')))",
+   "depends_on": "eval: ((doc.batch_id)&&(doc.manufacture) &&((doc.request_status =='Shortlisted')||(doc.request_status =='Completed')||(doc.request_status==='Vendor Dispute')))",
    "fieldname": "proofs_tab",
    "fieldtype": "Tab Break",
    "label": "Process"
@@ -186,6 +193,7 @@
    "label": "Manufacturing"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "manufactured_image",
    "fieldtype": "Attach Image",
    "label": "Manufactured Image"
@@ -195,6 +203,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "manufacturing_notes",
    "fieldtype": "Small Text",
    "label": "Manufacturing Notes"
@@ -206,34 +215,33 @@
    "label": "Installed Details"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "installation_image_1",
    "fieldtype": "Attach Image",
    "label": "Installation Image 1"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "installation_image_2",
    "fieldtype": "Attach Image",
    "label": "Installation Image 2"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "installation_verified_by",
    "fieldtype": "Data",
-   "label": "Installation Verified by"
+   "label": "Installation Verified by",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_lswg",
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "installation_notes",
    "fieldtype": "Small Text",
    "label": "Installation Notes"
-  },
-  {
-   "default": "0",
-   "fieldname": "require_proofs",
-   "fieldtype": "Check",
-   "label": "Require Proofs"
   },
   {
    "allow_on_submit": 1,
@@ -242,9 +250,12 @@
    "label": "Recce Verified by"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "manufacture_verified_by",
-   "fieldtype": "Data",
-   "label": "Verified by"
+   "fieldtype": "Link",
+   "label": "Verified by",
+   "options": "User",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
@@ -257,22 +268,22 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "quotation_price",
    "fieldtype": "Float",
-   "label": "Quotation Price"
+   "label": "Quotation Price",
+   "precision": "2",
+   "read_only": 1
   },
   {
-   "fieldname": "quote_measurement",
-   "fieldtype": "Data",
-   "label": "Measurement"
-  },
-  {
+   "allow_on_submit": 1,
    "fieldname": "quote_uom",
    "fieldtype": "Select",
    "label": "UOM",
-   "options": "Sft"
+   "options": "Sft\nNos"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "quote_rate_per_uom",
    "fieldtype": "Data",
    "label": "Rate per UOM"
@@ -329,6 +340,7 @@
    "fieldtype": "Link",
    "label": "Vendor",
    "options": "Vendor",
+   "permlevel": 1,
    "read_only": 1
   },
   {
@@ -392,7 +404,8 @@
   {
    "fieldname": "table_ctac",
    "fieldtype": "Table",
-   "options": "Vendor Disputes"
+   "options": "Vendor Disputes",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
@@ -407,13 +420,73 @@
    "fieldtype": "Small Text",
    "label": "Hold Comment",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "manufacture",
+   "fieldtype": "Check",
+   "label": "Manufacture"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "batch_id",
+   "fieldtype": "Link",
+   "label": "Batch ID",
+   "options": "Batch Process",
+   "permlevel": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "quotation_acceptance_section",
+   "fieldtype": "Section Break",
+   "label": "Quotation Acceptance"
+  },
+  {
+   "fieldname": "column_break_gcad",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "label": "Quantity",
+   "precision": "2"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "quote_accepted_by",
+   "fieldtype": "Link",
+   "label": "Accepted by",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "quote_accepted_on",
+   "fieldtype": "Date",
+   "label": "Accepted on",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "manufacture_verified_on",
+   "fieldtype": "Date",
+   "label": "Verified on",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "installtion_verified_on",
+   "fieldtype": "Date",
+   "label": "Installation Verified on",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-12 18:44:12.409999",
+ "modified": "2025-04-14 13:12:28.861471",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
@@ -452,10 +525,31 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "Lamp Vendor Employee",
+   "role": "Lamp User",
    "share": 1,
    "submit": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Romeo Admin",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Lamp User",
+   "share": 1
   }
  ],
  "row_format": "Dynamic",

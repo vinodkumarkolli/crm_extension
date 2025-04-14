@@ -24,7 +24,7 @@ frappe.ui.form.on("Marketing Material Request", {
                     
                 },__("Vendors"))
             }
-            if(frm.doc.request_status === 'Shortlisted'){
+            if(frm.doc.request_status === 'Shortlisted' && frm.doc.vendor){
                 //Procurement Stages Options
                 if(frm.doc.process_stage === 'Procurement'){
                     
@@ -32,6 +32,22 @@ frappe.ui.form.on("Marketing Material Request", {
                         openCompletionFormPopup(frm)
                         // frappe.msgprint({message:__('Please select the vendor from the list below to shortlist'),indicator:'yellow'})
                     },__("Vendors"))
+                    //TODO: Move below code to else block
+
+                }
+                else{
+                    if(!frm.doc.batch_id){
+                        frm.add_custom_button(__("Allocate Batch"), function () {
+                            openBatchFormPopup(frm,"new")
+                            // frappe.msgprint({message:__('Please select the vendor from the list below to shortlist'),indicator:'yellow'})
+                        },__("Batch"))
+                    }
+                    else{
+                        frm.add_custom_button(__("Modify Batch"), function () {
+                            openBatchFormPopup(frm,"modify")
+                            // frappe.msgprint({message:__('Please select the vendor from the list below to shortlist'),indicator:'yellow'})
+                        },__("Batch"))
+                    }
                 }
             }
             //Hiding Cancel Button
@@ -39,6 +55,137 @@ frappe.ui.form.on("Marketing Material Request", {
         }
 	},
 });
+function openBatchFormPopup(frm,mode){
+    switch(mode){
+        case "new":
+            frappe.call({
+                method:'frappe.client.get',
+                args:{
+                    doctype:'Vendor',
+                    name:frm.doc.vendor
+                },
+                callback:(r)=>{
+                    if(!r.exc){
+                        let batch_options = r.message.batch_process_items.filter((el)=> {return el.batch_state ==='Active'}).map(obj => {return {label:obj['creation_date'],value:obj['name'],description:'ID: '+obj['batch_identifier']+'  State: '+obj['batch_state']}})
+                        if(batch_options.length>1){
+                            frappe.throw(__('There are multiple active batches available for this vendor. Please process the batches first'))
+                        }
+                        else if(batch_options.length===1){
+                            const d = new frappe.ui.Dialog({
+                                title:'Allocate Batch',
+                                fields:[{
+                                    fieldname:'batch_id',
+                                    label:'Select Batch',
+                                    fieldtype:'Autocomplete',
+                                    options:batch_options,
+                                    reqd:1,
+                                }],
+                                primary_action: function(){
+                                    let batch_id = d.get_value('batch_id')
+                                    frappe.call({
+                                        method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.allocate_batch",
+                                        args:{
+                                            "doc": frm.doc.name,
+                                            "batch_id":batch_id
+                                        },
+                                        callback:function(r){
+                                            if(!r.exc){
+                                                //refresh_field('status');
+                                                d.hide();
+                                            }
+                                        }
+                                    })
+                                }
+                            })
+                            d.show()
+                        }
+                        else{
+                            frappe.throw(__('No active batches found for this vendor'))
+                        }
+                    }
+                    
+                }
+            })
+            break;
+        case "modify":
+            frappe.call({
+                method:'frappe.client.get',
+                args:{
+                    doctype:'Vendor',
+                    name:frm.doc.vendor
+                },
+                callback:(r)=>{
+                    if(!r.exc){
+                        let batch_options = r.message.batch_process_items.filter((el)=> {return el.batch_state ==='Active'}).map(obj => {return {label:obj['creation_date'],value:obj['name'],description:'ID: '+obj['batch_identifier']+'  State: '+obj['batch_state']}})
+                        if(batch_options.length>1){
+                            frappe.throw(__('There are multiple active batches available for this vendor. Please process the batches first'))
+                        }
+                        else if(batch_options.length===1){
+                            let options = [];
+                            if(frm.doc.process_stage ==='Batch id Allocated'){
+                                options.push('Batch id Allocated')
+                            }
+                            else{
+                                options.push('Batch id Allocated')
+                                options.push('Evaluating POI Exact Requirements')
+                            }
+                            const d = new frappe.ui.Dialog({
+                                title:'Modify Batch',
+                                fields:[{
+                                    fieldname:'modify_batch_id',
+                                    label:'Select Batch',
+                                    fieldtype:'Autocomplete',
+                                    options:batch_options,
+                                    reqd:1,
+                                },
+                                {
+                                    fieldname:'process_stage',
+                                    label:'New Process Stage',
+                                    fieldtype:'Link',
+                                    options:'Material Procurement Stage',
+                                    reqd:1,
+                                    get_query : function(){
+                                        return {
+                                            filters:[['stage_name','In',options]]
+                                        };
+                                    }
+                                }
+                                ],
+                                primary_action: function(){
+                                    const batch_id = d.get_value('modify_batch_id')
+                                    if(batch_id === frm.doc.batch_id){
+                                        d.hide();
+                                        frappe.throw(__('You are trying to assign same batch'))
+                                    }
+                                    else{
+                                        frappe.call({
+                                            method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.allocate_batch",
+                                            args:{
+                                                "doc": frm.doc.name,
+                                                "batch_id":batch_id
+                                            },
+                                            callback:function(r){
+                                                if(!r.exc){
+                                                    //refresh_field('status');
+                                                    d.hide();
+                                                }
+                                            }
+                                        })  
+                                    }
+                                }
+                            })
+                            d.show()
+                        }
+                        else{
+                            frappe.throw(__('No active batches found for this vendor'))
+                        }
+                        
+                    }
+                }
+            })
+            break;
+    }
+}
 function openCompletionFormPopup(frm){
     const d = new frappe.ui.Dialog({
         title:'Completion Form',
@@ -96,12 +243,13 @@ function openApprovalsPopup(frm,mode){
                         label:'Vendor',
                         options:'Vendor', 
                         reqd: 1,
-                        get_query:function(){
+                        get_query : function(){
                             return {
                                 filters:{
-                                    marketing_material_type:frm.doc.marketing_material_type
+                                    marketing_material_type:frm.doc.request_material,
+                                    active:1
                                 }
-                            }
+                            };
                         }
                     }
                 ],

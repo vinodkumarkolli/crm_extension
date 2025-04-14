@@ -12,7 +12,7 @@ class MarketingMaterialRequest(Document):
 		#self.installation_status ="Not Shortlisted"
 		request_material = frappe.get_doc("Marketing Material Type",self.request_material)
 		#self.add_comment("Created","Request for "+self.request_material+" has been submitted by "+self.request_raised_by)
-		self.require_proofs = request_material.require_proofs
+		self.manufacture = request_material.manufacture
 
 @frappe.whitelist()
 def get_doctype_meta(doctype):
@@ -33,7 +33,7 @@ def approve_request(doc,comment,vendor):
 	req_doc.add_comment("Comment","The request has been approved & shortlisted with following comments <b>"+comment+"</b>") 
 	req_doc.approved_declined_hold_date= now()
 	req_doc.save()
-	if req_doc.require_proofs:
+	if req_doc.manufacture:
 		request_material = frappe.get_doc("Marketing Material Type",req_doc.request_material)
 		req_doc.process_stage = request_material.procurement_steps[0].procurement_stage
 		#req_doc.process_stage = 
@@ -98,5 +98,22 @@ def mark_request_as_completed(doc,completed_date,completion_reason):
 	req_doc.request_status = "Completed"
 	req_doc.completed_date = completed_date
 	req_doc.add_comment("Comment","Request has been marked as completed "+completion_reason)
+	req_doc.save()
+	frappe.db.commit()
+@frappe.whitelist()
+def allocate_batch(doc,batch_id):
+	req_doc = frappe.get_doc("Marketing Material Request",doc)
+	req_doc.batch_id = batch_id
+	req_doc.process_stage = "Batch id Allocated"
+	req_doc.add_comment("Comment","Batch Id allocated # - "+batch_id)
+	req_doc.save()
+	frappe.db.commit()
+
+@frappe.whitelist()
+def modify_batch(doc,batch_id,process_stage):
+	req_doc = frappe.get_doc("Marketing Material Request",doc)
+	req_doc.batch_id = batch_id
+	req_doc.process_stage = process_stage
+	req_doc.add_comment("Comment","Batch modified # - "+batch_id)
 	req_doc.save()
 	frappe.db.commit()

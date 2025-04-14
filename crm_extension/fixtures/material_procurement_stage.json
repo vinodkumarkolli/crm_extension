@@ -1,21 +1,21 @@
 [
  {
   "activity_evaluator": "None",
+  "activity_performer": "Company Management",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-14 11:00:55.486539",
+  "name": "Batch id Allocated",
+  "stage_name": "Batch id Allocated"
+ },
+ {
+  "activity_evaluator": "None",
   "activity_performer": "None",
   "docstatus": 0,
   "doctype": "Material Procurement Stage",
   "modified": "2025-04-12 16:51:29.446304",
   "name": "Procurement",
   "stage_name": "Procurement"
- },
- {
-  "activity_evaluator": "Vendor",
-  "activity_performer": "Company Management",
-  "docstatus": 0,
-  "doctype": "Material Procurement Stage",
-  "modified": "2025-04-11 21:41:15.533376",
-  "name": "Purchase Order Placement",
-  "stage_name": "Purchase Order Placement"
  },
  {
   "activity_evaluator": "Company",
@@ -88,5 +88,14 @@
   "modified": "2025-04-11 21:53:54.492410",
   "name": "Attesting Completion of Service Job",
   "stage_name": "Attesting Completion of Service Job"
+ },
+ {
+  "activity_evaluator": "Vendor",
+  "activity_performer": "Company Management",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-04-11 21:41:15.533376",
+  "name": "Purchase Order Placement",
+  "stage_name": "Purchase Order Placement"
  }
 ]

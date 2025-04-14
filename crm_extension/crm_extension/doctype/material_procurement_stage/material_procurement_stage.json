@@ -1,6 +1,5 @@
 {
  "actions": [],
- "allow_rename": 1,
  "autoname": "field:stage_name",
  "creation": "2025-04-11 21:23:44.898177",
  "doctype": "DocType",
@@ -40,8 +39,8 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-11 21:45:08.556487",
- "modified_by": "Administrator",
+ "modified": "2025-04-14 12:32:23.603802",
+ "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Material Procurement Stage",
  "naming_rule": "By fieldname",
