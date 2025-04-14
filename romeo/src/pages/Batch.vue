@@ -53,7 +53,7 @@
                             </div>
                             <div class="flex flex-col justify-between w-3/12">
                                 <a :href="'https://www.google.com/maps/place/'+request.latitude+'%2C'+request.longitude"  target="_blank" rel="noopener noreferrer" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Map</a>
-                                <button class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Upload Recce Details</button>
+                                <button @click="handleRecceFormClick(request,index)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Upload Recce Details</button>
                             </div>
                         </li>
                     </ul>
@@ -112,6 +112,16 @@ export default {
         // serviceRequests:ref([]),
         // serviceAttestation:ref([])
         };
+    },
+    methods:{
+        handleRecceFormClick(materialRequest, index) {
+        // Handle the click event here
+        console.log('Clicked item:', materialRequest);
+        console.log('Clicked index:', index);
+
+        // Example: Modify the clicked item
+        //this.items[index].name = 'Clicked!';
+        },
     },
     mounted(){
         initTabs();
