@@ -29,6 +29,13 @@ const routes = [
     name:'Vendor',
     component:async () => import('@/pages/Vendor.vue'),
     props:true
+  },
+  ,
+  {
+    path:'/lamp/:vendorId/:batchId',
+    name:'Batch',
+    component:async () => import('@/pages/Batch.vue'),
+    props:true
   }
 ]
 

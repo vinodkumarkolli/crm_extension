@@ -430,9 +430,8 @@
   {
    "allow_on_submit": 1,
    "fieldname": "batch_id",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Batch ID",
-   "options": "Batch Process",
    "permlevel": 1,
    "read_only": 1
   },
@@ -486,7 +485,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-14 13:12:28.861471",
+ "modified": "2025-04-14 17:56:30.500368",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",

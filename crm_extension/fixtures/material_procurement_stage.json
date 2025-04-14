@@ -41,8 +41,8 @@
   "docstatus": 0,
   "doctype": "Material Procurement Stage",
   "modified": "2025-04-11 21:44:26.490150",
-  "name": "Preparing Quotations for Requirements",
-  "stage_name": "Preparing Quotations for Requirements"
+  "name": "Submitted Quotations for Requirements",
+  "stage_name": "Submitted Quotations for Requirements"
  },
  {
   "activity_evaluator": "Company",

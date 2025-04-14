@@ -48,8 +48,12 @@ def evaluate_user_for_vendor(vendor,user):
 		roles.append(perm.user_role)
 	query = """SELECT * from `tabVendor` WHERE name='{a}'""".format(a=vendor)
 	vendorResult = frappe.db.sql(query, as_dict=True)[0]
+	batches=get_batches_for_vendor(vendor)
 	if vendorResult:
-		return {'vendor':vendorResult, 'roles': roles}
+		if batches:
+			return {'vendor':vendorResult, 'roles': roles,'batches': batches}
+		else:
+			return {'vendor':vendorResult, 'roles': roles}
 	else:
 		frappe.throw("No such vendor exists")
 
@@ -87,6 +91,11 @@ def clear_unused_batches(vendorId):
 			cleaned_batch_ids.append(batch.name)
 	vendor_doc.save()
 	return cleaned_batch_ids
+@frappe.whitelist()
+def get_batches_for_vendor(vendorId):
+	query = """SELECT * FROM `tabBatch Process` WHERE parent='{a}'""".format(a=vendorId)
+	result = frappe.db.sql(query, as_dict=True)
+	return result
 def convert_objects_to_strings(data, key):
   """
   Converts an array of objects to an array of strings based on a key.
