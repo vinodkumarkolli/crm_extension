@@ -36,6 +36,17 @@ const routes = [
     name:'Batch',
     component:async () => import('@/pages/Batch.vue'),
     props:true
+  },
+  {
+    path:'/lamp/:vendorId/:batchId/recce/:requestId',
+    name:'Recce',
+    component:async () => import('@/forms/Recce.vue'),
+    props:true
+  },
+  {
+    path:'/camera',
+    name:'Camera Modal',
+    component:async () => import('@/components/CameraModal.vue')
   }
 ]
 

@@ -1,4 +1,5 @@
 <template>
+    <router-view></router-view>
     <Card :title="batchId" :subtitle="presentBatch.batch_state+ ' | '+presentBatch.creation_date" class="bg-red-100">
         <div class="grid grid-cols-3">
             
@@ -115,12 +116,7 @@ export default {
     },
     methods:{
         handleRecceFormClick(materialRequest, index) {
-        // Handle the click event here
-        console.log('Clicked item:', materialRequest);
-        console.log('Clicked index:', index);
-
-        // Example: Modify the clicked item
-        //this.items[index].name = 'Clicked!';
+            this.$router.push({name:'Recce',params:{batchId:this.batchId,vendorId:this.vendorId,requestId:materialRequest.name}})
         },
     },
     mounted(){
