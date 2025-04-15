@@ -29,6 +29,11 @@
                     <div class="grid grid-cols-2 gap-4">
                         <p><b>Store Images: </b></p>
                         <button type="button" id="storeImageBtn" @click="toggleModal" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Upload Image</button>
+                        
+                    </div>
+                    <div class="flex flex-row justify-center">
+                        <button @click="saveRecceChanges">Submit Recce Form</button>
+                        <button @click="$router.go(-1)">Cancel</button>
                     </div>    
                 </main>
                 <div class="flex flex-col justify-center items-center">
@@ -46,9 +51,11 @@
 </template>
 <script>
 import { ref } from 'vue';
-import {createResource,createDocumentResource, Card, FileUploader} from 'frappe-ui';
+import {createResource,createDocumentResource, Card} from 'frappe-ui';
 import {sessionUser} from '@/data/session';
 import CameraModal from '../components/CameraModal.vue';
+// import FileReader from "file-reader";
+
 export default {
     name:"Recce",
     components:{CameraModal},
@@ -71,8 +78,9 @@ export default {
             dataValidated:false,
             userVendorDetails:ref([]),
             materialRequest:ref([]),
-            imageData:ref({stores:[],quotation:[]}),
-            modalActive:ref(false)
+            imageData:ref({stores:[],quotation:[],uploadedImageURLS:[]}),
+            modalActive:ref(false),
+            fileUploader:ref([])
         }
     },
     methods:{
@@ -83,10 +91,47 @@ export default {
             // console.log("Saving Photos",photos);
             photos.forEach(photo=>{
                 this.imageData.stores.push({imageBlob:photo})
-                console.log(photo);
+                //console.log(photo);
         })
-        console.log(this.imageData);
+        //console.log(this.imageData);
             this.toggleModal();
+        },
+        async urlToBlob(url){
+            const response = await fetch(url);
+            return await response.blob();
+        },
+        saveRecceChanges(){
+            console.log(this.materialRequest.data)
+            if(this.imageData.stores.length > 0){
+                this.imageData.stores.forEach(store=>{
+                    this.uploadImageToServer(store.imageBlob);
+                })
+            }
+            else{
+                alert('Please upload at least one image');
+                return;
+            }
+        },
+        uploadImageToServer(imageBlob){
+            //Convert Blob to Base64 string and send it to server
+            const reader = new FileReader();
+            reader.readAsDataURL(imageBlob); // Read the blob as a base64 encoded string
+            reader.onloadend = () => {
+              const base64String = reader.result; // This is your base64-encoded string
+              console.log(base64String);
+              //Instantiate File Uploader URL
+              this.fileUploader = createResource({
+                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.upload_images_to_folder',
+                        method:'POST',
+                        params:{
+                            images:[base64String],
+                            doctype:'Marketing Material Request',
+                            docname:this.materialRequest.data.name,
+
+                        }
+                })
+                this.fileUploader.fetch().then(res=>{console.log(res)})
+            }
         }
     },
     mounted(){
@@ -112,7 +157,7 @@ export default {
                         this.materialRequest.data = res
                         // console.log(this.materialRequest.data)
                     })
-
+                    
                 }
             }
         })

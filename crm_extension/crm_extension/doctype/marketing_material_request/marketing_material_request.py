@@ -3,8 +3,10 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe.utils import now
+from frappe.utils import now, random_string
+from frappe.utils.file_manager import save_file
 import math
+import base64
 class MarketingMaterialRequest(Document):
 	def before_submit(self):
 		self.requested_date = now()
@@ -108,6 +110,18 @@ def allocate_batch(doc,batch_id):
 	req_doc.add_comment("Comment","Batch Id allocated # - "+batch_id)
 	req_doc.save()
 	frappe.db.commit()
+
+@frappe.whitelist()
+def upload_images_to_folder(images,doctype,docname):
+	urls=[]
+	for image in images:
+		image_data = image.encode('ascii')
+		content = base64.b64decode(image_data)
+		# content = base64.decode(image)
+		sf = save_file(random_string(8)+".jpg",content,doctype,docname)
+		print(sf)
+		urls.append(sf)
+		return urls
 
 @frappe.whitelist()
 def modify_batch(doc,batch_id,process_stage):

@@ -1,6 +1,7 @@
 <template>
 <BaseModal :modalActive="modalActive" @close-base-modal="toggleModal">
     <div>
+        <!--Tutorial https://www.npmjs.com/package/simple-vue-camera-->
         <camera  ref="camera" autoplay></camera>
         <!-- Add other components or elements as needed -->
     </div>
@@ -9,8 +10,8 @@
     </div>
     <div v-if="imageData.length > 0" class="fle flex-col gap-y-2">
         <ul class="flex flex-row justify-start overflow-x-auto space-x-1 py-2">
-                <li v-for="(url, index) in imageData" :key="index">
-                    <img :src="url" alt="Captured Image" />
+                <li v-for="(blob, index) in imageData" :key="index">
+                    <img :src="createObjectURL(blob)" alt="Captured Image" />
                 </li>
         </ul>
         <div class="flex flex-row justify-center mt-2 gap-x-3">
@@ -36,7 +37,6 @@ export default defineComponent({
         Camera,
         BaseModal
     },
-    
     watch:{
         modalActive(val){
             if(!val){
@@ -60,23 +60,28 @@ export default defineComponent({
     setup() {
         // Get a reference of the component
         const camera = ref<InstanceType<typeof Camera>>();
-        const imageData=ref<string[]>([])
+        const imageData=ref<Blob[]>([])
         // const modalActive=ref(true)
         // Use camera reference to call functions
         const snapshot = async () => {
             const blob = await camera.value?.snapshot();
             if(blob){
                 // To show the screenshot with an image tag, create a url
-                const url = URL.createObjectURL(blob);
-                imageData.value.push(url)
+                //const url = URL.createObjectURL(blob);
+                imageData.value.push(blob)
             }
             
+        }
+        // Helper function to create object URLs
+        const createObjectURL = (blob: Blob): string => {
+            return URL.createObjectURL(blob);
         }
 
         return {
             camera,
             snapshot,
-            imageData
+            imageData,
+            createObjectURL
         }
     }
 });
