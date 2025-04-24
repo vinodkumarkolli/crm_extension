@@ -42,11 +42,13 @@
   "table_ctac",
   "proofs_tab",
   "pre_installation_section",
-  "recce_images",
-  "recce_image_2__installation_place_image_2",
+  "recce_image_1",
+  "recce_image_2",
   "recce_done_by",
   "column_break_rbvq",
   "recce_notes",
+  "customer_authorisation_image_1",
+  "customer_authorisation_image_2",
   "quotation_section",
   "quantity",
   "quote_uom",
@@ -166,12 +168,6 @@
    "label": "Pre Installation"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "recce_image_2__installation_place_image_2",
-   "fieldtype": "Attach Image",
-   "label": "Recce Image 2 / Installation Place Image 2"
-  },
-  {
    "fieldname": "column_break_rbvq",
    "fieldtype": "Column Break"
   },
@@ -179,7 +175,8 @@
    "allow_on_submit": 1,
    "fieldname": "recce_notes",
    "fieldtype": "Small Text",
-   "label": "Recce Notes"
+   "label": "Recce Notes",
+   "read_only": 1
   },
   {
    "fieldname": "manufacturing_section",
@@ -470,22 +467,45 @@
   },
   {
    "allow_on_submit": 1,
-   "fieldname": "recce_images",
-   "fieldtype": "Attach",
-   "label": "Recce Image 1 / Installation Place Image 1"
+   "fieldname": "recce_done_by",
+   "fieldtype": "Data",
+   "label": "Recce done by",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
-   "fieldname": "recce_done_by",
-   "fieldtype": "Data",
-   "label": "Recce done by"
+   "fieldname": "recce_image_1",
+   "fieldtype": "Attach",
+   "label": "Installation Place Image 1",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "recce_image_2",
+   "fieldtype": "Attach Image",
+   "label": "Installation Place Image 2",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "customer_authorisation_image_1",
+   "fieldtype": "Attach",
+   "label": "Customer Authorisation Image 1",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "customer_authorisation_image_2",
+   "fieldtype": "Attach",
+   "label": "Customer Authorisation Image 2",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-15 21:30:11.443562",
+ "modified": "2025-04-24 17:57:44.522049",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",

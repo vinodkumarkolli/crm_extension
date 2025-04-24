@@ -28,22 +28,44 @@
                 <main>
                     <div class="grid grid-cols-2 gap-4">
                         <p><b>Store Images: </b></p>
-                        <button type="button" id="storeImageBtn" @click="toggleModal" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Upload Image</button>
-                        
+                        <button v-if="imageData.stores.length == 0" type="button" id="storeImageBtn" @click="openModal('stores')" class="w-1rem text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Upload Image</button>
+                        <button v-if="imageData.stores.length>0" @click="clearImages('stores')" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Clear Images</button>
                     </div>
-                    <div class="flex flex-row justify-center">
-                        <button @click="saveRecceChanges">Submit Recce Form</button>
-                        <button @click="$router.go(-1)">Cancel</button>
-                    </div>    
+                    <div class="grid grid-cols-2 gap-4">
+                        <p><b>Customer Authorisation: </b></p>
+                        <button v-if="imageData.quotation.length == 0" type="button" @click="openModal('quotation')" class="w-1rem text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Upload Image</button>
+                        <button v-if="imageData.quotation.length>0" @click="clearImages('quotation')" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Clear Images</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <p><b>Recce Notes: </b></p>
+                        <textarea rows="4" cols="50" placeholder="Enter your notes here..." v-model="recceNotes"></textarea>
+                    </div>
                 </main>
                 <div class="flex flex-col justify-center items-center">
-                    <ul v-if="imageData.stores">
-                        <li v-for="(store,index) in imageData.stores" :key="index">{{ store.imageBlob }}</li>
-                    </ul>
+                    <div v-if="imageData.stores?.length>0" class="flex flex-col justify-center items-center">
+                        <p><b>Store Images:</b></p>
+                        <ul v-if="imageData.stores" class="grid grid-cols-2 gap-4 items-center">
+                            <li v-for="(store,index) in imageData.stores" :key="index">
+                                <img :src="createObjectURL(store.imageBlob)" width="400" height="300" alt="Captured Image" />
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-if="imageData.quotation?.length>0" class="flex flex-col justify-center items-center">
+                        <p><b>Authorisation Images:</b></p>
+                        <ul v-if="imageData.quotation" class="grid grid-cols-2 gap-4 items-center">
+                            <li v-for="(authorisation,index) in imageData.quotation" :key="index">
+                                <img :src="createObjectURL(authorisation.imageBlob)" width="400" height="300" alt="Captured Image" />
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+            <div class="flex flex-row justify-center py-4">
+                <button @click="saveRecceChanges" class="w-1rem text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Submit Recce Form</button>
+                <button @click="$router.go(-1)" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Cancel</button>
+            </div>
         </Card>
-        <CameraModal :modalActive="modalActive" @close-camera-modal="toggleModal" @save-photos="savePhotos">
+        <CameraModal :modalActive="modalActive" :source="cameraModalSource" @close-camera-modal="closeModal" @save-photos="savePhotos">
         </CameraModal>
         
     </div>
@@ -78,60 +100,137 @@ export default {
             dataValidated:false,
             userVendorDetails:ref([]),
             materialRequest:ref([]),
+            materialRequestDocCommentHandler:ref([]),
             imageData:ref({stores:[],quotation:[],uploadedImageURLS:[]}),
             modalActive:ref(false),
-            fileUploader:ref([])
+            fileUploader:ref([]),
+            recceNotes:'',
+            cameraModalSource:ref('none')
         }
     },
     methods:{
-        toggleModal(event){
-            this.modalActive=!this.modalActive;
+        closeModal(){
+            this.cameraModalSource='none';
+            this.modalActive=false;
         },
-        savePhotos(photos){
-            // console.log("Saving Photos",photos);
-            photos.forEach(photo=>{
-                this.imageData.stores.push({imageBlob:photo})
-                //console.log(photo);
-        })
-        //console.log(this.imageData);
-            this.toggleModal();
+        openModal(source){
+            this.cameraModalSource=source;
+            this.modalActive=true;
+            // this.modalActive=!this.modalActive;
         },
-        async urlToBlob(url){
-            const response = await fetch(url);
-            return await response.blob();
-        },
-        saveRecceChanges(){
-            console.log(this.materialRequest.data)
-            if(this.imageData.stores.length > 0){
-                this.imageData.stores.forEach(store=>{
-                    this.uploadImageToServer(store.imageBlob);
-                })
+        clearImages(source){
+            if(source==='stores'){
+                this.imageData.stores=[];
+            }
+            else if(source==='quotation'){
+                this.imageData.quotation=[];
             }
             else{
-                alert('Please upload at least one image');
+                throw Error("Invalid Source")
+            }
+        },
+        savePhotos(dump){
+            const photos=dump.urls;
+            photos.forEach(photo=>{
+                this.urlToBlob(photo).then((blob)=>{
+                    if(dump.source === 'stores'){
+                        this.imageData.stores.push({imageBlob:blob})
+                    }
+                    else if(dump.source === 'quotation'){
+                        this.imageData.quotation.push({imageBlob:blob})
+                    }
+                    else{
+                        throw Error("Invalid Source")
+                    }
+                });
+            })
+            this.closeModal();
+        },
+        createObjectURL(blob) {
+            return URL.createObjectURL(blob);
+        },
+        async blobToBase64(blob){
+            return new Promise((resolve,reject)=>{
+                const reader=new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend=()=>{
+                    resolve(reader.result);
+                };
+                reader.onerror=(err)=>reject(err);
+            })
+        },
+        
+        async urlToBlob(url){
+            const response = await fetch(url);
+            const blob = await response.blob();
+            return blob;
+        },
+        async saveRecceChanges(){
+            
+            if(this.imageData.stores.length > 0 && this.imageData.quotation.length > 0 && this.recceNotes !== ''){
+                try{
+                    for (const [index,store] of this.imageData.stores.entries()) {
+                        let url = '';
+                        if(index == 0){
+                            // this.materialRequest.setValue.submit({recce_image_1:url})
+                            url = await this.uploadImageToServer(store.imageBlob,"recce_image_1");
+                            this.materialRequest.setValue.submit({recce_image_1:url,recce_done_by:sessionUser(),recce_notes:this.recceNotes})
+                        }
+                        if(index ==1){
+                            // this.materialRequest.setValue.submit({recce_image_2:url})
+                            url = await this.uploadImageToServer(store.imageBlob,"recce_image_2");
+                            this.materialRequest.setValue.submit({recce_image_2:url,recce_done_by:sessionUser()})
+                        }
+                    }
+                    for(const [index,authorisation] of this.imageData.quotation.entries()){
+                        let url ='';
+                        // console.log(authorisation.imageBlob);
+                        if(index==0){
+                            url = await this.uploadImageToServer(authorisation.imageBlob,"customer_authorisation_image_1");
+                            this.materialRequest.setValue.submit({customer_authorisation_image_1:url})
+                        }
+                        if(index==1){
+                            url = await this.uploadImageToServer(authorisation.imageBlob,"customer_authorisation_image_2");
+                            this.materialRequest.setValue.submit({customer_authorisation_image_2:url})
+                        }
+                    }
+                    this.materialRequest.setValue.submit({process_stage:'Evaluating POI Exact Requirements'});
+                    this.materialRequestDocCommentHandler = createResource({
+                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.custom_comment',
+                        params:{
+                            doc:this.materialRequest.data.name,
+                            process_stage:'Evaluating POI Exact Requirements',
+                            user: sessionUser()
+                        }
+                    })
+                    this.materialRequestDocCommentHandler.fetch();
+                }
+                catch(error){
+                    throw error;
+                }
+                this.$router.go(-1);
+            }
+            else{
+                alert('Please upload Images of Stores and Customer Authorization Letter with the specifications in Recce Notes');
                 return;
             }
         },
-        uploadImageToServer(imageBlob){
-            //Convert Blob to Base64 string and send it to server
-            const reader = new FileReader();
-            reader.readAsDataURL(imageBlob); // Read the blob as a base64 encoded string
-            reader.onloadend = () => {
-              const base64String = reader.result; // This is your base64-encoded string
-              console.log(base64String);
-              //Instantiate File Uploader URL
-              this.fileUploader = createResource({
-                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.upload_images_to_folder',
-                        method:'POST',
-                        params:{
-                            images:[base64String],
-                            doctype:'Marketing Material Request',
-                            docname:this.materialRequest.data.name,
-
-                        }
-                })
-                this.fileUploader.fetch().then(res=>{console.log(res)})
-            }
+        async uploadImageToServer(imageBlob,df){
+            const base64String= await this.blobToBase64(imageBlob);
+            //Instantiate File Uploader URL
+            this.fileUploader = createResource({
+                    url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.upload_images_to_folder',
+                    method:'POST',
+                    params:{
+                        image:base64String,
+                        df:df,
+                        doctype:'Marketing Material Request',
+                        docname:this.materialRequest.data.name,
+                        folder:"Home/recce-images"
+                    }
+            })
+            const url = await this.fileUploader.fetch();
+            return url;
         }
     },
     mounted(){

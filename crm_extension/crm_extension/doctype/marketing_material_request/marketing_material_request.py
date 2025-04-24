@@ -21,6 +21,14 @@ def get_doctype_meta(doctype):
 	meta = frappe.get_meta(doctype)
 	return meta.as_dict()
 @frappe.whitelist()
+def custom_comment(doc,process_stage,user):
+	try:
+		req_doc = frappe.get_doc("Marketing Material Request",doc)
+		req_doc.add_comment("Comment","Process Stage changed to "+process_stage+" by "+user+" on "+now())
+		return True
+	except Exception as e:
+		return False
+@frappe.whitelist()
 def approve_request(doc,comment,vendor):
 	vendor_doc = frappe.get_doc("Vendor",vendor)
 	req_doc = frappe.get_doc("Marketing Material Request",doc)
@@ -32,7 +40,7 @@ def approve_request(doc,comment,vendor):
 	#req_doc.installation_status = "Shortlisted"
 	req_doc.approval_comment = comment
 	req_doc.hold_comment = ""
-	req_doc.add_comment("Comment","The request has been approved & shortlisted with following comments <b>"+comment+"</b>") 
+	req_doc.add_comment("Comment","The request has been approved & shortlisted with following comments <b>"+comment+"</b>"+" on "+now()) 
 	req_doc.approved_declined_hold_date= now()
 	req_doc.save()
 	if req_doc.manufacture:
@@ -49,7 +57,7 @@ def hold_request(doc,comment):
 	req_doc.request_status = "On Hold"
 	req_doc.approval_comment = ""
 	req_doc.hold_comment = comment
-	req_doc.add_comment("Comment","Request has been put on hold becoz of <b>"+comment+"</b>")
+	req_doc.add_comment("Comment","Request has been put on hold becoz of <b>"+comment+"</b>"+" on "+now())
 	req_doc.approved_declined_hold_date= now()
 	req_doc.save()
 	frappe.db.commit()
@@ -57,7 +65,7 @@ def hold_request(doc,comment):
 def reject_request(doc,comment):
 	req_doc = frappe.get_doc("Marketing Material Request",doc)
 	req_doc.request_status = "Declined"
-	req_doc.add_comment("Comment","Request has been rejected becoz of <b>"+comment+"</b>")
+	req_doc.add_comment("Comment","Request has been rejected becoz of <b>"+comment+"</b>"+" on "+now())
 	# req_doc.admin_notes = comment
 	req_doc.approved_declined_hold_date= now() 
 	req_doc.save()
@@ -99,7 +107,7 @@ def mark_request_as_completed(doc,completed_date,completion_reason):
 	req_doc = frappe.get_doc("Marketing Material Request",doc)
 	req_doc.request_status = "Completed"
 	req_doc.completed_date = completed_date
-	req_doc.add_comment("Comment","Request has been marked as completed "+completion_reason)
+	req_doc.add_comment("Comment","Request has been marked as completed "+completion_reason+" on "+now())
 	req_doc.save()
 	frappe.db.commit()
 @frappe.whitelist()
@@ -107,27 +115,35 @@ def allocate_batch(doc,batch_id):
 	req_doc = frappe.get_doc("Marketing Material Request",doc)
 	req_doc.batch_id = batch_id
 	req_doc.process_stage = "Batch id Allocated"
-	req_doc.add_comment("Comment","Batch Id allocated # - "+batch_id)
+	req_doc.add_comment("Comment","Batch Id allocated # - "+batch_id+" on "+now())
 	req_doc.save()
 	frappe.db.commit()
 
 @frappe.whitelist()
-def upload_images_to_folder(images,doctype,docname):
-	urls=[]
-	for image in images:
-		image_data = image.encode('ascii')
-		content = base64.b64decode(image_data)
-		# content = base64.decode(image)
-		sf = save_file(random_string(8)+".jpg",content,doctype,docname)
-		print(sf)
-		urls.append(sf)
-		return urls
+def upload_images_to_folder(image,folder,doctype,docname,df):
+	# for image in images:
+	header, encoded = image.split(',', 1)
+	content = base64.b64decode(encoded)
+	# content = base64.decode(image)
+	sf = save_file(
+		fname=random_string(8)+".jpg",
+		content=content,
+		dt=doctype,
+		dn=docname,
+		df=df,
+		folder=folder,
+		is_private=False
+		)
+	file_doc = frappe.get_doc("File", sf.name)
+	url = file_doc.file_url
+	# print(url)
+	return url
 
 @frappe.whitelist()
 def modify_batch(doc,batch_id,process_stage):
 	req_doc = frappe.get_doc("Marketing Material Request",doc)
 	req_doc.batch_id = batch_id
 	req_doc.process_stage = process_stage
-	req_doc.add_comment("Comment","Batch modified # - "+batch_id)
+	req_doc.add_comment("Comment","Batch modified # - "+batch_id+" on "+now())
 	req_doc.save()
 	frappe.db.commit()
