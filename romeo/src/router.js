@@ -43,10 +43,16 @@ const routes = [
     component:async () => import('@/forms/Recce.vue'),
     props:true
   },
+  // {
+  //   path:'/camera',
+  //   name:'Camera Modal',
+  //   component:async () => import('@/components/CameraModal.vue')
+  // }
   {
-    path:'/camera',
-    name:'Camera Modal',
-    component:async () => import('@/components/CameraModal.vue')
+    path:'/lamp/:vendorId/:batchId/details/:requestId',
+    name:'Request Details',
+    component:async () => import('@/forms/Request.vue'),
+    props:true
   }
 ]
 
