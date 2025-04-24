@@ -21,6 +21,10 @@
             <a href="#" class="tab-link flex items-center text-sm px-4 py-2 text-gray-700 relative" data-dui-tab-target="tab-quotation-requests">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 feather feather-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                 Quotations </a>
+            <a href="#" class="tab-link flex items-center text-sm px-4 py-2 text-gray-700 relative" data-dui-tab-target="tab-underreview-quotations">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 feather feather-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Under Review </a>
             <a href="#" class="tab-link flex items-center text-sm px-4 py-2 text-gray-700 relative" data-dui-tab-target="tab-manufacture-attestation">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 feather feather-tool"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
                 Attest Manufacture </a>
@@ -81,7 +85,33 @@
                                 <!-- <a :href="'https://www.google.com/maps/place/'+request.latitude+'%2C'+request.longitude"  target="_blank" rel="noopener noreferrer" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Map</a> -->
                                 <button v-if="request.request_status==='Shortlisted'" @click="this.$router.push({name:'Request Details',params:{batchId:this.batchId,vendorId:this.vendorId,requestId:request.name}})" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Request Details</button>
                                 <button v-if="request.process_stage==='Evaluating POI Exact Requirements' && request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" @click="handleRecceFormClick(request,index)" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Resubmit Recce Details</button>
-                                <button v-if="request.process_stage==='Evaluating POI Exact Requirements' && request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" @click="handleRecceFormClick(request,index)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Upload Quotation</button>
+                                <button v-if="request.process_stage==='Evaluating POI Exact Requirements' && request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" @click="handleUploadQuotation(request,index)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Upload Quotation</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="tab-underreview-quotations" class="tab-content w-full text-stone-500 text-sm hidden p-4">
+                <div v-if="dataValidated && materialRequests.quotation_submitted?materialRequests.quotation_submitted.length >0:false " class="flex flex-col">
+                    <h4 class="text-white unique-color-map font-bold rounded-lg text-center max-width">Under Review Quotations</h4>
+                    <ul class="flex flex-col max-width py-2 scrollbar-y-scroll scrollbar-x-hidden" >
+                        <li class="flex flex-row justify-between mb-2 rounded-md border-2 border-black py-2 border-solid " v-for="(request,index) in materialRequests.quotation_submitted" :key="index">
+                            <div class="w-3/12 flex flex-col justify-between">
+                                <header><h2>{{ request.name }}</h2></header>
+                                <header><h4> {{ request.poi_name }} </h4></header>
+                            </div>
+                            <div class="flex flex-col justify-between w-6/12 border-black border-solid">
+                                <p><b>Process Stage: </b>{{ request.process_stage }}</p>
+                                <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p>
+                                <p><b>Request Notes:</b> {{ request.request_notes }}</p>
+                                <p><b>Recce Notes: </b> {{ request.recce_notes }}</p>
+                                <p><b>Quotation Cost: </b>{{ request.quotation_price }}</p>
+                            </div>
+                            <div class="flex flex-col justify-between w-3/12">
+                                <!-- <a :href="'https://www.google.com/maps/place/'+request.latitude+'%2C'+request.longitude"  target="_blank" rel="noopener noreferrer" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Map</a> -->
+                                <button v-if="request.request_status==='Shortlisted'" @click="this.$router.push({name:'Request Details',params:{batchId:this.batchId,vendorId:this.vendorId,requestId:request.name}})" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Request Details</button>
+                                <!-- <button v-if="request.process_stage==='Evaluating POI Exact Requirements' && request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" @click="handleRecceFormClick(request,index)" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Resubmit Recce Details</button>
+                                <button v-if="request.process_stage==='Evaluating POI Exact Requirements' && request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" @click="handleUploadQuotation(request,index)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Upload Quotation</button> -->
                             </div>
                         </li>
                     </ul>
@@ -145,6 +175,9 @@ export default {
         //Function to check whether an array contains any of the elements of another array
         containsAny(arr1, arr2) {
             return arr1.some(item1 => arr2.some(item2 => item1.includes(item2)));
+        },
+        handleUploadQuotation(materialRequest,index){
+            this.$router.push({name:'Quotation',params:{batchId:this.batchId,vendorId:this.vendorId,requestId:materialRequest.name}})
         }
     },
     mounted(){

@@ -53,7 +53,13 @@ const routes = [
     name:'Request Details',
     component:async () => import('@/forms/Request.vue'),
     props:true
-  }
+  },
+  {
+    path:'/lamp/:vendorId/:batchId/quotation/:requestId',
+    name:'Quotation',
+    component:async () => import('@/forms/Quotation.vue'),
+    props:true
+  },
 ]
 
 let router = createRouter({
