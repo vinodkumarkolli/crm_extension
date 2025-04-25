@@ -147,3 +147,14 @@ def modify_batch(doc,batch_id,process_stage):
 	req_doc.add_comment("Comment","Batch modified # - "+batch_id+" on "+now())
 	req_doc.save()
 	frappe.db.commit()
+@frappe.whitelist()
+def approve_quotation(doc):
+	req_doc = frappe.get_doc("Marketing Material Request",doc)
+	req_doc.quote_accepted_by = frappe.session.user
+	req_doc.quote_accepted_on = now()
+	req_doc.process_stage ='Accepted Quotation'
+	req_doc.add_comment("Comment",
+					 "Quotation accepted by {a} on {b}. __Details:__ {c} {d} @ Rs.{e} /- each unit, costing Rs. {f}.".format(a=frappe.session.user,b=now(),c=req_doc.quantity,d=req_doc.quote_uom,e=req_doc.quote_rate_per_uom,f=req_doc.quotation_price)
+					 )
+	req_doc.save()
+	frappe.db.commit()

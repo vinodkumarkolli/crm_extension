@@ -1,4 +1,8 @@
 <template>
+    <!-- Page Content-->
+    <Card v-if="!dataValidated || !materialRequest.data">
+        <h1>You are not authorized to view this page.</h1>
+    </Card>
     <div v-if="dataValidated && materialRequest.data" class="flex flex-col w-full h-[calc(100vh_-_9rem)] overflow-y-auto">
         <Card :title="materialRequest.data.name" :subtitle="materialRequest.data.poi_name">
             <div class="grid grid-cols-3 gap-4">
@@ -222,13 +226,13 @@ export default {
                     quote_uom: this.selectedUOM.value,
                     quote_rate_per_uom:Number(this.ratePerUOM),
                     quotation_price: Number(this.quantity)*Number(this.ratePerUOM),
-                    process_stage:'Submitted Quotations for Requirements'
+                    process_stage:'Submitted Quotation for Requirements'
                 })
                 const commentHandler=createResource({
                     url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.custom_comment',
                         params:{
                             doc:this.materialRequest.data.name,
-                            process_stage:'Submitted Quotations for Requirements',
+                            process_stage:'Submitted Quotation for Requirements',
                             user: sessionUser()
                         }
                 })

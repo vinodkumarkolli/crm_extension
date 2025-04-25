@@ -49,12 +49,51 @@ frappe.ui.form.on("Marketing Material Request", {
                         },__("Batch"))
                     }
                 }
+                if(frm.doc.process_stage ==='Submitted Quotation for Requirements' && frm.doc.batch_id){
+                    frappe.msgprint({message:__('A quotation is submitted for <b>'+frm.doc.quantity+' '+frm.doc.quote_uom+'</b> with price: <b>'+frm.doc.quotation_price+'</b>.<br>'
+                        +'<b>Request Notes: </b>'+frm.doc.request_notes+'<br>'
+                        +'<b>Approval Comment: </b>'+frm.doc.approval_comment+'<br>'
+                        +'<b>Recce Notes: </b>'+frm.doc.recce_notes+'<br>'
+                        +'<br>Please check appropriate documents before approving</b>'),indicator:'green'})
+                    frm.add_custom_button(__("Approve Quotation"), function () {
+                        approveQuotation(frm)                   
+                    },__("Approvals"))
+                }
+
             }
             //Hiding Cancel Button
             frm.page.btn_secondary.hide();
         }
 	},
 });
+function approveQuotation(frm){
+    frappe.warn('Are you sure you want to approve the quotation?',
+        'Details: <b>'+frm.doc.quantity+' '+frm.doc.quote_uom+'</b> with price: <b>'+frm.doc.quotation_price+'</b>.<br>'
+    +'<b>Request Notes: </b>'+frm.doc.request_notes+'<br>'
+    +'<b>Approval Comment: </b>'+frm.doc.approval_comment+'<br>'
+    +'<b>Recce Notes: </b>'+frm.doc.recce_notes+'<br>',
+        () => {
+            // action to perform if Proceed is selected
+            frappe.call({
+                method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.approve_quotation",
+                args:{
+                    doc:frm.doc.name,
+                },
+                callback(r){
+                    if(!r.exc){
+                        frappe.msgprint({
+                            title: __('Notification'),
+                            indicator: 'green',
+                            message: __('Quotation approve successfully!')
+                        });
+                    }
+                }
+            })
+        },
+        'Proceed',
+        true // Sets dialog as minimizable
+    )
+}
 function openBatchFormPopup(frm,mode){
     switch(mode){
         case "new":

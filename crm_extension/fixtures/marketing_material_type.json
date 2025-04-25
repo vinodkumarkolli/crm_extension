@@ -21,23 +21,23 @@
    },
    {
     "optional": 0,
-    "procurement_stage": "Submitted Quotations for Requirements"
+    "procurement_stage": "Submitted Quotation for Requirements"
    },
    {
     "optional": 0,
-    "procurement_stage": "Accepting generated Requirements"
+    "procurement_stage": "Accepted Quotation"
    },
    {
     "optional": 0,
-    "procurement_stage": "Attesting Manufacture Process"
+    "procurement_stage": "Attested Manufacture Process"
    },
    {
     "optional": 0,
-    "procurement_stage": "Delivering the Goods by Vendor"
+    "procurement_stage": "Delivered the Goods by Vendor"
    },
    {
     "optional": 0,
-    "procurement_stage": "Attesting Completion of Job handled by Vendor"
+    "procurement_stage": "Attested Completion of Job handled by Vendor"
    },
    {
     "optional": 0,
@@ -45,7 +45,7 @@
    },
    {
     "optional": 0,
-    "procurement_stage": "Attesting Completion of Service Job"
+    "procurement_stage": "Attested Completion of Service Job"
    }
   ]
  },
@@ -107,23 +107,23 @@
    },
    {
     "optional": 0,
-    "procurement_stage": "Submitted Quotations for Requirements"
+    "procurement_stage": "Submitted Quotation for Requirements"
    },
    {
     "optional": 0,
-    "procurement_stage": "Accepting generated Requirements"
+    "procurement_stage": "Accepted Quotation"
    },
    {
     "optional": 0,
-    "procurement_stage": "Attesting Manufacture Process"
+    "procurement_stage": "Attested Manufacture Process"
    },
    {
     "optional": 0,
-    "procurement_stage": "Delivering the Goods by Vendor"
+    "procurement_stage": "Delivered the Goods by Vendor"
    },
    {
     "optional": 0,
-    "procurement_stage": "Attesting Completion of Job handled by Vendor"
+    "procurement_stage": "Attested Completion of Job handled by Vendor"
    },
    {
     "optional": 0,
@@ -131,7 +131,7 @@
    },
    {
     "optional": 0,
-    "procurement_stage": "Attesting Completion of Service Job"
+    "procurement_stage": "Attested Completion of Service Job"
    }
   ]
  }

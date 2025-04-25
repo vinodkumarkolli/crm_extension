@@ -60,18 +60,21 @@
   "column_break_gcad",
   "quote_accepted_on",
   "manufacturing_section",
-  "manufactured_image",
+  "manufactured_image_1",
+  "manufactured_image_2",
   "manufacture_verified_by",
-  "manufacture_verified_on",
+  "manufacture_quantity",
   "column_break_mids",
   "manufacturing_notes",
   "installed_details_section",
   "installation_image_1",
   "installation_image_2",
+  "installed_by",
+  "installation_quantity",
   "installation_verified_by",
-  "installtion_verified_on",
   "column_break_lswg",
-  "installation_notes"
+  "installation_notes",
+  "installation_attestation_notes"
  ],
  "fields": [
   {
@@ -184,12 +187,6 @@
    "label": "Manufacturing"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "manufactured_image",
-   "fieldtype": "Attach Image",
-   "label": "Manufactured Image"
-  },
-  {
    "fieldname": "column_break_mids",
    "fieldtype": "Column Break"
   },
@@ -197,7 +194,8 @@
    "allow_on_submit": 1,
    "fieldname": "manufacturing_notes",
    "fieldtype": "Small Text",
-   "label": "Manufacturing Notes"
+   "label": "Manufacturing Notes",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
@@ -209,19 +207,22 @@
    "allow_on_submit": 1,
    "fieldname": "installation_image_1",
    "fieldtype": "Attach Image",
-   "label": "Installation Image 1"
+   "label": "Installation Image 1",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
    "fieldname": "installation_image_2",
    "fieldtype": "Attach Image",
-   "label": "Installation Image 2"
+   "label": "Installation Image 2",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
    "fieldname": "installation_verified_by",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Installation Verified by",
+   "options": "User",
    "read_only": 1
   },
   {
@@ -232,7 +233,8 @@
    "allow_on_submit": 1,
    "fieldname": "installation_notes",
    "fieldtype": "Small Text",
-   "label": "Installation Notes"
+   "label": "Installation Notes",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
@@ -456,20 +458,6 @@
   },
   {
    "allow_on_submit": 1,
-   "fieldname": "manufacture_verified_on",
-   "fieldtype": "Date",
-   "label": "Verified on",
-   "read_only": 1
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "installtion_verified_on",
-   "fieldtype": "Date",
-   "label": "Installation Verified on",
-   "read_only": 1
-  },
-  {
-   "allow_on_submit": 1,
    "fieldname": "recce_done_by",
    "fieldtype": "Data",
    "label": "Recce done by",
@@ -502,13 +490,58 @@
    "fieldtype": "Attach",
    "label": "Customer Authorisation Image 2",
    "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "manufacture_quantity",
+   "fieldtype": "Float",
+   "label": "Manufactured Quantity",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "manufactured_image_1",
+   "fieldtype": "Attach Image",
+   "label": "Manufactured Image 1",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "manufactured_image_2",
+   "fieldtype": "Attach Image",
+   "label": "Manufactured Image 2",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "installation_attestation_notes",
+   "fieldtype": "Small Text",
+   "label": "Installation Attestation Notes",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "installation_quantity",
+   "fieldtype": "Float",
+   "label": "Installation Quantity",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "installed_by",
+   "fieldtype": "Link",
+   "label": "Installed by",
+   "options": "User",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-25 11:16:34.015810",
+ "modified": "2025-04-25 18:08:36.951728",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
