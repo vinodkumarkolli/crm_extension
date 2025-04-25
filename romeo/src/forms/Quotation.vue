@@ -3,15 +3,93 @@
         <Card :title="materialRequest.data.name" :subtitle="materialRequest.data.poi_name">
             <div class="grid grid-cols-3 gap-4">
                 <div>
-                    <p><b>Batch: </b> {{batchId}}</p>
-                    <p><b>Vendor: </b> {{materialRequest.data.vendor_name}}</p>
-                    <p><b>Material: </b> {{ materialRequest.data.request_material }}</p>
-                    <p><b>Stage: </b> {{ materialRequest.data.process_stage }}</p>
-                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            Batch:
+                        </label>
+                        <TextInput
+                            :type="'text'"
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true"
+                            v-model="materialRequest.data.batch_id"
+                        />
+                    <!-- <p id="det_reccenotes">{{batchId}} </p> -->
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            Vendor:
+                        </label>
+                        <TextInput
+                            :type="'text'"
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true"
+                            v-model="materialRequest.data.vendor_name"
+                        />
+                    <!-- <p id="det_reccenotes">{{batchId}} </p> -->
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            Material:
+                        </label>
+                        <TextInput
+                            :type="'text'"
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true"
+                            v-model="materialRequest.data.request_material"
+                        />
+                    <!-- <p id="det_reccenotes">{{batchId}} </p> -->
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            Stage:
+                        </label>
+                        <TextInput
+                            :type="'text'"
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true"
+                            v-model="materialRequest.data.process_stage"
+                        />
+                    </div>
                 </div>
                 <div>
-                    <p><b>Request Notes: </b> {{ materialRequest.data.request_notes }}</p>
-                    <p><b>Approval Comment: </b> {{ materialRequest.data.approval_comment }} </p>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            Request Notes:
+                        </label>
+                        <Textarea
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true"
+                            v-model="materialRequest.data.request_notes"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            Approval Comment:
+                        </label>
+                        <Textarea
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true"
+                            v-model="materialRequest.data.approval_comment"
+                        />
+                    </div>
                 </div>
                 <div class="flex justify-center items-center items-center">
                     <a :href="'https://www.google.com/maps/place/'+materialRequest.data.latitude+'%2C'+materialRequest.data.longitude"  target="_blank" rel="noopener noreferrer" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Map</a>
@@ -20,9 +98,11 @@
         </Card>
         <Card v-if="materialRequest.data.recce_image_1 && dataValidated" title="Recce Report" subtitle="Analyse for raising Quotation">
             <div class="grid grid-cols-3 gap-4">
-                <div class="flex flex-col align-top items-center">
-                    <p><b>Store Images:</b></p>
-                    <ul class="grid grid-cols-2 gap-2">
+                <div class="flex flex-col align-top">
+                    <label for="det_storeimages" class="block text-gray-700 text-sm font-bold mb-2">
+                        Store Images
+                    </label>
+                    <ul id="det_storeimages" class="grid grid-cols-2 gap-2">
                         <li v-if="materialRequest.data.recce_image_1">
                             <img :src="materialRequest.data.recce_image_1" width="100px" height="auto" alt=""/>
                         </li>
@@ -31,9 +111,11 @@
                         </li>
                     </ul>
                 </div>
-                <div class="flex flex-col align-top items-center">
-                    <p><b>Authorisation Images:</b></p>
-                    <ul class="grid grid-cols-2 gap-2">
+                <div class="flex flex-col align-top">
+                    <label for="det_authimages" class="block text-gray-700 text-sm font-bold mb-2">
+                        Authorisation Images
+                    </label>
+                    <ul id="det_authimages" class="grid grid-cols-2 gap-2">
                         <li v-if="materialRequest.data.customer_authorisation_image_1">
                             <img :src="materialRequest.data.customer_authorisation_image_1" width="100px" height="auto" alt=""/>
                         </li>
@@ -43,8 +125,18 @@
                     </ul>
                 </div>
                 <div class="flex flex-col align-top items-center">
-                    <p><b>Recce Notes:</b></p>
-                    <p>{{materialRequest.data.recce_notes}} </p>
+                    <label for="det_reccenotes" class="block text-gray-700 text-sm font-bold mb-2">
+                        Recce Notes
+                    </label>
+                    <TextInput id="det_reccenotes"
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.recce_notes"
+                    />
                 </div>
             </div>
         </Card>
@@ -194,7 +286,7 @@ export default {
 }
 </script>
 <script setup>
-import { Autocomplete,TextInput } from 'frappe-ui'
+import { Autocomplete,TextInput,Textarea } from 'frappe-ui'
 </script>
 <style scoped>
 .rounded-input {

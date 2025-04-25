@@ -1,14 +1,39 @@
 <template>
     <router-view></router-view>
     <Card :title="batchId" :subtitle="presentBatch.batch_state+ ' | '+presentBatch.creation_date" class="bg-red-100">
-        <div class="grid grid-cols-3">
-            
-            <Card subtitle="Allocated Requests">
-                {{presentBatchAnalytics.allocated_requests}} Nos
-            </Card>
-            <Card subtitle="Recce Requests">
-                {{presentBatchAnalytics.recce_requests}} Nos
-            </Card>
+        <div class="grid grid-cols-4 gap-4 my-4">
+            <div class="border border-black bg-gray-200 flex flex-col justify-center items-center rounded">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    Allocated Requests
+                </label>
+                <p class="text-sm">
+                    {{presentBatchAnalytics.allocated_requests}} Nos
+                </p>
+            </div>
+            <div class="border border-black bg-gray-200 flex flex-col justify-center items-center rounded">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    Recce Requests
+                </label>
+                <p class="text-sm">
+                    {{presentBatchAnalytics.recce_requests}} Nos
+                </p>
+            </div>
+            <div class="border border-black bg-gray-200 flex flex-col justify-center items-center rounded">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    Quotation Requests
+                </label>
+                <p class="text-sm">
+                    {{presentBatchAnalytics.quotation_requests}} Nos
+                </p>
+            </div>
+            <div class="border border-black bg-gray-200 flex flex-col justify-center items-center rounded">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    Process Quotations
+                </label>
+                <p class="text-sm">
+                    {{presentBatchAnalytics.under_review_quotations}} Nos
+                </p>
+            </div>
         </div>
     </Card>
     <div class="tab-group flex mt-10 max-width" data-dui-orientation="vertical">
@@ -215,7 +240,8 @@ export default {
                         'name':this.batchId,
                         'allocated_requests':this.materialRequests.data.length,
                         'recce_requests':this.materialRequests.recce.length,
-                        'quotation_requests':[],
+                        'quotation_requests':this.materialRequests.quotation.length,
+                        'under_review_quotations':this.materialRequests.quotation_submitted.length,
                         'manufacture_attestation':[],
                         'delivery_requests':[],
                         'delivery_attestation':[],
