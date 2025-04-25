@@ -207,7 +207,7 @@ import { ref } from 'vue';
 import {createResource,createDocumentResource,Card} from 'frappe-ui'
 import {sessionUser} from '@/data/session';
 import CameraModal from '../components/CameraModal.vue';
-export default{
+export default {
     name:"Manufacture",
     props:{
         batchId:{
@@ -313,7 +313,7 @@ export default{
                         if(index == 0){
                             // this.materialRequest.setValue.submit({recce_image_1:url})
                             url = await this.uploadImageToServer(manufacture.imageBlob,"manufactured_image_1");
-                            console.log(url);
+                            // console.log(url);
                             this.materialRequest.setValue.submit({manufactured_image_1:url})
                             this.materialRequest.setValue.submit({manufacture_verified_by:sessionUser()})
                             this.materialRequest.setValue.submit({manufacturing_notes:this.manufactureNotes})
@@ -361,7 +361,7 @@ export default{
             this.userVendorDetails.data = res
             // console.log(this.userVendorDetails.data)
             if(this.userVendorDetails.data.roles.length > 0){
-                if(this.userVendorDetails.data.vendor && this.containsAny(this.userVendorDetails.data.roles,['Vendor Admin','Company Evaluator'])){
+                if(this.userVendorDetails.data.vendor && this.containsAny(this.userVendorDetails.data.roles,['Company Evaluator'])){
                     this.dataValidated=true;
                     this.materialRequest = createDocumentResource({
                         doctype:'Marketing Material Request',

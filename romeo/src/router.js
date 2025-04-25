@@ -72,6 +72,12 @@ const routes = [
     component:async () => import('@/forms/Delivery.vue'),
     props:true
   },
+  {
+    path:'/lamp/:vendorId/:batchId/attest/:requestId',
+    name:'Delivery Attestation',
+    component:async () => import('@/forms/AttestDelivery.vue'),
+    props:true
+  },
 ]
 
 let router = createRouter({

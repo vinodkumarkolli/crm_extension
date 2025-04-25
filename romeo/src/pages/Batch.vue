@@ -198,8 +198,8 @@
                                 <header><h4> {{ request.poi_name }} </h4></header>
                             </div>
                             <div class="flex flex-col justify-between w-6/12 border-black border-solid">
-                                <p><b>Process Stage: </b>{{ request.process_stage }}</p>
-                                <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p>
+                                <!-- <p><b>Process Stage: </b>{{ request.process_stage }}</p> -->
+                                <!-- <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p> -->
                                 <p><b>Request Notes:</b> {{ request.request_notes }}</p>
                                 <p><b>Recce Notes: </b> {{ request.recce_notes }}</p>
                                 <p><b>Specification: </b>{{ request.quantity }} {{ request.quote_uom }} @ {{ request.quote_rate_per_uom }} Rs. per {{ request.quote_uom }}</p>
@@ -228,8 +228,8 @@
                                 <header><h4> {{ request.poi_name }} </h4></header>
                             </div>
                             <div class="flex flex-col justify-between w-6/12 border-black border-solid">
-                                <p><b>Process Stage: </b>{{ request.process_stage }}</p>
-                                <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p>
+                                <!-- <p><b>Process Stage: </b>{{ request.process_stage }}</p> -->
+                                <!-- <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p> -->
                                 <p><b>Request Notes:</b> {{ request.request_notes }}</p>
                                 <p><b>Recce Notes: </b> {{ request.recce_notes }}</p>
                                 <p><b>Specification: </b>{{ request.quantity }} {{ request.quote_uom }} @ {{ request.quote_rate_per_uom }} Rs. per {{ request.quote_uom }}</p>
@@ -245,7 +245,36 @@
                 </div>
             </div>
             <div id="tab-delivery-attestation" class="tab-content w-full text-stone-500 text-sm hidden p-4">
-            <div v-if="dataValidated && materialRequests.delivered_pending_attestion?materialRequests.delivered_pending_attestion.length > 0:false">Delivery Attestation</div>
+                <!-- <div v-if="dataValidated && materialRequests.delivered_pending_attestion?materialRequests.delivered_pending_attestion.length > 0:false">Delivery Attestation</div> -->
+                <div v-if="materialRequests.delivered_pending_attestion?materialRequests.delivered_pending_attestion.length===0:false" class="flex flex-col justify-center items-center">
+                    <label class="block text-gray-700 font-bold mb-2">No requests found for this stage</label>
+                </div>
+                <div v-if="dataValidated && materialRequests.delivered_pending_attestion?materialRequests.delivered_pending_attestion.length >0:false ">
+                    <h4 class="text-white unique-color-map font-bold rounded-lg text-center max-width">Delivered - To be Attested Requests</h4>
+                    <ul class="flex flex-col max-width py-2 scrollbar-y-scroll scrollbar-x-hidden" >
+                        <li class="flex flex-row justify-between mb-2 rounded-md border-2 border-black py-2 border-solid " v-for="(request,index) in materialRequests.delivered_pending_attestion" :key="index">
+                            <div class="w-3/12 flex flex-col justify-between">
+                                <header><h2>{{ request.name }}</h2></header>
+                                <header><h4> {{ request.poi_name }} </h4></header>
+                            </div>
+                            <div class="flex flex-col justify-between w-6/12 border-black border-solid">
+                                <!-- <p><b>Process Stage: </b>{{ request.process_stage }}</p> -->
+                                <!-- <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p> -->
+                                <p><b>Request Notes:</b> {{ request.request_notes }}</p>
+                                <p><b>Recce Notes: </b> {{ request.recce_notes }}</p>
+                                <p><b>Specification: </b>{{ request.quantity }} {{ request.quote_uom }} @ {{ request.quote_rate_per_uom }} Rs. per {{ request.quote_uom }}</p>
+                                <p><b>Manufactured: </b>{{ request.manufacture_quantity }} {{ request.quote_uom }}</p>
+                                <p><b>Installed: </b>{{ request.installation_quantity }} {{ request.quote_uom }}</p>
+                            </div>
+                            <div class="flex flex-col justify-between w-3/12">
+                                <!-- <a :href="'https://www.google.com/maps/place/'+request.latitude+'%2C'+request.longitude"  target="_blank" rel="noopener noreferrer" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Map</a> -->
+                                <button v-if="request.request_status==='Shortlisted'" @click="this.$router.push({name:'Request Details',params:{batchId:this.batchId,vendorId:this.vendorId,requestId:request.name}})" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Request Details</button>
+                                <!-- <button v-if="request.process_stage==='Evaluating POI Exact Requirements' && request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" @click="handleRecceFormClick(request,index)" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Resubmit Recce Details</button> -->
+                                <button v-if="request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Company Evaluator']):false" @click="handleDeliveryAttestation(request,index)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Attest Delivery</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div id="tab-service-requests" class="tab-content w-full text-stone-500 text-sm hidden p-4">
             <div v-if="dataValidated">Service Requests</div>
@@ -306,6 +335,9 @@ export default {
         },
         handleDelilveryItem(materialRequest,index){
             this.$router.push({name:'Delivery',params:{batchId:this.batchId,vendorId:this.vendorId,requestId:materialRequest.name}})
+        },
+        handleDeliveryAttestation(materialRequest,index){
+            this.$router.push({name:'Delivery Attestation',params:{batchId:this.batchId,vendorId:this.vendorId,requestId:materialRequest.name}})
         }
     },
     mounted(){

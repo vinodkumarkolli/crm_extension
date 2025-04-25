@@ -100,7 +100,7 @@
                 </div>
             </div>
         </Card>
-        <Card v-if="materialRequest.data.recce_image_1 && dataValidated" title="Recce Report" subtitle="Analyse for raising Quotation">
+        <Card v-if="materialRequest.data.recce_image_1 && dataValidated" title="Recce Report">
             <div class="grid grid-cols-3 gap-4">
                 <div class="flex flex-col align-top">
                     <label for="det_storeimages" class="block text-gray-700 text-sm font-bold mb-2">
@@ -141,45 +141,204 @@
                         :disabled="true"
                         v-model="materialRequest.data.recce_notes"
                     />
+                    <!-- <p id="det_reccenotes">{{materialRequest.data.recce_notes}} </p> -->
                 </div>
             </div>
         </Card>
-        <Card v-if="dataValidated" title="Raise Quotation" subtitle="Create a quotation based on the recce report and customer authorisations.">
+        <Card v-if="materialRequest.data.quotation_price && dataValidated && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" title="Quotation Details">
+            <div class="grid grid-cols-4 gap-4">
+                <div>
+                    <label for="det_quantity" class="block text-gray-700 text-sm font-bold mb-2">
+                        Quantity
+                    </label>
+                    <TextInput id="det_quantity"
+                        :type="'number'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.quantity"
+                    />
+                </div>
+                <div>
+                    <label for="det_uom" class="block text-gray-700 text-sm font-bold mb-2">
+                        UOM
+                    </label>
+                    <TextInput id="det_uom"
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.quote_uom"
+                    />
+                </div>
+                <div>
+                    <label for="det_rate_uom" class="block text-gray-700 text-sm font-bold mb-2">
+                      Rate per UOM
+                    </label>
+                    <TextInput id="det_rate_uom"
+                        :type="'number'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.quote_rate_per_uom"
+                    />
+                </div>
+                <div>
+                    <label for="det_rate_uom" class="block text-gray-700 text-sm font-bold mb-2">
+                      Quotation Cost
+                    </label>
+                    <TextInput id="det_rate_uom"
+                        :type="'number'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.quotation_price"
+                    />
+                </div>
+            </div>
+
+        </Card>
+        <Card v-if="materialRequest.data.manufacture_quantity && dataValidated && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" title="Installation Details">
+            <div class="grid grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                      Manufactured  Qty
+                    </label>
+                    <TextInput 
+                        :type="'number'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.manufacture_quantity"
+                    />
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                      Manufactured  UOM
+                    </label>
+                    <TextInput 
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.quote_uom"
+                    />
+                </div>
+                <div v-if="materialRequest.data.installation_quantity">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                      Installed Qty
+                    </label>
+                    <TextInput 
+                        :type="'number'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.installation_quantity"
+                    />
+                </div>
+                <div v-if="materialRequest.data.installation_quantity">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                      Installed  UOM
+                    </label>
+                    <TextInput 
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.quote_uom"
+                    />
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 py-4">
+                <div class="flex flex-col align-top">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Manufacturing Images
+                    </label>
+                    <ul class="grid grid-cols-2 gap-2">
+                        <li v-if="materialRequest.data.manufactured_image_1">
+                            <img :src="materialRequest.data.manufactured_image_1" width="100px" height="auto" alt=""/>
+                        </li>
+                        <li v-if="materialRequest.data.manufactured_image_2">
+                            <img :src="materialRequest.data.manufactured_image_2" width="100px" height="auto" alt=""/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex flex-col align-top">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Installed Images
+                    </label>
+                    <ul class="grid grid-cols-2 gap-2">
+                        <li v-if="materialRequest.data.installation_image_1">
+                            <img :src="materialRequest.data.installation_image_1" width="100px" height="auto" alt=""/>
+                        </li>
+                        <li v-if="materialRequest.data.installation_image_2">
+                            <img :src="materialRequest.data.installation_image_2" width="100px" height="auto" alt=""/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 py-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Manufacturing Notes:
+                    </label>
+                    <Textarea
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.manufacturing_notes"
+                    />
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Installation Notes:
+                    </label>
+                    <Textarea
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.installation_notes"
+                    />
+                </div>
+            </div>
+        </Card>
+        <Card v-if="dataValidated" title="Attest Delivery" subtitle="This is the last step in processing. Once attested, delivery is deemed as completed without any issues.">
             <div class="flex flex-col">
                 <div class="grid grid-cols-2 gap-4 py-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Quote UOM:
+                        Attestation Comment:
                     </label>
-                    <Autocomplete variant="subtle" id="uom" v-model="selectedUOM" :options="requestDict.quoteUoms" placeholder="Select a UOM"  class="py-4"/>
-                </div>
-                <div class="grid grid-cols-2 gap-4 py-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Quantity:
-                    </label>
-                    <TextInput
-                        :type="'number'"
+                    <Textarea
                         :ref_for="true"
                         size="sm"
                         variant="subtle"
-                        placeholder="Quantity"
-                        :disabled="false"
-                        v-model="quantity" class="py-4"
+                        placeholder="Enter your notes here..."
+                        v-model="attestationNotes"
                     />
-                </div>
-                <div class="grid grid-cols-2 gap-4 py-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Rate Per UOM:</label>
-                    <TextInput
-                        :type="'number'"
-                        :ref_for="true"
-                        size="sm"
-                        variant="subtle"
-                        placeholder="Rate per UOM"
-                        :disabled="false"
-                        v-model="ratePerUOM" class="py-4"
-                    />
+                    <label class="block text-gray-700 font-bold mb-2"></label>
                 </div>
                 <div class="flex flex-row justify-center py-4">
-                    <button @click="uploadQuotation" class="w-1rem text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Submit Quotation</button>
+                    <button @click="attestDeliveryRequest" class="w-1rem text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Attest & Complete</button>
                     <button @click="$router.go(-1)" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Cancel</button>
                 </div>
             </div>
@@ -191,7 +350,7 @@ import { ref } from 'vue';
 import {createResource,createDocumentResource,Card} from 'frappe-ui'
 import {sessionUser} from '@/data/session';
 export default {
-    name:'Quotation',
+    name:'Request Details',
     props:{
         batchId:{
         type:String,
@@ -208,47 +367,50 @@ export default {
     },
     data(){
         return{
+            host:window.location.host,
             dataValidated:false,
             materialRequest: ref([]),
             userVendorDetails:ref([]),
-            requestDict: ref([]),
-            selectedUOM:'',
-            quantity:'',
-            ratePerUOM:''
+            attestationNotes:''
         }
-        
     },
     methods:{
         containsAny(arr1, arr2) {
             return arr1.some(item1 => arr2.some(item2 => item1.includes(item2)));
         },
-        uploadQuotation(){
-            if(this.selectedUOM != '' && Number(this.quantity)>0 && Number(this.ratePerUOM)>0){
+        attestDeliveryRequest(){
+            if(this.attestationNotes!=''){
                 try{
                     this.materialRequest.setValue.submit({
-                        quantity: Number(this.quantity),
-                        quote_uom: this.selectedUOM.value,
-                        quote_rate_per_uom:Number(this.ratePerUOM),
-                        quotation_price: Number(this.quantity)*Number(this.ratePerUOM),
-                        process_stage:'Submitted Quotation for Requirements'
+                        installation_attestation_notes: this.attestationNotes,
+                        installation_verified_by: sessionUser(),
+                        process_stage:'Attested Completion of Job handled by Vendor'
                     })
                     const commentHandler=createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.custom_comment',
                             params:{
                                 doc:this.materialRequest.data.name,
-                                process_stage:'Submitted Quotation for Requirements',
+                                process_stage:'Attested Completion of Job handled by Vendor',
                                 user: sessionUser()
                             }
                     })
                     commentHandler.fetch()
+                    const markRequestCompleted = createResource({
+                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.success_completion_request',
+                        params:{
+                            doc:this.materialRequest.data.name
+                        }
+                    })
+                    markRequestCompleted.fetch()
                 }
                 catch(err){
-                    throw err
+                    throw err;
                 }
+                alert("Successfully attested request.")
                 this.$router.go(-1);
             }
             else{
-                alert('Please fill all the details')
+                alert('Please enter some comments before submitting.')
             }
         }
     },
@@ -265,7 +427,7 @@ export default {
             this.userVendorDetails.data = res
             // console.log(this.userVendorDetails.data)
             if(this.userVendorDetails.data.roles.length > 0){
-                if(this.userVendorDetails.data.vendor && this.containsAny(this.userVendorDetails.data.roles,['Vendor Admin','Company Evaluator'])){
+                if(this.userVendorDetails.data.vendor && this.containsAny(this.userVendorDetails.data.roles,['Company Evaluator'])){
                     this.dataValidated=true;
                     this.materialRequest = createDocumentResource({
                         doctype:'Marketing Material Request',
@@ -276,16 +438,6 @@ export default {
                         this.materialRequest.data = res
                         // console.log(this.materialRequest.data)
                     })
-                    this.requestDict = createResource({
-                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.get_doctype_meta',
-                        params:{
-                            doctype:'Marketing Material Request'
-                        }
-                    })
-                    this.requestDict.fetch().then((res)=>{
-                        this.requestDict.quoteUoms = res.fields.filter(field => field.fieldname ==='quote_uom')[0].options.split('\n').map(option => {return { label: option.trim(), value: option.trim() }});
-                        // console.log(this.requestDict.quoteUoms)
-                    })
                     
                 }
             }
@@ -294,18 +446,5 @@ export default {
 }
 </script>
 <script setup>
-import { Autocomplete,TextInput,Textarea } from 'frappe-ui'
+import {TextInput,Textarea} from 'frappe-ui'
 </script>
-<style scoped>
-.rounded-input {
-  border-radius: 8px; /* Adjust the value for more or less rounding */
-  border: 1px solid #ccc; /* Optional: Add a border */
-  padding: 8px; /* Optional: Add some padding */
-  outline: none; /* Remove default outline */
-  transition: border-color 0.3s; /* Optional: Add transition for focus effect */
-}
-
-.rounded-input:focus {
-  border-color: #007bff; /* Optional: Change border color on focus */
-}
-</style>

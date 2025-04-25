@@ -206,6 +206,122 @@
             </div>
 
         </Card>
+        <Card v-if="materialRequest.data.manufacture_quantity && dataValidated && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" title="Installation Details">
+            <div class="grid grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                      Manufactured  Qty
+                    </label>
+                    <TextInput 
+                        :type="'number'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.manufacture_quantity"
+                    />
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                      Manufactured  UOM
+                    </label>
+                    <TextInput 
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.quote_uom"
+                    />
+                </div>
+                <div v-if="materialRequest.data.installation_quantity">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                      Installed Qty
+                    </label>
+                    <TextInput 
+                        :type="'number'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.installation_quantity"
+                    />
+                </div>
+                <div v-if="materialRequest.data.installation_quantity">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                      Installed  UOM
+                    </label>
+                    <TextInput 
+                        :type="'text'"
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.quote_uom"
+                    />
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 py-4">
+                <div class="flex flex-col align-top">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Manufacturing Images
+                    </label>
+                    <ul class="grid grid-cols-2 gap-2">
+                        <li v-if="materialRequest.data.manufactured_image_1">
+                            <img :src="materialRequest.data.manufactured_image_1" width="100px" height="auto" alt=""/>
+                        </li>
+                        <li v-if="materialRequest.data.manufactured_image_2">
+                            <img :src="materialRequest.data.manufactured_image_2" width="100px" height="auto" alt=""/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex flex-col align-top">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Installed Images
+                    </label>
+                    <ul class="grid grid-cols-2 gap-2">
+                        <li v-if="materialRequest.data.installation_image_1">
+                            <img :src="materialRequest.data.installation_image_1" width="100px" height="auto" alt=""/>
+                        </li>
+                        <li v-if="materialRequest.data.installation_image_2">
+                            <img :src="materialRequest.data.installation_image_2" width="100px" height="auto" alt=""/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 py-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Manufacturing Notes:
+                    </label>
+                    <Textarea
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.manufacturing_notes"
+                    />
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Installation Notes:
+                    </label>
+                    <Textarea
+                        :ref_for="true"
+                        size="sm"
+                        variant="subtle"
+                        placeholder="NA"
+                        :disabled="true"
+                        v-model="materialRequest.data.installation_notes"
+                    />
+                </div>
+            </div>
+        </Card>
     </div>
 </template>
 <script>

@@ -110,6 +110,15 @@ def mark_request_as_completed(doc,completed_date,completion_reason):
 	req_doc.add_comment("Comment","Request has been marked as completed "+completion_reason+" on "+now())
 	req_doc.save()
 	frappe.db.commit()
+
+@frappe.whitelist()
+def success_completion_request(doc):
+	req_doc = frappe.get_doc("Marketing Material Request",doc)
+	req_doc.request_status = "Completed"
+	req_doc.completed_date = now()
+	req_doc.add_comment("Comment","Request has been marked as completed successfully on "+now())
+	req_doc.save()
+	frappe.db.commit()
 @frappe.whitelist()
 def allocate_batch(doc,batch_id):
 	req_doc = frappe.get_doc("Marketing Material Request",doc)

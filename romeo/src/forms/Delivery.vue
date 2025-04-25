@@ -207,7 +207,7 @@ import { ref } from 'vue';
 import {createResource,createDocumentResource,Card,TextInput,Textarea} from 'frappe-ui'
 import {sessionUser} from '@/data/session';
 import CameraModal from '../components/CameraModal.vue';
-export default{
+export default {
     name:"Delivery",
     props:{
         batchId:{
@@ -313,7 +313,7 @@ export default{
                         if(index == 0){
                             // this.materialRequest.setValue.submit({recce_image_1:url})
                             url = await this.uploadImageToServer(delivery.imageBlob,"installation_image_1");
-                            console.log(url);
+                            // console.log(url);
                             this.materialRequest.setValue.submit({installation_image_1:url})
                             this.materialRequest.setValue.submit({installed_by:sessionUser()})
                             this.materialRequest.setValue.submit({installation_notes:this.deliveryNotes})
