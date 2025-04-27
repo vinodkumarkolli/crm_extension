@@ -30,7 +30,7 @@ def create_new_payment(doc,pay_date,pay_det,pay_amt):
 	row.payment_amount = pay_amt
 	row.payment_date = pay_date
 	row.save()
-	pay_batch_doc.save()
+	# pay_batch_doc.save()
 	return row.name
 @frappe.whitelist()
 def togglePayBatchState(doc):

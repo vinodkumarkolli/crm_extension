@@ -60,7 +60,7 @@ function addPaymentDetail(frm){
                 fieldtype:'Float',
                 precison:2,
                 default:frm.doc.liable_amount,
-                reqd:1,
+                // reqd:1,
                 read_only:1
             },
             {
@@ -69,7 +69,7 @@ function addPaymentDetail(frm){
                 fieldtype:'Float',
                 precison:2,
                 default:frm.doc.paid_amount,
-                reqd:1,
+                // reqd:1,
                 read_only:1
             },
             {
@@ -78,7 +78,7 @@ function addPaymentDetail(frm){
                 fieldtype:'Float',
                 precison:2,
                 default:frm.doc.liable_amount-frm.doc.paid_amount,
-                reqd:1,
+                // reqd:1,
                 read_only:1
             },
             {
