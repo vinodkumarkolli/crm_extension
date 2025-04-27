@@ -284,7 +284,7 @@ export default {
                     if(dump.source === 'delivery'){
                         this.imageData.delivery.push({imageBlob:blob})
                     }
-                    else if(source==='authorisation'){
+                    else if(dump.source==='authorisation'){
                         this.imageData.authorisation.push({imageBlob:blob});
                     }
                     else{
@@ -351,12 +351,12 @@ export default {
                         let url ='';
                         // console.log(authorisation.imageBlob);
                         if(index==0){
-                            url = await this.uploadImageToServer(authorisation.imageBlob,"custom_signed_image_1");
-                            this.materialRequest.setValue.submit({custom_signed_image_1:url})
+                            url = await this.uploadImageToServer(authorisation.imageBlob,"customer_signed_image_1");
+                            this.materialRequest.setValue.submit({customer_signed_image_1:url})
                         }
                         if(index==1){
-                            url = await this.uploadImageToServer(authorisation.imageBlob,"custom_signed_image_2");
-                            this.materialRequest.setValue.submit({custom_signed_image_2:url})
+                            url = await this.uploadImageToServer(authorisation.imageBlob,"customer_signed_image_2");
+                            this.materialRequest.setValue.submit({customer_signed_image_2:url})
                         }
                     }
                     this.materialRequest.setValue.submit({process_stage:'Delivered the Goods by Vendor'});

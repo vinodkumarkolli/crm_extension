@@ -23,6 +23,11 @@ frappe.ui.form.on("Marketing Material Request", {
                 frm.add_custom_button(__("Raise a Dispute"), function () {
                     
                 },__("Vendors"))
+                if(frm.doc.quote_rate_per_uom){
+                    frm.add_custom_button(__("Change quotation price"), function () {
+                        modifyQuotationPrice(frm)
+                    },__("Vendors"))
+                }
             }
             if(frm.doc.request_status === 'Shortlisted' && frm.doc.vendor){
                 //Procurement Stages Options
@@ -66,6 +71,9 @@ frappe.ui.form.on("Marketing Material Request", {
         }
 	},
 });
+function modifyQuotationPrice(frm){
+
+}
 function approveQuotation(frm){
     frappe.warn('Are you sure you want to approve the quotation?',
         'Details: <b>'+frm.doc.quantity+' '+frm.doc.quote_uom+'</b> with price: <b>'+frm.doc.quotation_price+'</b>.<br>'

@@ -203,6 +203,7 @@
                             <div class="flex flex-col justify-between w-6/12 border-black border-solid">
                                 <!-- <p><b>Process Stage: </b>{{ request.process_stage }}</p> -->
                                 <!-- <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p> -->
+                                <p class="bg-red-300 rounded"><b>Material: </b>{{ request.request_material }}</p>
                                 <p><b>Request Notes:</b> {{ request.request_notes }}</p>
                                 <p><b>Recce Notes: </b> {{ request.recce_notes }}</p>
                                 <p><b>Specification: </b>{{ request.quantity }} {{ request.quote_uom }} @ {{ request.quote_rate_per_uom }} Rs. per {{ request.quote_uom }}</p>
@@ -233,6 +234,7 @@
                             <div class="flex flex-col justify-between w-6/12 border-black border-solid">
                                 <!-- <p><b>Process Stage: </b>{{ request.process_stage }}</p> -->
                                 <!-- <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p> -->
+                                <p class="bg-red-300 rounded"><b>Material: </b>{{ request.request_material }}</p>
                                 <p><b>Request Notes:</b> {{ request.request_notes }}</p>
                                 <p><b>Recce Notes: </b> {{ request.recce_notes }}</p>
                                 <p><b>Specification: </b>{{ request.quantity }} {{ request.quote_uom }} @ {{ request.quote_rate_per_uom }} Rs. per {{ request.quote_uom }}</p>
