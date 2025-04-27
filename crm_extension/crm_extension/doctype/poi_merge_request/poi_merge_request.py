@@ -9,7 +9,7 @@ from frappe.utils import now
 class POIMergeRequest(Document):
 	def before_submit(self):
 		linkedPOIs = frappe.db.get_list('CRM POI',filters={'parent_poi_latest':self.from_poi},fields=["name","parent_poi_latest"])
-		query = """SELECT name from `tabMarketing Material Request`  WHERE poi_id='{a}'""".format(a= self.from_poi)
+		query = """SELECT name,poi_id from `tabMarketing Material Request`  WHERE poi_id='{a}'""".format(a= self.from_poi)
 		linkedMaterialRequests = frappe.db.sql(query,as_dict=True)
 		if len(linkedPOIs) >0 :
 			for i in linkedPOIs:
@@ -44,10 +44,10 @@ def execute_merge_subrequest(merge_doc,child_subrequest):
 		subrequest_doc.poi_id = to_poi.name
 		subrequest_doc.poi_name = to_poi.location_name
 		subrequest_doc.crm_lead_id = to_poi.crm_lead_id
-		subrequest_doc.crm_lead_name = to_poi.crm_lead_name
+		subrequest_doc.crm_lead_name = to_poi.lead_name
 		subrequest_doc.field_assist_id = to_poi.fieldassist_id
 		subrequest_doc.latitude = to_poi.latitude
-		subrequest_doc.longitude = to_poi.longitide
+		subrequest_doc.longitude = to_poi.longitude
 		subrequest_doc.save()
 		frappe.db.commit()
 	else:

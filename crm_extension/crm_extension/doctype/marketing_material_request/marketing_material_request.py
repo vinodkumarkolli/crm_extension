@@ -10,7 +10,10 @@ import base64
 class MarketingMaterialRequest(Document):
 	@property
 	def quote_price(self):
-		return self.quantity * float(self.quote_rate_per_uom)
+		if self.quote_rate_per_uom:
+			return self.quantity * float(self.quote_rate_per_uom)
+		else :
+			return 0
 	def before_submit(self):
 		self.requested_date = now()
 		self.request_status = "Submitted"

@@ -96,11 +96,13 @@
    "search_index": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "crm_lead_id",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "CRM Lead ID",
-   "options": "CRM Lead"
+   "options": "CRM Lead",
+   "read_only": 1
   },
   {
    "fieldname": "requested_date",
@@ -273,9 +275,11 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "latitude",
    "fieldtype": "Data",
    "label": "Latitude",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -284,9 +288,11 @@
    "label": "POI Details"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "longitude",
    "fieldtype": "Data",
    "label": "Longitude",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -299,6 +305,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "poi_name",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -368,14 +375,18 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "crm_lead_name",
    "fieldtype": "Data",
-   "label": "CRM Lead Name"
+   "label": "CRM Lead Name",
+   "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "fieldassist_id",
    "fieldtype": "Data",
-   "label": "Field Assist ID"
+   "label": "Field Assist ID",
+   "read_only": 1
   },
   {
    "fieldname": "information_section",
@@ -569,7 +580,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-27 20:50:13.709669",
+ "modified": "2025-04-27 21:18:48.070900",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
