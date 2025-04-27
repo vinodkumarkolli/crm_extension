@@ -48,7 +48,7 @@
                             variant="subtle"
                             placeholder="NA"
                             :disabled="true"
-                            v-model="materialRequest.data.request_material"
+                            v-model="materialRequest.data.request_material" class="bg-red-300 rounded"
                         />
                     <!-- <p id="det_reccenotes">{{batchId}} </p> -->
                     </div>

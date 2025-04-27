@@ -94,6 +94,19 @@
                             v-model="materialRequest.data.approval_comment"
                         />
                     </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            Recce Notes:
+                        </label>
+                        <Textarea
+                            :ref_for="true"
+                            size="sm"
+                            variant="subtle"
+                            placeholder="NA"
+                            :disabled="true"
+                            v-model="materialRequest.data.recce_notes"
+                        />
+                    </div>
                 </div>
                 <div class="flex justify-center items-center items-center">
                     <a :href="'https://www.google.com/maps/place/'+materialRequest.data.latitude+'%2C'+materialRequest.data.longitude"  target="_blank" rel="noopener noreferrer" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Map</a>

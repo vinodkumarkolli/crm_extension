@@ -522,12 +522,12 @@ export default {
                 }
                 //console.log(JSON.stringify(marketing));
                 this.marketingRequests.insert.submit(marketing).then((response) =>{
-                    alert(`Successfully submitted merge request ${response.name}`)
+                    alert(`Successfully submitted marketing material request ${response.name}`)
                     this.closeAllForms();
                     window.location.reload();
                 }
                 ).catch((error)=>{
-                    alert(`Error occured while submitting merge request`,error.message)
+                    alert(`Error occured while submitting marketing material request`,error.message)
                 })
                 
             }

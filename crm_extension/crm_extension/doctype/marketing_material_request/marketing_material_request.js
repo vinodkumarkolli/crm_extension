@@ -84,7 +84,7 @@ function approveQuotation(frm){
                         frappe.msgprint({
                             title: __('Notification'),
                             indicator: 'green',
-                            message: __('Quotation approve successfully!')
+                            message: __('Quotation approved successfully!')
                         });
                     }
                 }

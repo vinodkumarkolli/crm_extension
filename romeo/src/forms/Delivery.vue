@@ -164,6 +164,21 @@
                     </ul>
                 </div>
                 <div class="grid grid-cols-2 gap-4 py-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Customer Signed Letter:
+                    </label>
+                    <!-- <p><b>Customer Authorisation: </b></p> -->
+                    <button v-if="imageData.authorisation.length == 0" type="button" @click="openModal('authorisation')" class="w-1rem text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Upload Image</button>
+                    <button v-if="imageData.authorisation.length>0" @click="clearImages('authorisation')" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Clear Images</button>
+                </div>
+                <div v-if="imageData.authorisation?.length>0" class="flex flex-col justify-center items-center py-4">
+                    <ul v-if="imageData.authorisation" class="grid grid-cols-2 gap-4 items-center">
+                        <li v-for="(authorisation,index) in imageData.authorisation" :key="index">
+                            <img :src="createObjectURL(authorisation.imageBlob)" width="100px" height="auto" alt="Captured Image" />
+                        </li>
+                    </ul>
+                </div>
+                <div class="grid grid-cols-2 gap-4 py-4">
                     <!-- <p><b>Recce Notes: </b></p> -->
                     <label class="block text-gray-700 text-sm font-bold mb-2">
                         Delivered Qty:
@@ -230,7 +245,7 @@ export default {
             userVendorDetails:ref([]),
             modalActive:ref(false),
             cameraModalSource:ref('none'),
-            imageData:ref({delivery:[]}),
+            imageData:ref({delivery:[],authorisation:[]}),
             deliveryNotes:'',
             deliveredQty:'',
         }
@@ -252,6 +267,9 @@ export default {
             if(source==='delivery'){
                 this.imageData.delivery=[];
             }
+            else if(source==='authorisation'){
+                this.imageData.authorisation=[];
+            }
             else{
                 throw Error("Invalid Source")
             }
@@ -265,6 +283,9 @@ export default {
                 this.urlToBlob(photo).then((blob)=>{
                     if(dump.source === 'delivery'){
                         this.imageData.delivery.push({imageBlob:blob})
+                    }
+                    else if(source==='authorisation'){
+                        this.imageData.authorisation.push({imageBlob:blob});
                     }
                     else{
                         throw Error("Invalid Source")
@@ -306,7 +327,7 @@ export default {
             return url;
         },
         async saveDeliveryDetails(){
-            if(this.imageData.delivery.length > 0 && this.deliveryNotes !== ''){
+            if(this.imageData.delivery.length > 0 && this.imageData.authorisation.length > 0 && this.deliveryNotes !== ''){
                 try{
                     for (const [index,delivery] of this.imageData.delivery.entries()) {
                         let url = '';
@@ -324,6 +345,18 @@ export default {
                             // this.materialRequest.setValue.submit({recce_image_2:url})
                             url = await this.uploadImageToServer(delivery.imageBlob,"installation_image_2");
                             this.materialRequest.setValue.submit({installation_image_2:url})
+                        }
+                    }
+                    for(const [index,authorisation] of this.imageData.authorisation.entries()){
+                        let url ='';
+                        // console.log(authorisation.imageBlob);
+                        if(index==0){
+                            url = await this.uploadImageToServer(authorisation.imageBlob,"custom_signed_image_1");
+                            this.materialRequest.setValue.submit({custom_signed_image_1:url})
+                        }
+                        if(index==1){
+                            url = await this.uploadImageToServer(authorisation.imageBlob,"custom_signed_image_2");
+                            this.materialRequest.setValue.submit({custom_signed_image_2:url})
                         }
                     }
                     this.materialRequest.setValue.submit({process_stage:'Delivered the Goods by Vendor'});

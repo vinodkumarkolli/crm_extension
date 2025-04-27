@@ -111,6 +111,7 @@
                                 <header><h4> {{ request.poi_name }} </h4></header>
                             </div>
                             <div class="flex flex-col justify-between w-6/12 border-black border-solid">
+                                <p><b>Material: </b>{{ request.request_material }}</p>
                                 <p><b>Process Stage: </b>{{ request.process_stage }}</p>
                                 <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p>
                                 <p><b>Request Notes:</b> {{ request.request_notes }}</p>
@@ -138,6 +139,7 @@
                                 <header><h4> {{ request.poi_name }} </h4></header>
                             </div>
                             <div class="flex flex-col justify-between w-6/12 border-black border-solid">
+                                <p><b>Material: </b>{{ request.request_material }}</p>
                                 <p><b>Process Stage: </b>{{ request.process_stage }}</p>
                                 <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p>
                                 <p><b>Request Notes:</b> {{ request.request_notes }}</p>
@@ -168,6 +170,7 @@
                                 <header><h4> {{ request.poi_name }} </h4></header>
                             </div>
                             <div class="flex flex-col justify-between w-6/12 border-black border-solid">
+                                <p><b>Material: </b>{{ request.request_material }}</p>
                                 <p><b>Process Stage: </b>{{ request.process_stage }}</p>
                                 <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p>
                                 <p><b>Request Notes:</b> {{ request.request_notes }}</p>

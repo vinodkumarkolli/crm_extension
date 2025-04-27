@@ -69,6 +69,8 @@
   "installed_details_section",
   "installation_image_1",
   "installation_image_2",
+  "custom_signed_image_1",
+  "custom_signed_image_2",
   "installed_by",
   "installation_quantity",
   "installation_verified_by",
@@ -535,13 +537,27 @@
    "label": "Installed by",
    "options": "User",
    "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "custom_signed_image_1",
+   "fieldtype": "Attach Image",
+   "label": "Custom signed Image 1",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "custom_signed_image_2",
+   "fieldtype": "Attach Image",
+   "label": "Custom signed Image 2",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-25 18:08:36.951728",
+ "modified": "2025-04-27 15:44:46.470113",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
