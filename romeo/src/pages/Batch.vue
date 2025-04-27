@@ -183,7 +183,7 @@
                                 <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p>
                                 <p><b>Request Notes:</b> {{ request.request_notes }}</p>
                                 <p><b>Recce Notes: </b> {{ request.recce_notes }}</p>
-                                <p><b>Quotation Cost: </b>{{ request.quotation_price }}</p>
+                                <p><b>Quotation Cost: </b>{{ request.quote_price }}</p>
                             </div>
                             <div class="flex flex-col justify-between w-3/12">
                                 <!-- <a :href="'https://www.google.com/maps/place/'+request.latitude+'%2C'+request.longitude"  target="_blank" rel="noopener noreferrer" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Map</a> -->

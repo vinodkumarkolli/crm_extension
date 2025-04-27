@@ -55,7 +55,7 @@
   "quote_uom",
   "column_break_luas",
   "quote_rate_per_uom",
-  "quotation_price",
+  "quote_price",
   "quotation_acceptance_section",
   "quote_accepted_by",
   "column_break_gcad",
@@ -259,14 +259,6 @@
   },
   {
    "allow_on_submit": 1,
-   "fieldname": "quotation_price",
-   "fieldtype": "Float",
-   "label": "Quotation Price",
-   "precision": "2",
-   "read_only": 1
-  },
-  {
-   "allow_on_submit": 1,
    "fieldname": "quote_uom",
    "fieldtype": "Select",
    "label": "UOM",
@@ -309,6 +301,7 @@
   {
    "fieldname": "poi_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "POI Name",
    "read_only": 1,
    "reqd": 1
@@ -561,13 +554,22 @@
    "label": "Payment Batch ID",
    "options": "Payment Batch",
    "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "quote_price",
+   "fieldtype": "Float",
+   "is_virtual": 1,
+   "label": "Quote Price",
+   "precision": "2",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-27 18:12:50.205900",
+ "modified": "2025-04-27 20:50:13.709669",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",

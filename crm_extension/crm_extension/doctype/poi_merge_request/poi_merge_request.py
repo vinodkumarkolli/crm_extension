@@ -9,11 +9,16 @@ from frappe.utils import now
 class POIMergeRequest(Document):
 	def before_submit(self):
 		linkedPOIs = frappe.db.get_list('CRM POI',filters={'parent_poi_latest':self.from_poi},fields=["name","parent_poi_latest"])
+		query = """SELECT name from `tabMarketing Material Request`  WHERE poi_id='{a}'""".format(a= self.from_poi)
+		linkedMaterialRequests = frappe.db.sql(query,as_dict=True)
 		if len(linkedPOIs) >0 :
 			for i in linkedPOIs:
 				self.append('tab_subrequests',{'sub_request_type':'CRM POI','audit_document':i.name,'past_parent_poi':i.parent_poi_latest,'latest_parent_poi':self.to_poi,'modified_date':now(),'execution_status':'Planned'})
 		try:
 			self.append('tab_subrequests',{'sub_request_type':'CRM POI','audit_document':self.from_poi,'past_parent_poi':self.from_poi,'latest_parent_poi':self.to_poi,'modified_date':now(),'execution_status':'Planned'})
+			if len(linkedMaterialRequests):
+				for i in linkedMaterialRequests:
+					self.append('tab_subrequests',{'sub_request_type':'Marketing Material Request','audit_document':i.name,'past_parent_poi':i.poi_id,'latest_parent_poi':self.to_poi,'modified_date':now(),'execution_status':'Planned'})
 		except Exception as e:
 			print(e)
 			return {"error":e}

@@ -60,7 +60,7 @@ frappe.ui.form.on("Marketing Material Request", {
                     }
                 }
                 if(frm.doc.process_stage ==='Submitted Quotation for Requirements' && frm.doc.batch_id){
-                    frappe.msgprint({message:__('A quotation is submitted for <b>'+frm.doc.quantity+' '+frm.doc.quote_uom+'</b> with price: <b>'+frm.doc.quotation_price+'</b>.<br>'
+                    frappe.msgprint({message:__('A quotation is submitted for <b>'+frm.doc.quantity+' '+frm.doc.quote_uom+'</b> with price: <b>'+frm.doc.quote_price+'</b>.<br>'
                         +'<b>Request Notes: </b>'+frm.doc.request_notes+'<br>'
                         +'<b>Approval Comment: </b>'+frm.doc.approval_comment+'<br>'
                         +'<b>Recce Notes: </b>'+frm.doc.recce_notes+'<br>'
@@ -164,7 +164,7 @@ function modifyQuotationPrice(frm){
 }
 function approveQuotation(frm){
     frappe.warn('Are you sure you want to approve the quotation?',
-        'Details: <b>'+frm.doc.quantity+' '+frm.doc.quote_uom+'</b> with price: <b>'+frm.doc.quotation_price+'</b>.<br>'
+        'Details: <b>'+frm.doc.quantity+' '+frm.doc.quote_uom+'</b> with price: <b>'+frm.doc.quote_price+'</b>.<br>'
     +'<b>Request Notes: </b>'+frm.doc.request_notes+'<br>'
     +'<b>Approval Comment: </b>'+frm.doc.approval_comment+'<br>'
     +'<b>Recce Notes: </b>'+frm.doc.recce_notes+'<br>',

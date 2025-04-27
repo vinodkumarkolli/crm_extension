@@ -145,7 +145,7 @@
                 </div>
             </div>
         </Card>
-        <Card v-if="materialRequest.data.quotation_price && dataValidated && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" title="Quotation Details">
+        <Card v-if="materialRequest.data.quote_price && dataValidated && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" title="Quotation Details">
             <div class="grid grid-cols-4 gap-4">
                 <div>
                     <label for="det_quantity" class="block text-gray-700 text-sm font-bold mb-2">
@@ -200,7 +200,7 @@
                         variant="subtle"
                         placeholder="NA"
                         :disabled="true"
-                        v-model="materialRequest.data.quotation_price"
+                        v-model="materialRequest.data.quote_price"
                     />
                 </div>
             </div>
