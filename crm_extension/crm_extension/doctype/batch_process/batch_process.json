@@ -8,16 +8,7 @@
   "creation_date",
   "batch_identifier",
   "column_break_nfex",
-  "batch_state",
-  "batch_details_section",
-  "allocated_requests",
-  "column_break_ksvx",
-  "quoted_requests",
-  "quotation_cost",
-  "installed_requests",
-  "installation_cost",
-  "disputed_requests",
-  "disputes_cost"
+  "batch_state"
  ],
  "fields": [
   {
@@ -41,57 +32,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "batch_details_section",
-   "fieldtype": "Section Break",
-   "label": "Batch Details"
-  },
-  {
-   "fieldname": "allocated_requests",
-   "fieldtype": "Data",
-   "label": "Allocated Requests",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_ksvx",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "quoted_requests",
-   "fieldtype": "Data",
-   "label": "Quoted Requests",
-   "read_only": 1
-  },
-  {
-   "fieldname": "quotation_cost",
-   "fieldtype": "Float",
-   "label": "Quotation Cost",
-   "read_only": 1
-  },
-  {
-   "fieldname": "installed_requests",
-   "fieldtype": "Data",
-   "label": "Installed Requests",
-   "read_only": 1
-  },
-  {
-   "fieldname": "installation_cost",
-   "fieldtype": "Float",
-   "label": "Installation Cost",
-   "read_only": 1
-  },
-  {
-   "fieldname": "disputed_requests",
-   "fieldtype": "Data",
-   "label": "Disputed Requests",
-   "read_only": 1
-  },
-  {
-   "fieldname": "disputes_cost",
-   "fieldtype": "Float",
-   "label": "Disputes Cost",
-   "read_only": 1
-  },
-  {
    "fieldname": "batch_identifier",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -104,7 +44,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-14 13:44:42.671255",
+ "modified": "2025-04-27 22:58:28.222309",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Batch Process",
