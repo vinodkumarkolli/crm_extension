@@ -83,7 +83,7 @@
    "fieldname": "payment_details",
    "fieldtype": "Table",
    "label": "Payment Details",
-   "options": "Vendor Payments",
+   "options": "Vendor Payment",
    "read_only": 1
   },
   {
@@ -97,9 +97,14 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2025-04-27 18:37:22.646643",
- "modified_by": "vinodkumarkolli@gmail.com",
+ "links": [
+  {
+   "link_doctype": "Marketing Material Request",
+   "link_fieldname": "payment_batch_id"
+  }
+ ],
+ "modified": "2025-04-27 19:57:48.348995",
+ "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "Payment Batch",
  "naming_rule": "Expression",

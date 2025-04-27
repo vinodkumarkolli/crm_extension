@@ -101,10 +101,10 @@
                 Attest Delivery </a>
             <a href="#" class="tab-link flex items-center text-sm px-4 py-2 text-gray-700 relative" data-dui-tab-target="tab-service-requests">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 feather feather-battery-charging"><path d="M5 18H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3.19M15 6h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3.19"></path><line x1="23" y1="13" x2="23" y2="11"></line><polyline points="11 6 7 12 13 12 9 18"></polyline></svg>
-                Service Requests </a>
+                Completed - No Payment Batch </a>
             <a href="#" class="tab-link flex items-center text-sm px-4 py-2 text-gray-700 relative" data-dui-tab-target="tab-service-attestation">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-                Attest Servicing </a>
+                Completed - Payment Batch Allocated </a>
           </div>
             <div id="tab-recce-requests" class="tab-content w-full text-stone-500 text-sm block p-4 max-width">
                 <div v-if="materialRequests.recce?materialRequests.recce.length===0:false " class="flex flex-col justify-center items-center">
@@ -290,10 +290,71 @@
                 </div>
             </div>
             <div id="tab-service-requests" class="tab-content w-full text-stone-500 text-sm hidden p-4">
-            <div v-if="dataValidated">Service Requests</div>
+            <!-- <div v-if="dataValidated">Service Requests</div> -->
+                <div v-if="materialRequests.completed_nopay_requests?materialRequests.completed_nopay_requests.length===0:false" class="flex flex-col justify-center items-center">
+                    <label class="block text-gray-700 font-bold mb-2">No requests found for this stage</label>
+                </div>
+                <div v-if="dataValidated && materialRequests.completed_nopay_requests?materialRequests.completed_nopay_requests.length >0:false && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false">
+                    <h4 class="text-white unique-color-map font-bold rounded-lg text-center max-width">Completed - Yet not paid</h4>
+                    <ul class="flex flex-col max-width py-2 scrollbar-y-scroll scrollbar-x-hidden" >
+                        <li class="flex flex-row justify-between mb-2 rounded-md border-2 border-black py-2 border-solid " v-for="(request,index) in materialRequests.completed_nopay_requests" :key="index">
+                            <div class="w-3/12 flex flex-col justify-between">
+                                <header><h2>{{ request.name }}</h2></header>
+                                <header><h4> {{ request.poi_name }} </h4></header>
+                            </div>
+                            <div class="flex flex-col justify-between w-6/12 border-black border-solid">
+                                <!-- <p><b>Process Stage: </b>{{ request.process_stage }}</p> -->
+                                <!-- <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p> -->
+                                <p><b>Request Notes:</b> {{ request.request_notes }}</p>
+                                <!-- <p><b>Recce Notes: </b> {{ request.recce_notes }}</p> -->
+                                <p><b>Specification: </b>{{ request.quantity }} {{ request.quote_uom }} @ {{ request.quote_rate_per_uom }} Rs. per {{ request.quote_uom }}</p>
+                                <p><b>Manufactured: </b>{{ request.manufacture_quantity }} {{ request.quote_uom }}</p>
+                                <p><b>Installed: </b>{{ request.installation_quantity }} {{ request.quote_uom }}</p>
+                                <p><b>Installation Notes:</b>{{ request.installation_notes }}</p>
+                            </div>
+                            <div class="flex flex-col justify-between w-3/12">
+                                <!-- <a :href="'https://www.google.com/maps/place/'+request.latitude+'%2C'+request.longitude"  target="_blank" rel="noopener noreferrer" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Map</a> -->
+                                <button v-if="request.request_status==='Completed'" @click="this.$router.push({name:'Request Details',params:{batchId:this.batchId,vendorId:this.vendorId,requestId:request.name}})" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Request Details</button>
+                                <!-- <button v-if="request.process_stage==='Evaluating POI Exact Requirements' && request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" @click="handleRecceFormClick(request,index)" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Resubmit Recce Details</button> -->
+                                <!-- <button v-if="request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Company Evaluator']):false" @click="handleDeliveryAttestation(request,index)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Attest Delivery</button> -->
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div id="tab-service-attestation" class="tab-content w-full text-stone-500 text-sm hidden p-4">
-            <div v-if="dataValidated">Service Attestation</div>
+            <!-- <div v-if="dataValidated">Service Attestation</div> -->
+                <div v-if="materialRequests.completed_pay_requests?materialRequests.completed_pay_requests.length===0:false" class="flex flex-col justify-center items-center">
+                    <label class="block text-gray-700 font-bold mb-2">No requests found for this stage</label>
+                </div>
+                <div v-if="dataValidated && materialRequests.completed_pay_requests?materialRequests.completed_pay_requests.length >0:false && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false">
+                    <h4 class="text-white unique-color-map font-bold rounded-lg text-center max-width">Completed - Payment Processed</h4>
+                    <ul class="flex flex-col max-width py-2 scrollbar-y-scroll scrollbar-x-hidden" >
+                        <li class="flex flex-row justify-between mb-2 rounded-md border-2 border-black py-2 border-solid " v-for="(request,index) in materialRequests.completed_pay_requests" :key="index">
+                            <div class="w-3/12 flex flex-col justify-between">
+                                <header><h2>{{ request.name }}</h2></header>
+                                <header><h4> {{ request.poi_name }} </h4></header>
+                            </div>
+                            <div class="flex flex-col justify-between w-6/12 border-black border-solid">
+                                <!-- <p><b>Process Stage: </b>{{ request.process_stage }}</p> -->
+                                <!-- <p><b>Approved Date: </b>{{ request.approved_declined_hold_date }}</p> -->
+                                <p><b>Request Notes:</b> {{ request.request_notes }}</p>
+                                <!-- <p><b>Recce Notes: </b> {{ request.recce_notes }}</p> -->
+                                <p><b>Specification: </b> {{ request.quantity }} {{ request.quote_uom }} @ {{ request.quote_rate_per_uom }} Rs. per {{ request.quote_uom }}</p>
+                                <p><b>Manufactured: </b> {{ request.manufacture_quantity }} {{ request.quote_uom }}</p>
+                                <p><b>Installed: </b> {{ request.installation_quantity }} {{ request.quote_uom }}</p>
+                                <p><b>Installation Notes:</b> {{ request.installation_notes }}</p>
+                                <p><b>Payment Details:</b> {{ request.payment_batch_id }}</p>
+                            </div>
+                            <div class="flex flex-col justify-between w-3/12">
+                                <!-- <a :href="'https://www.google.com/maps/place/'+request.latitude+'%2C'+request.longitude"  target="_blank" rel="noopener noreferrer" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Map</a> -->
+                                <button v-if="request.request_status==='Completed'" @click="this.$router.push({name:'Request Details',params:{batchId:this.batchId,vendorId:this.vendorId,requestId:request.name}})" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">View Request Details</button>
+                                <!-- <button v-if="request.process_stage==='Evaluating POI Exact Requirements' && request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Vendor Admin','Company Evaluator']):false" @click="handleRecceFormClick(request,index)" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Resubmit Recce Details</button> -->
+                                <!-- <button v-if="request.request_status==='Shortlisted' && userVendorDetails.data.roles?containsAny(userVendorDetails.data.roles,['Company Evaluator']):false" @click="handleDeliveryAttestation(request,index)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Attest Delivery</button> -->
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
       </div>
 </template>

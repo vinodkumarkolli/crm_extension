@@ -8,6 +8,9 @@ from frappe.utils.file_manager import save_file
 import math
 import base64
 class MarketingMaterialRequest(Document):
+	@property
+	def quotation_price(self):
+		return self.quantity * self.quote_rate_per_uom
 	def before_submit(self):
 		self.requested_date = now()
 		self.request_status = "Submitted"
@@ -171,4 +174,9 @@ def approve_quotation(doc):
 def assign_paymentbatch(doc,batch_id):
 	req_doc = frappe.get_doc("Marketing Material Request",doc)
 	req_doc.payment_batch_id = batch_id
+	req_doc.save()
+@frappe.whitelist()
+def modify_quote_rate(doc,new_rate):
+	req_doc = frappe.get_doc("Marketing Material Request",doc)
+	req_doc.quote_rate_per_uom = new_rate
 	req_doc.save()

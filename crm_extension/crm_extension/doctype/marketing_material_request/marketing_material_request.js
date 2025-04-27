@@ -23,7 +23,7 @@ frappe.ui.form.on("Marketing Material Request", {
                 frm.add_custom_button(__("Raise a Dispute"), function () {
                     
                 },__("Vendors"))
-                if(frm.doc.quote_rate_per_uom){
+                if(frm.doc.quote_rate_per_uom && !frm.doc.payment_batch_id){
                     frm.add_custom_button(__("Change quotation price"), function () {
                         modifyQuotationPrice(frm)
                     },__("Vendors"))
@@ -124,7 +124,43 @@ function assignPaymentBatch(frm){
     d.show();
 }
 function modifyQuotationPrice(frm){
-
+    d = new frappe.ui.Dialog({
+        title:'Modify Quotation Price',
+        fields:[
+            {
+                fieldname:'quoatation_spec',
+                label:'Quotation Spec',
+                fieldtype:'Small Text',
+                default:frm.doc.quantity +' '+frm.doc.quote_uom+' @ '+frm.doc.quote_rate_per_uom+ " Rs. per "+frm.doc.quote_uom,
+                reqd:1,
+                read_only:1
+            },
+            {
+                fieldname:'new_quote_rate',
+                fieldtype:'Float',
+                label:'New Quotation Rate',
+                reqd: 1,
+                precision:2
+            }
+        ],
+        primary_action:function(){
+            var new_quote_rate = d.get_value('new_quote_rate');
+            frappe.call({
+                method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.modify_quote_rate",
+                args:{
+                    "doc": frm.doc.name,
+                    "new_rate":new_quote_rate
+                },
+                callback:function(r){
+                    if(!r.exc){
+                        //refresh_field('status');
+                        d.hide();
+                    }
+                }
+            });
+        }
+    })
+    d.show();
 }
 function approveQuotation(frm){
     frappe.warn('Are you sure you want to approve the quotation?',
