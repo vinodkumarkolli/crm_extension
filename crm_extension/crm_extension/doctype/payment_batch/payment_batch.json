@@ -1,0 +1,142 @@
+{
+ "actions": [],
+ "autoname": "format:PAY-BATCH-{######}",
+ "creation": "2025-04-27 16:29:33.722941",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_dicu",
+  "vendor",
+  "vendor_name",
+  "liable_amount",
+  "paid_amount",
+  "is_active",
+  "column_break_efna",
+  "created_on",
+  "amended_from",
+  "section_break_clbh",
+  "payment_details"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_dicu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "vendor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vendor",
+   "options": "Vendor",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "liable_amount",
+   "fieldtype": "Float",
+   "is_virtual": 1,
+   "label": "Liable Amount",
+   "precision": "2"
+  },
+  {
+   "fieldname": "paid_amount",
+   "fieldtype": "Float",
+   "is_virtual": 1,
+   "label": "Paid Amount",
+   "precision": "2"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active?",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_efna",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "created_on",
+   "fieldtype": "Date",
+   "label": "Created on",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Payment Batch",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "section_break_clbh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval: doc.docstatus===1 && doc.liable_amount > 0",
+   "fieldname": "payment_details",
+   "fieldtype": "Table",
+   "label": "Payment Details",
+   "options": "Vendor Payments",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "vendor.vendor_name",
+   "fieldname": "vendor_name",
+   "fieldtype": "Data",
+   "label": "Vendor Name",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-04-27 18:37:22.646643",
+ "modified_by": "vinodkumarkolli@gmail.com",
+ "module": "Crm Extension",
+ "name": "Payment Batch",
+ "naming_rule": "Expression",
+ "owner": "vinodkumarkolli@gmail.com",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Romeo Admin",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "created_on"
+}

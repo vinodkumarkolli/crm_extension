@@ -18,6 +18,7 @@
   "process_stage",
   "manufacture",
   "batch_id",
+  "payment_batch_id",
   "section_break_zvea",
   "legacy_details_column",
   "crm_lead_id",
@@ -332,7 +333,8 @@
    "label": "Vendor",
    "options": "Vendor",
    "permlevel": 1,
-   "read_only": 1
+   "read_only": 1,
+   "set_only_once": 1
   },
   {
    "allow_on_submit": 1,
@@ -551,13 +553,21 @@
    "fieldtype": "Attach Image",
    "label": "Customer signed Image 2",
    "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "payment_batch_id",
+   "fieldtype": "Link",
+   "label": "Payment Batch ID",
+   "options": "Payment Batch",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-27 16:22:20.440294",
+ "modified": "2025-04-27 18:12:50.205900",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",

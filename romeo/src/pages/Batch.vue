@@ -60,10 +60,18 @@
             </div>
             <div class="border border-black bg-gray-200 flex flex-col justify-center items-center rounded">
                 <label class="block text-gray-700 text-sm font-bold mb-2">
-                    Completed Requests
+                    Completed - No Payment Allocated Requests
                 </label>
                 <p class="text-sm">
-                    {{presentBatchAnalytics.completed_requests}} Nos
+                    {{presentBatchAnalytics.completed_nopay_requests}} Nos
+                </p>
+            </div>
+            <div class="border border-black bg-gray-200 flex flex-col justify-center items-center rounded">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    Completed - Payment Allocated Requests
+                </label>
+                <p class="text-sm">
+                    {{presentBatchAnalytics.completed_pay_requests}} Nos
                 </p>
             </div>
         </div>
@@ -374,7 +382,8 @@ export default {
                     this.materialRequests.manufacturing= response.filter(request=>{return request.process_stage === 'Accepted Quotation' && request.request_status == 'Shortlisted'})
                     this.materialRequests.delivery=response.filter(request=>{return request.process_stage === 'Attested Manufacture Process' && request.request_status == 'Shortlisted'})
                     this.materialRequests.delivered_pending_attestion =response.filter(request=>{return request.process_stage === 'Delivered the Goods by Vendor' && request.request_status == 'Shortlisted'})
-                    this.materialRequests.completed_requests=response.filter(request=>{return request.process_stage === 'Attested Completion of Job handled by Vendor' && request.request_status == 'Completed'})
+                    this.materialRequests.completed_nopay_requests=response.filter(request=>{return request.process_stage === 'Attested Completion of Job handled by Vendor' && request.request_status == 'Completed' && !request.payment_batch_id})
+                    this.materialRequests.completed_pay_requests=response.filter(request=>{return request.process_stage === 'Attested Completion of Job handled by Vendor' && request.request_status == 'Completed' && request.payment_batch_id})
                     //this.materialRequests.service=requests.filter(request=>{return request.process_stage === 'Customer Feedback Submitted' && request.request_status == 'Shortlisted'})
 
                     this.presentBatchAnalytics = {
@@ -386,7 +395,8 @@ export default {
                         'manufacturing_requests':this.materialRequests.manufacturing.length,
                         'delivery_requests':this.materialRequests.delivery.length,
                         'delivered_attestation':this.materialRequests.delivered_pending_attestion.length,
-                        'completed_requests':this.materialRequests.completed_requests.length,
+                        'completed_nopay_requests':this.materialRequests.completed_nopay_requests.length,
+                        'completed_pay_requests':this.materialRequests.completed_pay_requests.length,
                         'service_requests':[],
                         'service_attestation':[]
                     }

@@ -167,3 +167,8 @@ def approve_quotation(doc):
 					 )
 	req_doc.save()
 	frappe.db.commit()
+@frappe.whitelist()
+def assign_paymentbatch(doc,batch_id):
+	req_doc = frappe.get_doc("Marketing Material Request",doc)
+	req_doc.payment_batch_id = batch_id
+	req_doc.save()

@@ -29,6 +29,11 @@ frappe.ui.form.on("Marketing Material Request", {
                     },__("Vendors"))
                 }
             }
+            if(frm.doc.request_status === "Completed" && !frm.doc.payment_batch_id){
+                frm.add_custom_button(__("Assign Payment Batch"), function () {
+                    assignPaymentBatch(frm)
+                },__("Payments"))
+            }
             if(frm.doc.request_status === 'Shortlisted' && frm.doc.vendor){
                 //Procurement Stages Options
                 if(frm.doc.process_stage === 'Procurement'){
@@ -71,6 +76,53 @@ frappe.ui.form.on("Marketing Material Request", {
         }
 	},
 });
+function assignPaymentBatch(frm){
+    d = new frappe.ui.Dialog({
+        title:'Assign Payment Batch',
+        fields:[
+            {
+                fieldname:'vendor_name',
+                label:'Vendor Name',
+                fieldtype:'Data',
+                default:frm.doc.vendor_name,
+                reqd:1,
+                read_only:1
+            },
+            {
+                fieldname:'payment_batch',
+                fieldtype:'Link',
+                label:'Payment Batch',
+                options:'Payment Batch', 
+                reqd: 1,
+                get_query : function(){
+                    return {
+                        filters:{
+                            vendor:frm.doc.vendor,
+                            is_active:1
+                        }
+                    };
+                }
+            }
+        ],
+        primary_action:function(){
+            var payment_batch = d.get_value('payment_batch');
+            frappe.call({
+                method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.assign_paymentbatch",
+                args:{
+                    "doc": frm.doc.name,
+                    "batch_id":payment_batch
+                },
+                callback:function(r){
+                    if(!r.exc){
+                        //refresh_field('status');
+                        d.hide();
+                    }
+                }
+            });
+        }
+    })
+    d.show();
+}
 function modifyQuotationPrice(frm){
 
 }
