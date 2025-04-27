@@ -333,8 +333,7 @@
    "label": "Vendor",
    "options": "Vendor",
    "permlevel": 1,
-   "read_only": 1,
-   "set_only_once": 1
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
@@ -580,7 +579,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-27 21:18:48.070900",
+ "modified": "2025-04-27 22:29:23.866469",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",

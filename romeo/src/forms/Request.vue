@@ -292,6 +292,19 @@
                         </li>
                     </ul>
                 </div>
+                <div class="flex flex-col align-top">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Installation Customer Authorisation
+                    </label>
+                    <ul class="grid grid-cols-2 gap-2">
+                        <li v-if="materialRequest.data.custom_signed_image_1">
+                            <img :src="materialRequest.data.custom_signed_image_1" width="100px" height="auto" alt=""/>
+                        </li>
+                        <li v-if="materialRequest.data.customer_signed_image_2">
+                            <img :src="materialRequest.data.customer_signed_image_2" width="100px" height="auto" alt=""/>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="grid grid-cols-2 gap-4 py-4">
                 <div>
