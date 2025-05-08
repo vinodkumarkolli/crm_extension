@@ -1,0 +1,44 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-04-12 16:53:38.161638",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "user_role"
+ ],
+ "fields": [
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "user_role",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "User Role",
+   "options": "Vendor Employee\nVendor Admin\nCompany Evaluator",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-05-08 13:31:42.512041",
+ "modified_by": "Administrator",
+ "module": "Crm Extension",
+ "name": "Vendor User",
+ "owner": "vinodkumarkolli@gmail.com",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
