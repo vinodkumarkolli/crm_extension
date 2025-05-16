@@ -83,7 +83,7 @@ function initMap(setlat,setlong,districts) {
         if(mapContainer.value){
             mapContainer.value = L.map('map', { zoomControl: false }).setView([setlat, setlong], 12,{animate: true});
             const bounds = getBoundsFromLatLng(setlat,setlong, 30 * 1000); // 30 Km Radius
-            mapContainer.value.setMaxBounds(bounds);
+            //mapContainer.value.setMaxBounds(bounds);
             // Optionally, fit the map view to these bounds
             mapContainer.value.fitBounds(bounds);
             const geoLocate = new LocateControl().addTo(mapContainer.value)
