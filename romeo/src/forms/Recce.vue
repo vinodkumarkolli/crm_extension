@@ -270,13 +270,11 @@ export default {
                             // this.materialRequest.setValue.submit({recce_image_1:url})
                             url = await this.uploadImageToServer(store.imageBlob,"recce_image_1");
                             this.materialRequest.setValue.submit({recce_image_1:url,recce_done_by:sessionUser(),recce_notes:this.recceNotes})
-                            this.materialRequest.reload()
                         }
                         if(index ==1){
                             // this.materialRequest.setValue.submit({recce_image_2:url})
                             url = await this.uploadImageToServer(store.imageBlob,"recce_image_2");
                             this.materialRequest.setValue.submit({recce_image_2:url,recce_done_by:sessionUser()})
-                            this.materialRequest.reload()
                         }
                     }
                     for(const [index,authorisation] of this.imageData.quotation.entries()){
@@ -285,16 +283,13 @@ export default {
                         if(index==0){
                             url = await this.uploadImageToServer(authorisation.imageBlob,"customer_authorisation_image_1");
                             this.materialRequest.setValue.submit({customer_authorisation_image_1:url})
-                            this.materialRequest.reload()
                         }
                         if(index==1){
                             url = await this.uploadImageToServer(authorisation.imageBlob,"customer_authorisation_image_2");
                             this.materialRequest.setValue.submit({customer_authorisation_image_2:url})
-                            this.materialRequest.reload()
                         }
                     }
                     // this.materialRequest.setValue.submit({process_stage:'Evaluating POI Exact Requirements'});
-                    // this.materialRequest.reload()
                     this.materialRequestDocCommentHandler = createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                         params:{
