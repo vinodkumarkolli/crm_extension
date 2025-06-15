@@ -76,7 +76,7 @@ export default defineComponent({
     
         // const modalActive=ref(true)
         // Use camera reference to call functions
-        const compressImageBlob = async(imageUrl: string, maxWidth = 800, maxHeight = 600, targetSizeKB = 10): Promise<Blob> => {
+        const compressImageBlob = async(imageUrl: string, maxWidth = 1080, maxHeight = 1350, targetSizeKB = 10): Promise<Blob> => {
             return new Promise<Blob>((resolve, reject) => {
                 // const imageUrl = URL.createObjectURL(imageBlob);
                 const img = new Image();
