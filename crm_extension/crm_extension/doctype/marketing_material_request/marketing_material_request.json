@@ -138,7 +138,8 @@
    "fieldname": "process_stage",
    "fieldtype": "Link",
    "label": "Process Stage",
-   "options": "Material Procurement Stage"
+   "options": "Material Procurement Stage",
+   "read_only": 1
   },
   {
    "fieldname": "request_material",
@@ -578,7 +579,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-15 23:44:05.775165",
+ "modified": "2025-06-15 23:50:54.619985",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
