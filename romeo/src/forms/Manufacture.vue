@@ -341,7 +341,7 @@ export default {
                     }
                     this.materialRequest.setValue.submit({process_stage:'Attested Manufacture Process'});
                     const materialRequestDocCommentHandler = createResource({
-                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.custom_comment',
+                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                         params:{
                             doc:this.materialRequest.data.name,
                             process_stage:'Attested Manufacture Process',

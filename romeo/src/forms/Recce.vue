@@ -293,10 +293,10 @@ export default {
                             this.materialRequest.reload()
                         }
                     }
-                    this.materialRequest.setValue.submit({process_stage:'Evaluating POI Exact Requirements'});
-                    this.materialRequest.reload()
+                    // this.materialRequest.setValue.submit({process_stage:'Evaluating POI Exact Requirements'});
+                    // this.materialRequest.reload()
                     this.materialRequestDocCommentHandler = createResource({
-                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.custom_comment',
+                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                         params:{
                             doc:this.materialRequest.data.name,
                             process_stage:'Evaluating POI Exact Requirements',

@@ -233,7 +233,7 @@ export default {
                         process_stage:'Submitted Quotation for Requirements'
                     })
                     const commentHandler=createResource({
-                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.custom_comment',
+                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                             params:{
                                 doc:this.materialRequest.data.name,
                                 process_stage:'Submitted Quotation for Requirements',

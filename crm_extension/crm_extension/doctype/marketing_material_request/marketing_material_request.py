@@ -27,10 +27,13 @@ def get_doctype_meta(doctype):
 	meta = frappe.get_meta(doctype)
 	return meta.as_dict()
 @frappe.whitelist()
-def custom_comment(doc,process_stage,user):
+def change_process_status(doc,process_stage,user):
 	try:
 		req_doc = frappe.get_doc("Marketing Material Request",doc)
+		req_doc.process_stage=process_stage
+		req_doc.save()
 		req_doc.add_comment("Comment","Process Stage changed to "+process_stage+" by "+user+" on "+now())
+		frappe.db.commit()
 		return True
 	except Exception as e:
 		return False
