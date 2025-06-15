@@ -2,7 +2,7 @@
 <BaseModal :modalActive="modalActive" @close-base-modal="closeModal">
     <div>
         <!--Tutorial https://www.npmjs.com/package/simple-vue-camera-->
-        <camera  ref="camera" autoplay></camera>
+        <camera  ref="camera" autoplay :resolution="{ width: 240, height: 426.66 }"></camera>
         <!-- Add other components or elements as needed -->
     </div>
     <div v-if="imageData.length < 2" class="flex justify-end w-full py-2">
@@ -76,7 +76,7 @@ export default defineComponent({
     
         // const modalActive=ref(true)
         // Use camera reference to call functions
-        const compressImageBlob = async(imageUrl: string, maxWidth = 1080, maxHeight = 1350, targetSizeKB = 10): Promise<Blob> => {
+        const compressImageBlob = async(imageUrl: string, maxWidth = 720, maxHeight = 1280, targetSizeKB = 10): Promise<Blob> => {
             return new Promise<Blob>((resolve, reject) => {
                 // const imageUrl = URL.createObjectURL(imageBlob);
                 const img = new Image();
