@@ -225,14 +225,48 @@ export default {
         uploadQuotation(){
             if(this.selectedUOM != '' && Number(this.quantity)>0 && Number(this.ratePerUOM)>0){
                 try{
-                    this.materialRequest.setValue.submit({
-                        quantity: Number(this.quantity),
-                        quote_uom: this.selectedUOM.value,
-                        quote_rate_per_uom:Number(this.ratePerUOM),
-                        // quotation_price: Number(this.quantity)*Number(this.ratePerUOM),
-                        process_stage:'Submitted Quotation for Requirements'
+                    let materialRequestFieldUpdater;
+                    //Updating First Field
+                    materialRequestFieldUpdater = createResource({
+                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                        params:{
+                            doctype:'Marketing Material Request',
+                            doc:this.materialRequest.data.name,
+                            fieldname:'quantity',
+                            value:Number(this.quantity)
+                        }
                     })
-                    const commentHandler=createResource({
+                    materialRequestFieldUpdater.fetch();
+                    //Updating Second Field
+                    materialRequestFieldUpdater = createResource({
+                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                        params:{
+                            doctype:'Marketing Material Request',
+                            doc:this.materialRequest.data.name,
+                            fieldname:'quote_uom',
+                            value:this.selectedUOM.value
+                        }
+                    })
+                    materialRequestFieldUpdater.fetch();
+                    //Updating Third Field
+                    materialRequestFieldUpdater = createResource({
+                        url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                        params:{
+                            doctype:'Marketing Material Request',
+                            doc:this.materialRequest.data.name,
+                            fieldname:'quote_rate_per_uom',
+                            value:Number(this.ratePerUOM)
+                        }
+                    })
+                    materialRequestFieldUpdater.fetch();
+                    // this.materialRequest.setValue.submit({
+                    //     quantity: Number(this.quantity),
+                    //     quote_uom: this.selectedUOM.value,
+                    //     quote_rate_per_uom:Number(this.ratePerUOM),
+                    //     // quotation_price: Number(this.quantity)*Number(this.ratePerUOM),
+                    //     process_stage:'Submitted Quotation for Requirements'
+                    // })
+                    const materialRequestStatusUpdater=createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                             params:{
                                 doc:this.materialRequest.data.name,
@@ -240,7 +274,7 @@ export default {
                                 user: sessionUser()
                             }
                     })
-                    commentHandler.fetch()
+                    materialRequestStatusUpdater.fetch()
                 }
                 catch(err){
                     throw err

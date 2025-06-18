@@ -321,26 +321,93 @@ export default {
         async saveManufactureDetails(){
             if(this.imageData.manufacture.length > 0 && this.manufactureNotes !== ''){
                 try{
+                    let materialRequestFieldUpdater;
                     for (const [index,manufacture] of this.imageData.manufacture.entries()) {
                         let url = '';
                         if(index == 0){
                             // this.materialRequest.setValue.submit({recce_image_1:url})
                             url = await this.uploadImageToServer(manufacture.imageBlob,"manufactured_image_1");
                             // console.log(url);
-                            this.materialRequest.setValue.submit({manufactured_image_1:url})
-                            this.materialRequest.setValue.submit({manufacture_verified_by:sessionUser()})
-                            this.materialRequest.setValue.submit({manufacturing_notes:this.manufactureNotes})
-                            this.materialRequest.setValue.submit({manufacture_quantity: this.manufacturedQty})
+                            //Updating First Field
+                            materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'manufactured_image_1',
+                                    value:url
+                                }
+                            })
+                            materialRequestFieldUpdater.fetch();
+                            //Updating Second Field
+                            materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'manufacture_verified_by',
+                                    value:sessionUser()
+                                }
+                            })
+                            materialRequestFieldUpdater.fetch();
+                            //Updating Third Field
+                            materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'manufacturing_notes',
+                                    value:this.manufactureNotes
+                                }
+                            })
+                            materialRequestFieldUpdater.fetch();
+                            //Updating Fourth Field
+                            materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'manufacture_quantity',
+                                    value:this.manufacturedQty
+                                }
+                            })
+                            materialRequestFieldUpdater.fetch();
+                            //Updating Fifth Field
+                            materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'manufacture_verified_on',
+                                    value:new Date()
+                                }
+                            })
+                            materialRequestFieldUpdater.fetch();
+                            // this.materialRequest.setValue.submit({manufactured_image_1:url})
+                            // this.materialRequest.setValue.submit({manufacture_verified_by:sessionUser()})
+                            // this.materialRequest.setValue.submit({manufacturing_notes:this.manufactureNotes})
+                            // this.materialRequest.setValue.submit({manufacture_quantity: this.manufacturedQty})
                             // this.materialRequest.setValue.submit({manufacture_verified_on:new Date()})
                         }
                         if(index ==1){
                             // this.materialRequest.setValue.submit({recce_image_2:url})
                             url = await this.uploadImageToServer(manufacture.imageBlob,"manufactured_image_2");
-                            this.materialRequest.setValue.submit({manufactured_image_2:url})
+                            //Updating Sixth Field
+                            materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'manufactured_image_2',
+                                    value:url
+                                }
+                            })
+                            materialRequestFieldUpdater.fetch();
+                            //this.materialRequest.setValue.submit({manufactured_image_2:url})
                         }
                     }
-                    this.materialRequest.setValue.submit({process_stage:'Attested Manufacture Process'});
-                    const materialRequestDocCommentHandler = createResource({
+                    //this.materialRequest.setValue.submit({process_stage:'Attested Manufacture Process'});
+                    const materialRequestStatusUpdater = createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                         params:{
                             doc:this.materialRequest.data.name,
@@ -348,7 +415,7 @@ export default {
                             user: sessionUser()
                         }
                     })
-                    materialRequestDocCommentHandler.fetch();
+                    materialRequestStatusUpdater.fetch();
                 }
                 catch(error){
                     throw error;

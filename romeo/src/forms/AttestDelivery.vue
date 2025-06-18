@@ -381,12 +381,35 @@ export default {
         attestDeliveryRequest(){
             if(this.attestationNotes!=''){
                 try{
-                    this.materialRequest.setValue.submit({
-                        installation_attestation_notes: this.attestationNotes,
-                        installation_verified_by: sessionUser(),
-                        process_stage:'Attested Completion of Job handled by Vendor'
-                    })
-                    const commentHandler=createResource({
+                    let materialRequestFieldUpdater;
+                    //Updating First Field
+                    materialRequestFieldUpdater = createResource({
+                            url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                            params:{
+                                doctype:'Marketing Material Request',
+                                doc:this.materialRequest.data.name,
+                                fieldname:'installation_attestation_notes',
+                                value:this.attestationNotes
+                            }
+                        })
+                    materialRequestFieldUpdater.fetch();
+                    //Updating Second Field
+                    materialRequestFieldUpdater = createResource({
+                            url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                            params:{
+                                doctype:'Marketing Material Request',
+                                doc:this.materialRequest.data.name,
+                                fieldname:'installation_verified_by',
+                                value:sessionUser()
+                            }
+                        })
+                    materialRequestFieldUpdater.fetch();
+                    // this.materialRequest.setValue.submit({
+                    //     installation_attestation_notes: this.attestationNotes,
+                    //     installation_verified_by: sessionUser(),
+                    //     process_stage:'Attested Completion of Job handled by Vendor'
+                    // })
+                    const materialRequestStatusUpdater=createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                             params:{
                                 doc:this.materialRequest.data.name,
@@ -394,7 +417,7 @@ export default {
                                 user: sessionUser()
                             }
                     })
-                    commentHandler.fetch()
+                    materialRequestStatusUpdater.fetch()
                     const markRequestCompleted = createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.success_completion_request',
                         params:{
