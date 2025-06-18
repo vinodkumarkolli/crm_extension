@@ -2,7 +2,7 @@
 <BaseModal :modalActive="modalActive" @close-base-modal="closeModal">
     <div>
         <!--Tutorial https://www.npmjs.com/package/simple-vue-camera-->
-        <camera  ref="camera" autoplay :resolution="{ width: 426.66, height: 240 }"></camera>
+        <camera  ref="camera" autoplay :resolution="{ width: 240 , height: 426.66  }"></camera>
         <!-- Add other components or elements as needed -->
     </div>
     <div v-if="imageData.length < 2" class="flex justify-end w-full py-2">
