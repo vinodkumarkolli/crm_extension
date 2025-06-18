@@ -195,7 +195,8 @@ export default {
             dataValidated:false,
             userVendorDetails:ref([]),
             materialRequest:ref([]),
-            materialRequestDocCommentHandler:ref([]),
+            materialRequestStatusUpdater:ref([]),
+            materialRequestFieldUpdater:ref([]),
             imageData:ref({stores:[],quotation:[],uploadedImageURLS:[]}),
             modalActive:ref(false),
             // fileUploader:ref([]),
@@ -269,12 +270,55 @@ export default {
                         if(index == 0){
                             // this.materialRequest.setValue.submit({recce_image_1:url})
                             url = await this.uploadImageToServer(store.imageBlob,"recce_image_1");
-                            this.materialRequest.setValue.submit({recce_image_1:url,recce_done_by:sessionUser(),recce_notes:this.recceNotes})
+                            this.materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'recce_image_1',
+                                    value:url
+                                }
+                            })
+                            this.materialRequestFieldUpdater.fetch();
+                            //Updating Second Field
+                            this.materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'recce_done_by',
+                                    value:sessionUser()
+                                }
+                            })
+                            this.materialRequestFieldUpdater.fetch();
+                            //Updating Third Field
+                            this.materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'recce_notes',
+                                    value:this.recceNotes
+                                }
+                            })
+                            this.materialRequestFieldUpdater.fetch();                
+                            //this.materialRequest.setValue.submit({recce_image_1:url,recce_done_by:sessionUser(),recce_notes:this.recceNotes})
                         }
                         if(index ==1){
                             // this.materialRequest.setValue.submit({recce_image_2:url})
                             url = await this.uploadImageToServer(store.imageBlob,"recce_image_2");
-                            this.materialRequest.setValue.submit({recce_image_2:url,recce_done_by:sessionUser()})
+                            //Updating Fourth Field
+                            this.materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'recce_image_2',
+                                    value:this.url
+                                }
+                            })
+                            this.materialRequestFieldUpdater.fetch();
+                            //this.materialRequest.setValue.submit({recce_image_2:url,recce_done_by:sessionUser()})
                         }
                     }
                     for(const [index,authorisation] of this.imageData.quotation.entries()){
@@ -282,15 +326,37 @@ export default {
                         // console.log(authorisation.imageBlob);
                         if(index==0){
                             url = await this.uploadImageToServer(authorisation.imageBlob,"customer_authorisation_image_1");
-                            this.materialRequest.setValue.submit({customer_authorisation_image_1:url})
+                            //Updating Sixth Field
+                            this.materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'customer_authorisation_image_1',
+                                    value:this.url
+                                }
+                            })
+                            this.materialRequestFieldUpdater.fetch();
+                            //this.materialRequest.setValue.submit({customer_authorisation_image_1:url})
                         }
                         if(index==1){
                             url = await this.uploadImageToServer(authorisation.imageBlob,"customer_authorisation_image_2");
-                            this.materialRequest.setValue.submit({customer_authorisation_image_2:url})
+                            //Updating Seventh Field
+                            this.materialRequestFieldUpdater = createResource({
+                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                                params:{
+                                    doctype:'Marketing Material Request',
+                                    doc:this.materialRequest.data.name,
+                                    fieldname:'customer_authorisation_image_2',
+                                    value:this.url
+                                }
+                            })
+                            this.materialRequestFieldUpdater.fetch();
+                            //this.materialRequest.setValue.submit({customer_authorisation_image_2:url})
                         }
                     }
                     // this.materialRequest.setValue.submit({process_stage:'Evaluating POI Exact Requirements'});
-                    this.materialRequestDocCommentHandler = createResource({
+                    this.materialRequestStatusUpdater = createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                         params:{
                             doc:this.materialRequest.data.name,
@@ -298,7 +364,7 @@ export default {
                             user: sessionUser()
                         }
                     })
-                    this.materialRequestDocCommentHandler.fetch();
+                    this.materialRequestStatusUpdater.fetch();
                 }
                 catch(error){
                     throw error;

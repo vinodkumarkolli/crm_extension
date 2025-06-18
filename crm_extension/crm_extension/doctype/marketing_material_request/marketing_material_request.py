@@ -27,6 +27,10 @@ def get_doctype_meta(doctype):
 	meta = frappe.get_meta(doctype)
 	return meta.as_dict()
 @frappe.whitelist()
+def update_dynamic_field(doctype,doc,fieldname,value):
+	frappe.db.set_value(doctype, doc, fieldname, value)
+	frappe.db.commit()
+@frappe.whitelist()
 def change_process_status(doc,process_stage,user):
 	try:
 		req_doc = frappe.get_doc("Marketing Material Request",doc)
