@@ -76,7 +76,7 @@ export default defineComponent({
     
         // const modalActive=ref(true)
         // Use camera reference to call functions
-        const compressImageBlob = async(imageUrl: string, maxWidth = 426.66, maxHeight = 240, targetSizeKB = 10): Promise<Blob> => {
+        const compressImageBlob = async(imageUrl: string , targetSizeKB = 10, latitude?: number, longitude?: number): Promise<Blob> => {
             return new Promise<Blob>((resolve, reject) => {
                 // const imageUrl = URL.createObjectURL(imageBlob);
                 const img = new Image();
@@ -86,14 +86,14 @@ export default defineComponent({
                     let height = img.height;
 
                     // Calculate new dimensions while maintaining aspect ratio
-                    if (width > maxWidth) {
-                        height *= maxWidth / width;
-                        width = maxWidth;
-                    }
-                    if (height > maxHeight) {
-                        width *= maxHeight / height;
-                        height = maxHeight;
-                    }
+                    // if (width > maxWidth) {
+                    //     height *= maxWidth / width;
+                    //     width = maxWidth;
+                    // }
+                    // if (height > maxHeight) {
+                    //     width *= maxHeight / height;
+                    //     height = maxHeight;
+                    // }
                     const canvas = document.createElement('canvas');
                     canvas.width = width;
                     canvas.height = height;
@@ -102,9 +102,26 @@ export default defineComponent({
                     //Add timestamp to the image
                     const now = new Date().toLocaleString();
                     if(ctx){
-                        ctx.font = '16px Arial';
+                        const padding = 10; // Padding from edges
+                        const lineHeight = 12; // Approximate line height for spacing (font is 16px)
+                        ctx.font = '10px Arial';
                         ctx.fillStyle = 'white';
-                        ctx.fillText(now, 10, 20);
+                        ctx.textAlign = 'right';
+                        ctx.textBaseline = 'bottom';
+                        if (latitude !== undefined && longitude !== undefined) {
+                            const latStr = latitude.toFixed(4);
+                            const lonStr = longitude.toFixed(4);
+
+                            // Draw location at bottom-right
+                            ctx.fillText(`Lat: ${latStr}, Lon: ${lonStr}`, canvas.width - padding, canvas.height - padding);
+                            // Draw timestamp above location
+                            ctx.fillText(now, canvas.width - padding, canvas.height - padding - lineHeight);
+                        } 
+                        else {
+                            
+                            ctx.fillText("Location: N/A", canvas.width - padding, canvas.height - padding);
+                            ctx.fillText(now, canvas.width - padding, canvas.height - padding - lineHeight);
+                        }
                     }
                     
                     let quality = 0.7;
@@ -155,8 +172,34 @@ export default defineComponent({
                 if (blob) {
                     // To show the screenshot with an image tag, create a url
                     const url = URL.createObjectURL(blob);
+                    // Get geolocation
+                    let coords: { latitude: number; longitude: number } | null = null;
+                    try {
+                        coords = await new Promise((resolve, reject) => {
+                            if (!navigator.geolocation) {
+                                console.warn("Geolocation is not supported by this browser.");
+                                resolve(null); // Resolve with null if not supported
+                                return;
+                            }
+                            navigator.geolocation.getCurrentPosition(
+                                (position) => {
+                                    resolve({
+                                        latitude: position.coords.latitude,
+                                        longitude: position.coords.longitude,
+                                    });
+                                },
+                                (error) => {
+                                    console.warn("Error getting geolocation:", error.message);
+                                    resolve(null); // Resolve with null on error (e.g., permission denied)
+                                }
+                            );
+                        });
+                    } catch (geoError) {
+                        console.warn("Geolocation promise was not fulfilled:", geoError);
+                        // coords remains null, image processing will continue without location
+                    }
                     // Compress the image before adding it to the array
-                    const compressedBlob = await compressImageBlob(url);
+                    const compressedBlob = await compressImageBlob(url,10,coords?.latitude, coords?.longitude);
                     // Now compressedBlob is properly typed as Blob
                     const compressedImageUrl = URL.createObjectURL(compressedBlob);
                     // Create a URL for the compressed blob and add it to the array

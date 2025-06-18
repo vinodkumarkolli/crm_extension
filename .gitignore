@@ -55,3 +55,6 @@ jspm_packages/
 
 # Aider AI Chat
 .aider*
+
+# Node Modules
+crm_extension/crm_extension/public/node_modules
