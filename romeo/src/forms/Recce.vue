@@ -314,7 +314,7 @@ export default {
                                     doctype:'Marketing Material Request',
                                     doc:this.materialRequest.data.name,
                                     fieldname:'recce_image_2',
-                                    value:this.url
+                                    value:url
                                 }
                             })
                             this.materialRequestFieldUpdater.fetch();
@@ -333,7 +333,7 @@ export default {
                                     doctype:'Marketing Material Request',
                                     doc:this.materialRequest.data.name,
                                     fieldname:'customer_authorisation_image_1',
-                                    value:this.url
+                                    value:url
                                 }
                             })
                             this.materialRequestFieldUpdater.fetch();
