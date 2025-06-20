@@ -372,17 +372,17 @@ export default {
                                 }
                             })
                             materialRequestFieldUpdater.fetch();
-                            //Updating Fifth Field
-                            materialRequestFieldUpdater = createResource({
-                                url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
-                                params:{
-                                    doctype:'Marketing Material Request',
-                                    doc:this.materialRequest.data.name,
-                                    fieldname:'manufacture_verified_on',
-                                    value:new Date()
-                                }
-                            })
-                            materialRequestFieldUpdater.fetch();
+                            // //Updating Fifth Field
+                            // materialRequestFieldUpdater = createResource({
+                            //     url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.update_dynamic_field',
+                            //     params:{
+                            //         doctype:'Marketing Material Request',
+                            //         doc:this.materialRequest.data.name,
+                            //         fieldname:'manufacture_verified_on',
+                            //         value:new Date()
+                            //     }
+                            // })
+                            // materialRequestFieldUpdater.fetch();
                             // this.materialRequest.setValue.submit({manufactured_image_1:url})
                             // this.materialRequest.setValue.submit({manufacture_verified_by:sessionUser()})
                             // this.materialRequest.setValue.submit({manufacturing_notes:this.manufactureNotes})
@@ -407,7 +407,7 @@ export default {
                         }
                     }
                     //this.materialRequest.setValue.submit({process_stage:'Attested Manufacture Process'});
-                    const materialRequestStatusUpdater = createResource({
+                    let materialRequestStatusUpdater = createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                         params:{
                             doc:this.materialRequest.data.name,

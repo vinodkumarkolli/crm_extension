@@ -409,7 +409,7 @@ export default {
                     //     installation_verified_by: sessionUser(),
                     //     process_stage:'Attested Completion of Job handled by Vendor'
                     // })
-                    const materialRequestStatusUpdater=createResource({
+                    let materialRequestStatusUpdater=createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                             params:{
                                 doc:this.materialRequest.data.name,
@@ -418,7 +418,7 @@ export default {
                             }
                     })
                     materialRequestStatusUpdater.fetch()
-                    const markRequestCompleted = createResource({
+                    let markRequestCompleted = createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.success_completion_request',
                         params:{
                             doc:this.materialRequest.data.name

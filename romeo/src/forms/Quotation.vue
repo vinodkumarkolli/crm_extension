@@ -259,14 +259,7 @@ export default {
                         }
                     })
                     materialRequestFieldUpdater.fetch();
-                    // this.materialRequest.setValue.submit({
-                    //     quantity: Number(this.quantity),
-                    //     quote_uom: this.selectedUOM.value,
-                    //     quote_rate_per_uom:Number(this.ratePerUOM),
-                    //     // quotation_price: Number(this.quantity)*Number(this.ratePerUOM),
-                    //     process_stage:'Submitted Quotation for Requirements'
-                    // })
-                    const materialRequestStatusUpdater=createResource({
+                    let materialRequestStatusUpdater=createResource({
                         url:'/api/method/crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status',
                             params:{
                                 doc:this.materialRequest.data.name,
