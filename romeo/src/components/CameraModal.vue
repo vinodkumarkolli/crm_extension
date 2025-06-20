@@ -104,7 +104,7 @@ export default defineComponent({
                     if(ctx){
                         const padding = 10; // Padding from edges
                         const lineHeight = 12; // Approximate line height for spacing (font is 16px)
-                        ctx.font = '10px Arial';
+                        ctx.font = '16px Arial';
                         ctx.fillStyle = 'white';
                         ctx.textAlign = 'right';
                         ctx.textBaseline = 'bottom';
@@ -168,7 +168,11 @@ export default defineComponent({
         }
         const snapshot = async () => {
             try {
-                const blob = await camera.value?.snapshot();
+                const blob = await camera.value?.snapshot(
+                    { width: 1080, height: 1920 },
+                    "image/jpeg",
+                    0.8
+                );
                 if (blob) {
                     // To show the screenshot with an image tag, create a url
                     const url = URL.createObjectURL(blob);
