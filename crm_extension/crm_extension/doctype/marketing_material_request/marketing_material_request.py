@@ -133,7 +133,6 @@ def success_completion_request(doc):
 	# req_doc.request_status = "Completed"
 	# req_doc.completed_date = now()
 	req_doc.add_comment("Comment","Request has been marked as completed successfully on "+now())
-	req_doc.save()
 	frappe.db.commit()
 @frappe.whitelist()
 def allocate_batch(doc,batch_id):
