@@ -34,8 +34,9 @@ def update_dynamic_field(doctype,doc,fieldname,value):
 def change_process_status(doc,process_stage,user):
 	try:
 		req_doc = frappe.get_doc("Marketing Material Request",doc)
-		req_doc.process_stage=process_stage
-		req_doc.save()
+		frappe.db.set_value("Marketing Material Request",doc,"process_stage",process_stage)
+		# req_doc.process_stage=process_stage
+		# req_doc.save()
 		req_doc.add_comment("Comment","Process Stage changed to "+process_stage+" by "+user+" on "+now())
 		frappe.db.commit()
 		return True
@@ -127,8 +128,10 @@ def mark_request_as_completed(doc,completed_date,completion_reason):
 @frappe.whitelist()
 def success_completion_request(doc):
 	req_doc = frappe.get_doc("Marketing Material Request",doc)
-	req_doc.request_status = "Completed"
-	req_doc.completed_date = now()
+	frappe.db.set_value("Marketing Material Request",doc,"request_status","Completed")
+	frappe.db.set_value("Marketing Material Request",doc,"completed_date",now())
+	# req_doc.request_status = "Completed"
+	# req_doc.completed_date = now()
 	req_doc.add_comment("Comment","Request has been marked as completed successfully on "+now())
 	req_doc.save()
 	frappe.db.commit()
