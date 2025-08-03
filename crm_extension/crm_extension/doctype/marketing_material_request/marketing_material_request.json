@@ -123,7 +123,6 @@
    "in_list_view": 1,
    "label": "Request Status",
    "options": "Submitted\nShortlisted\nCompleted\nDeclined\nOn Hold\nVendor Dispute",
-   "read_only": 1,
    "reqd": 1
   },
   {
@@ -579,8 +578,8 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-20 14:25:46.470212",
- "modified_by": "vinodkumarkolli@gmail.com",
+ "modified": "2025-08-03 19:24:55.231995",
+ "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "Marketing Material Request",
  "naming_rule": "Expression",
