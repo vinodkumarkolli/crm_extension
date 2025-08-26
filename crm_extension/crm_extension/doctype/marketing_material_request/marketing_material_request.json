@@ -30,6 +30,7 @@
   "amended_from",
   "details_section",
   "request_notes",
+  "past_request_notes",
   "approval_comment",
   "hold_comment",
   "vendor_tab",
@@ -123,6 +124,7 @@
    "in_list_view": 1,
    "label": "Request Status",
    "options": "Submitted\nShortlisted\nCompleted\nDeclined\nOn Hold\nVendor Dispute",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -572,13 +574,18 @@
    "fieldtype": "Attach Image",
    "label": "Customer signed Image 1",
    "read_only": 1
+  },
+  {
+   "fieldname": "past_request_notes",
+   "fieldtype": "HTML",
+   "label": "Past Request Notes"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-03 21:41:29.851311",
+ "modified": "2025-08-26 15:26:39.549612",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "Marketing Material Request",

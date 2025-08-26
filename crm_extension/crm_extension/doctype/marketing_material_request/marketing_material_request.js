@@ -3,6 +3,11 @@
 
 frappe.ui.form.on("Marketing Material Request", {
 	refresh(frm) {
+        // Fetch and display past requests
+        if(frm.doc.poi_id) {
+            fetchPastRequests(frm);
+        }
+        
         if(frm.doc.docstatus === 1){
             if(frm.doc.request_status === "Submitted" || frm.doc.request_status === "On Hold" ){
                 frm.add_custom_button(__("Approve"), function () {
@@ -76,6 +81,7 @@ frappe.ui.form.on("Marketing Material Request", {
         }
 	},
 });
+
 function assignPaymentBatch(frm){
     d = new frappe.ui.Dialog({
         title:'Assign Payment Batch',
@@ -123,6 +129,7 @@ function assignPaymentBatch(frm){
     })
     d.show();
 }
+
 function modifyQuotationPrice(frm){
     d = new frappe.ui.Dialog({
         title:'Modify Quotation Price',
@@ -162,6 +169,7 @@ function modifyQuotationPrice(frm){
     })
     d.show();
 }
+
 function approveQuotation(frm){
     frappe.warn('Are you sure you want to approve the quotation?',
         'Details: <b>'+frm.doc.quantity+' '+frm.doc.quote_uom+'</b> with price: <b>'+frm.doc.quote_price+'</b>.<br>'
@@ -190,6 +198,7 @@ function approveQuotation(frm){
         true // Sets dialog as minimizable
     )
 }
+
 function openBatchFormPopup(frm,mode){
     switch(mode){
         case "new":
@@ -321,6 +330,7 @@ function openBatchFormPopup(frm,mode){
             break;
     }
 }
+
 function openCompletionFormPopup(frm){
     const d = new frappe.ui.Dialog({
         title:'Completion Form',
@@ -359,6 +369,7 @@ function openCompletionFormPopup(frm){
     })
     d.show();
 }
+
 function openApprovalsPopup(frm,mode){
     var d;
     switch(mode){
@@ -455,4 +466,104 @@ function openApprovalsPopup(frm,mode){
             d.show();
             break;
     }
+}
+
+function fetchPastRequests(frm) {
+    frappe.call({
+        method: "frappe.client.get_list",
+        args: {
+            doctype: "Marketing Material Request",
+            filters: {
+                poi_id: frm.doc.poi_id,
+                docstatus: 1, // Only submitted documents
+                name: ["!=", frm.doc.name] // Exclude current document
+            },
+            fields: ["name", "request_material", "creation", "request_status", "request_notes"],
+            limit_page_length: 10 // Limit to 10 most recent requests
+        },
+        callback: function(r) {
+            if (!r.exc && r.message) {
+                // Get material types for filtering
+                if (r.message.length > 0) {
+                    var material_names = [];
+                    r.message.forEach(function(request) {
+                        if (request.request_material && material_names.indexOf(request.request_material) === -1) {
+                            material_names.push(request.request_material);
+                        }
+                    });
+                    
+                    if (material_names.length > 0) {
+                        frappe.call({
+                            method: "frappe.client.get_list",
+                            args: {
+                                doctype: "Marketing Material Type",
+                                filters: {
+                                    name: ["in", material_names]
+                                },
+                                fields: ["name", "material_name"]
+                            },
+                            callback: function(mat_r) {
+                                if (!mat_r.exc && mat_r.message) {
+                                    // Filter for Frontlit Boards or Backlit Boards
+                                    var valid_materials = mat_r.message
+                                        .filter(function(m) { 
+                                            return m.material_name === "Frontlit Boards" || m.material_name === "Backlit Boards";
+                                        })
+                                        .map(function(m) { return m.name; });
+                                    
+                                    // Filter requests by valid material types
+                                    var filtered_requests = r.message.filter(function(request) {
+                                        return valid_materials.indexOf(request.request_material) !== -1;
+                                    });
+                                    
+                                    // Format and display the requests
+                                    displayPastRequests(frm, filtered_requests);
+                                } else {
+                                    displayPastRequests(frm, []);
+                                }
+                            }
+                        });
+                    } else {
+                        displayPastRequests(frm, []);
+                    }
+                } else {
+                    displayPastRequests(frm, []);
+                }
+            } else {
+                displayPastRequests(frm, []);
+            }
+        }
+    });
+}
+
+function displayPastRequests(frm, requests) {
+    var html = "";
+    
+    if (requests.length > 0) {
+        html += "<div style='border: 1px solid #d1d8dd; padding: 10px; margin-bottom: 10px; background-color: #f0f8ff;'>";
+        html += "<h4 style='margin-top: 0;'>Past Marketing Material Requests</h4>";
+        html += "<table class='table table-bordered'>";
+        html += "<thead><tr><th>Request ID</th><th>Material</th><th>Date</th><th>Status</th><th>Notes</th></tr></thead>";
+        html += "<tbody>";
+        
+        requests.forEach(function(request) {
+            html += "<tr>";
+            html += "<td>" + request.name + "</td>";
+            html += "<td>" + (request.request_material || "") + "</td>";
+            html += "<td>" + frappe.datetime.str_to_user(request.creation) + "</td>";
+            html += "<td>" + request.request_status + "</td>";
+            html += "<td>" + (request.request_notes || "") + "</td>";
+            html += "</tr>";
+        });
+        
+        html += "</tbody></table>";
+        html += "</div>";
+    } else {
+        html = "<div style='border: 1px solid #d1d8dd; padding: 10px; margin-bottom: 10px; background-color: #fff5f5;'>";
+        html += "<h4 style='margin-top: 0;'>Past Marketing Material Requests</h4>";
+        html += "<p>No past requests found for this POI with Frontlit Boards or Backlit Boards.</p>";
+        html += "</div>";
+    }
+    
+    frm.set_df_property("past_request_notes", "options", html);
 }
