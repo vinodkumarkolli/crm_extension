@@ -55,8 +55,7 @@ class CRMPOINotify(Document):
 			}).insert(ignore_permissions=True)
 			
 			# Set is_validated to 1
-			self.is_validated = 1
-			self.save()
+			frappe.db.set_value('CRM POI Notify', self.name, 'is_validated', 1)
 			
 
 @frappe.whitelist()
