@@ -8,6 +8,8 @@
   "section_break_5ihw",
   "amended_from",
   "notification_type",
+  "crm_poi",
+  "survey_master",
   "column_break_mfre",
   "notification_time",
   "notified_by",
@@ -34,7 +36,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Notification Type",
-   "options": "Closure\nComplaint\nSurvey",
+   "options": "Closure\nSurvey",
    "reqd": 1
   },
   {
@@ -63,19 +65,33 @@
    "fieldtype": "Table",
    "label": "Detail",
    "options": "CRM POI Notification Detail"
+  },
+  {
+   "fieldname": "crm_poi",
+   "fieldtype": "Link",
+   "label": "CRM POI",
+   "options": "CRM POI",
+   "reqd": 1
+  },
+  {
+   "fieldname": "survey_master",
+   "fieldtype": "Link",
+   "label": "Survey Master",
+   "options": "CRM POI Survey Master"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-10 16:07:07.192564",
+ "modified": "2025-09-10 16:22:52.660194",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI Notify",
  "owner": "Administrator",
  "permissions": [
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -84,6 +100,32 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Bazooka User",
+   "select": 1,
    "share": 1,
    "submit": 1,
    "write": 1

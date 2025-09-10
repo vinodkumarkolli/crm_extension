@@ -145,9 +145,15 @@
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2025-04-06 20:26:10.173313",
- "modified_by": "vinodkumarkolli@gmail.com",
+ "links": [
+  {
+   "group": "Quiz",
+   "link_doctype": "CRM POI Notify",
+   "link_fieldname": "crm_poi"
+  }
+ ],
+ "modified": "2025-09-10 16:21:14.786703",
+ "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI",
  "naming_rule": "Expression",
@@ -177,6 +183,27 @@
    "select": 1,
    "share": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Bazooka User",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Lamp User",
+   "select": 1,
+   "share": 1
   }
  ],
  "row_format": "Dynamic",

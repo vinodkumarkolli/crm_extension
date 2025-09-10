@@ -12,7 +12,9 @@
   {
    "fieldname": "table_rwyu",
    "fieldtype": "Table",
-   "options": "CRM POI Survey Question"
+   "label": "Survey Questions",
+   "options": "CRM POI Survey Question",
+   "reqd": 1
   },
   {
    "default": "0",
@@ -23,8 +25,14 @@
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2025-09-10 16:04:49.294504",
+ "links": [
+  {
+   "group": "Quiz",
+   "link_doctype": "CRM POI Notify",
+   "link_fieldname": "survey_master"
+  }
+ ],
+ "modified": "2025-09-10 16:14:38.522025",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI Survey Master",
