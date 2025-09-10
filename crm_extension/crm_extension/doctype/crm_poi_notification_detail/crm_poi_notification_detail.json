@@ -1,0 +1,59 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-10 15:29:58.257111",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "notification_heading",
+  "has_media",
+  "media",
+  "column_break_aqhf",
+  "notification_content"
+ ],
+ "fields": [
+  {
+   "fieldname": "notification_heading",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Notification Heading",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "has_media",
+   "fieldtype": "Check",
+   "label": "Has Media"
+  },
+  {
+   "fieldname": "media",
+   "fieldtype": "Attach",
+   "label": "Media"
+  },
+  {
+   "fieldname": "column_break_aqhf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "notification_content",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Notification Content"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-09-10 16:07:27.420759",
+ "modified_by": "Administrator",
+ "module": "Crm Extension",
+ "name": "CRM POI Notification Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

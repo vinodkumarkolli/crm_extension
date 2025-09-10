@@ -57,4 +57,4 @@ jspm_packages/
 .aider*
 
 # Node Modules
-crm_extension/crm_extension/public/node_modules
+crm_extension/crm_extension/public/node_modules/*

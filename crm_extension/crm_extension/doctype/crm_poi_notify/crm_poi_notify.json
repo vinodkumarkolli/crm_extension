@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-10 15:24:36.038352",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_5ihw",
+  "amended_from",
+  "notification_type",
+  "column_break_mfre",
+  "notification_time",
+  "notified_by",
+  "section_break_pzse",
+  "detail"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_5ihw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "CRM POI Notify",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "notification_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Notification Type",
+   "options": "Closure\nComplaint\nSurvey",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_mfre",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "notification_time",
+   "fieldtype": "Datetime",
+   "label": "Notification Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "notified_by",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Notified by",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_pzse",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "detail",
+   "fieldtype": "Table",
+   "label": "Detail",
+   "options": "CRM POI Notification Detail"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-09-10 16:07:07.192564",
+ "modified_by": "Administrator",
+ "module": "Crm Extension",
+ "name": "CRM POI Notify",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
