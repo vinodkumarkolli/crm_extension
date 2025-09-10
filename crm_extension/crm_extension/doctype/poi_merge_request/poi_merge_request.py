@@ -25,6 +25,9 @@ class POIMergeRequest(Document):
 		return {"success":"Success"}
 	def on_submit(self):
 		self.request_status="Submitted"
+		# Add comment to self.from_poi doc - doctype "CRM POI" with Edit type comment "Status changed to <b>Merge Request Raised</b>"
+		from_poi_doc = frappe.get_doc('CRM POI', self.from_poi)
+		from_poi_doc.add_comment("Edit", "Status changed to <b>Merge Request Raised</b>")
 		frappe.db.set_value('CRM POI', self.from_poi,'poi_status','Merge Request Raised')
 		return {"success":"Success"}
 		
@@ -38,6 +41,7 @@ def execute_merge_subrequest(merge_doc,child_subrequest):
 		subrequest_doc.poi_status='Merged'
 		subrequest_doc.save()
 		frappe.db.commit()
+		subrequest_doc.add_comment("Edit","Status changed to <b>Merged</b>")
 	elif child_subrequest.sub_request_type == 'Marketing Material Request':
 		subrequest_doc = frappe.get_doc('Marketing Material Request',child_subrequest.audit_document)
 		to_poi = frappe.get_doc('CRM POI',merge_doc.to_poi)
