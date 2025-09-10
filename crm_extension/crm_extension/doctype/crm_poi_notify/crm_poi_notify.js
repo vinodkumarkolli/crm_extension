@@ -7,6 +7,10 @@ frappe.ui.form.on("CRM POI Notify", {
 			// Cancel logic implemented in Python file (on_cancel method)
 			// When Cancel is clicked, doc.crm_poi's poi_status is restored to "Active" and a comment is added
 			// Add a custom button "Request Closure" if doc.notification_type = 'Closure' and doc.docstatus === 1 (submitted)
+			if(frm.doc.is_validated === 1){
+				//hide cancel button
+				frm.page.btn_secondary.hide();
+			}
 			if (frm.doc.notification_type === 'Closure' && frm.doc.docstatus === 1 && frm.doc.is_validated === 0) {
 				frm.add_custom_button(__('Close POI'), function() {
 					//before executing the below method call, prompt the user, if he is sure to close the poi. if yes clicked then execute the below method call else dont call
