@@ -1,6 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "autoname": "hash",
  "creation": "2025-09-10 15:24:36.038352",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -13,6 +13,7 @@
   "column_break_mfre",
   "notification_time",
   "notified_by",
+  "is_validated",
   "section_break_pzse",
   "detail"
  ],
@@ -41,7 +42,8 @@
   },
   {
    "fieldname": "column_break_mfre",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "read_only": 1
   },
   {
    "fieldname": "notification_time",
@@ -51,9 +53,10 @@
   },
   {
    "fieldname": "notified_by",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Notified by",
+   "options": "User",
    "reqd": 1
   },
   {
@@ -78,16 +81,23 @@
    "fieldtype": "Link",
    "label": "Survey Master",
    "options": "CRM POI Survey Master"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_validated",
+   "fieldtype": "Check",
+   "label": "Is Validated"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-10 16:22:52.660194",
+ "modified": "2025-09-10 18:10:35.674622",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI Notify",
+ "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [
   {
@@ -134,5 +144,6 @@
  "row_format": "Dynamic",
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "crm_poi"
 }

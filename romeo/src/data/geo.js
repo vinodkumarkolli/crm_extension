@@ -25,6 +25,7 @@ export function getBoundsFromLatLng(setLat,setLng, radius) {
 export function generateHTMLTemplate(feature,navigateUrl){
     // const poiUrl = '/romeo/bazooka/'+feature.properties.name+'?location_name='+feature.properties.location_name+'&crm_lead_id='+feature.properties.crm_lead_id+'&fieldassist_id='+feature.properties.fieldassist_id+'&fieldmate_id='+feature.properties.fieldmate_id+'&workmate_id='+feature.properties.workmate_id+'&latitude='+feature.geometry.coordinates[1]+'&longitude='+feature.geometry.coordinates[0]+'&source='+feature.properties.source+'&poi_status='+feature.properties.poi_status;
     const poiUrl = '/romeo/bazooka/'+feature.properties.name+'?source='+feature.properties.source
+    const closeUrl = '/romeo/bazooka/'+feature.properties.name+'/close?source='+feature.properties.source
     return L.Util.template(`<table>
       <tr><td><b>Location ID</b></td><td>${feature.properties.name}</td></tr>
       <tr><td><b>Location Name</b></td><td>${feature.properties.location_name}</td></tr>
@@ -45,7 +46,7 @@ export function generateHTMLTemplate(feature,navigateUrl){
             <a href="${poiUrl}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; padding: 8px 12px; background-color: #f0f0f0; border-radius: 4px;">Actions</a>
           </td>
           <td style="padding: 10px; margin: 5px; text-align: center;">
-            <a href="${poiUrl}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; padding: 8px 12px; background-color: #f0f0f0; border-radius: 4px;">Report</a>
+            <a href="${closeUrl}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; padding: 8px 12px; background-color: #ff0000; border-radius: 4px; color: #000000;">Closure</a>
           </td>
         </tr>
       </table>`)

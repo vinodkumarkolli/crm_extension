@@ -20,6 +20,12 @@ const routes = [
     props:true
   },
   {
+    path:'/bazooka/:id/close',
+    name:'POI Closure',
+    component:async () => import('@/forms/Closure.vue'),
+    props:true
+  },
+  {
     path:'/lamp',
     name:'Lamp',
     component:async () => import('@/pages/Lamp.vue')

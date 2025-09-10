@@ -322,7 +322,7 @@ export default {
     },
     data(){
         return {
-            poi_details: ref({}),
+            poi_details: {},
             showMergeForm : false,
             showBoardForm : false,
             showDistributorForm : false,
@@ -331,7 +331,7 @@ export default {
             pois: ref([]),
             mergeRequests:ref([]),
             rejectedMergeRequests:ref([]),
-            marketingRequests:ref([]),   
+            marketingRequests:ref([]),
             mergeToLocation:null,
             mergeNotes:null,
             marketingMaterialOptions:ref([]),
@@ -340,7 +340,7 @@ export default {
         }
     },
     mounted(){
-        this.poi_details= createResource({
+        createResource({
             url:'frappe.client.get',
             params:{
                 doctype:"CRM POI",

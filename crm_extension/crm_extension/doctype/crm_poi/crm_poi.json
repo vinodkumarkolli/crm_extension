@@ -121,7 +121,7 @@
    "fieldname": "poi_status",
    "fieldtype": "Select",
    "label": "POI Status",
-   "options": "Active\nIncorrect\nMerge Request Raised\nMerged",
+   "options": "Active\nClosure Requested\nClosed\nMerge Request Raised\nMerged",
    "read_only": 1,
    "reqd": 1
   },
@@ -152,7 +152,7 @@
    "link_fieldname": "crm_poi"
   }
  ],
- "modified": "2025-09-10 16:21:14.786703",
+ "modified": "2025-09-10 17:50:31.611554",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI",
