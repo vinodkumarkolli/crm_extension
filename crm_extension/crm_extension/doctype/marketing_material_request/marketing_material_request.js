@@ -19,6 +19,104 @@ frappe.ui.form.on("Marketing Material Request", {
                     openApprovalsPopup(frm,"Hold")         
                 },__("Approvals"))
             }
+            if(frm.doc.request_status =="Shortlisted" && (frm.doc.process_stage == "Procurement"|| frm.doc.process_stage == "Purchase Order Placement" || frm.doc.process_stage == "Batch id Allocated") && frm.doc.recce_done_by){
+                if(frm.doc.quote_price){
+                    if(frm.doc.quote_accepted_by){
+                        if(frm.doc.manufacture_verified_by){
+                            if(frm.doc.installed_by){
+                                frm.add_custom_button(__("Push to Installed Board"),function(){
+                                    frappe.call({
+                                    method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status",
+                                    args:{
+                                        "doc": frm.doc.name,
+                                        "process_stage":"Delivered the Goods by Vendor",
+                                        "user": frappe.session.user
+                                    },
+                                    callback:function(r){
+                                        if(!r.exc){
+                                            //refresh_field('status');
+                                            frappe.msgprint("Process Stage successfully changed to - Delivered the Goods by Vendor")
+                                        }
+                                    }
+                                });
+                                },__("Approvals"))
+                            }
+                            else{
+                                frm.add_custom_button(__("Push to Verified Manufacture"),function(){
+                                    frappe.call({
+                                    method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status",
+                                    args:{
+                                        "doc": frm.doc.name,
+                                        "process_stage":"Attested Manufacture Process",
+                                        "user": frappe.session.user
+                                    },
+                                    callback:function(r){
+                                        if(!r.exc){
+                                            //refresh_field('status');
+                                            frappe.msgprint("Process Stage successfully changed to - Attested Manufacture Process")
+                                        }
+                                    }
+                                });
+                                },__("Approvals"))
+                            }
+                        }
+                        else{
+                            frm.add_custom_button(__("Push to Accepted Quotation"),function(){
+                                frappe.call({
+                                    method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status",
+                                    args:{
+                                        "doc": frm.doc.name,
+                                        "process_stage":"Accepted Quotation",
+                                        "user": frappe.session.user
+                                    },
+                                    callback:function(r){
+                                        if(!r.exc){
+                                            //refresh_field('status');
+                                            frappe.msgprint("Process Stage successfully changed to - Accepted Quotation")
+                                        }
+                                    }
+                                });
+                            },__("Approvals"))
+                        }
+                    }
+                    else{
+                        frm.add_custom_button(__("Push to Submitted Quotation"),function(){
+                            frappe.call({
+                            method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status",
+                            args:{
+                                "doc": frm.doc.name,
+                                "process_stage":"Submitted Quotation for Requirements",
+                                "user": frappe.session.user
+                            },
+                            callback:function(r){
+                                if(!r.exc){
+                                    //refresh_field('status');
+                                    frappe.msgprint("Process Stage successfully changed to - Submitted Quotation for Requirements")
+                                }
+                            }
+                        });
+                        },__("Approvals"))
+                    }
+                }
+                else{
+                    frm.add_custom_button(__("Push to Evaluating Requirements"),function(){
+                        frappe.call({
+                            method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status",
+                            args:{
+                                "doc": frm.doc.name,
+                                "process_stage":"Evaluating POI Exact Requirements",
+                                "user": frappe.session.user
+                            },
+                            callback:function(r){
+                                if(!r.exc){
+                                    //refresh_field('status');
+                                    frappe.msgprint("Process Stage successfully changed to - Evaluating POI Exact Requirements")
+                                }
+                            }
+                        });
+                    },__("Approvals"))
+                }
+            }
             if(frm.doc.request_status === "On Hold"){
                 frm.add_custom_button(__("Reject"), function () {
                     openApprovalsPopup(frm,"Reject")
