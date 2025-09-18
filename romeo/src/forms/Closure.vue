@@ -168,14 +168,10 @@ export default {
                             docstatus: 1,
                             notification_type: "Closure",
                             crm_poi: this.id,
+                            poi_name:this.poi_details.doc.location_name,
                             notification_time: new Date().toISOString().slice(0, 19).replace('T', ' '),
                             notified_by: sessionUser(),
-                            detail: [
-                                {
-                                    notification_heading: "Closure Comment",
-                                    notification_content: this.closureNotes
-                                }
-                            ]
+                            notification_detail: "Closure Comment\n"+"-----------------\n" + this.closureNotes
                         }
                     },
                     onSuccess: (data) => {

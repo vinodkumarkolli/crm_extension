@@ -102,8 +102,8 @@
             <button  @click="toggleMergeForm" v-if="(poi_details.doc.poi_status=='Active')&&(pois.items?.length>0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Merge Request
             </button>
-            <button @click="toggleDistributorForm" v-if="(poi_details.doc.poi_status=='Active')&&(source == 'Field Assist')" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                Link Distributor
+            <button @click="toggleSurveyForm" v-if="(poi_details.doc.poi_status=='Active')&&(source == 'Field Assist')" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Take Survey
             </button>
             <button @click="toggleBoardForm" v-if="(poi_details.doc.poi_status=='Active')&&(source == 'Field Assist')" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Raise a Marketing Material Request
@@ -208,38 +208,77 @@
                     </div>
                 </div>
         </div>
-        <!--Generate Link Distributor Form-->
-        <div v-if="showDistributorForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
-            <h3 class="text-xl font-semibold mb-2">Link Distributor</h3>
-            <form>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label for="distributor_name" class="text-gray-600">Distributor Name:</label>
-                        <label id="distributor_name" name="distributor_name" class="border border-gray-300 rounded-md p-2 w-full" required>{{ to_location_name }}</label>
+        <!--Survey Form-->
+        <div v-if="showSurveyForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
+            
+            <div v-if="!currentSurvey">
+                <h3 class="text-xl font-semibold mb-2">Select a Survey</h3>
+                <div v-for="survey in surveys.items" :key="survey.name" class="flex items-center mb-2">
+                    <input type="checkbox" :id="'survey-' + survey.name" :value="survey.name" v-model="selectedSurveys" class="mr-2">
+                    <label :for="'survey-' + survey.name" class="text-gray-700">{{ survey.survey_name }}</label>
+                </div>
+                <button @click="startSurvey" :disabled="selectedSurveys.length === 0" class="mt-4 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Start Survey
+                </button>
+            </div>
+            <!-- Survey questions will be displayed here -->
+            <div v-else>
+                <div v-if="surveyQuestions.length > 0">
+                    <h3 class="text-xl font-semibold mb-2">{{ getCurrentQuestion().question_heading }}</h3>
+                    <h5 class="text-gray-800 font-semibold mb-2">{{ getCurrentQuestion().main_question }}</h5>
+                    <p v-if="getCurrentQuestion().main_question_description" class="text-gray-600 mb-4"> ({{ getCurrentQuestion().main_question_description }})</p>
+                    <!-- Render question based on type -->
+                    <div v-if="getCurrentQuestion().main_question_type === 'Select'">
+                        <div v-for="(option, index) in getQuestionOptions(getCurrentQuestion())" :key="index" class="flex items-center mb-2">
+                            <input type="radio" :id="'option-' + index" :value="option" v-model="surveyAnswers[getCurrentQuestion().name]" class="mr-2">
+                            <label :for="'option-' + index" class="text-gray-700">{{ option }}</label>
+                        </div>
                     </div>
-                    <div>
-                        <label for="distributor_email" class="text-gray-600">Distributor Email:</label>
-                        <input type="email" id="distributor_email" name="distributor_email" class="border border-gray-300 rounded-md p-2 w-full" required>
+                    
+                    <div v-else-if="getCurrentQuestion().main_question_type === 'Multi Select'">
+                        <div v-for="(option, index) in getQuestionOptions(getCurrentQuestion())" :key="index" class="flex items-center mb-2">
+                            <input type="checkbox" :id="'multi-option-' + index" :value="option" v-model="surveyAnswers[getCurrentQuestion().name]" class="mr-2">
+                            <label :for="'multi-option-' + index" class="text-gray-700">{{ option }}</label>
+                        </div>
                     </div>
-                    <div>
-                        <label for="distributor_phone" class="text-gray-600">Distributor Phone:</label>
-                        <input type="tel" id="distributor_phone" name="distributor_phone" class="border border-gray-300 rounded-md p-2 w-full" required>
+                    
+                    <div v-else-if="getCurrentQuestion().main_question_type === 'Data'">
+                        <TextInput
+                            :type="'text'"
+                            size="sm"
+                            variant="subtle"
+                            :placeholder="getCurrentQuestion().main_question"
+                            v-model="surveyAnswers[getCurrentQuestion().name]"
+                        />
                     </div>
-                    <div>
-                        <label for="distributor_address" class="text-gray-600">Distributor Address:</label>
-                        <input type="text" id="distributor_address" name="distributor_address" class="border border-gray-300 rounded-md p-2 w-full" required>
+                    
+                    <div v-else-if="getCurrentQuestion().main_question_type === 'Rating'">
+                        <div class="flex items-center">
+                            <span v-for="star in 5" :key="star" @click="setRating(getCurrentQuestion().name, star)"
+                                class="cursor-pointer text-2xl"
+                                :class="{'text-yellow-500': getRating(getCurrentQuestion().name) >= star, 'text-gray-300': getRating(getCurrentQuestion().name) < star}">
+                                ★
+                            </span>
+                        </div>
                     </div>
-                    <div class="col-span-2 flex justify-center ">
-                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                            Submit
+                    
+                    <!-- Navigation buttons -->
+                    <div class="flex justify-between mt-6">
+                        <button v-if="currentQuestionIndex > 0" @click="previousQuestion" class="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                            Previous
                         </button>
-                        <button type="button" @click="closeAllForms" class="text-white
-                        bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                            Cancel
+                        <button v-if="currentQuestionIndex < surveyQuestions.length - 1" @click="nextQuestion" :disabled="!isCurrentQuestionValid()" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Next
+                        </button>
+                        <button v-else @click="submitSurvey" :disabled="!isCurrentQuestionValid()" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Submit
                         </button>
                     </div>
                 </div>
-            </form>
+                <div v-else>
+                    <p>No questions found in this survey.</p>
+                </div>
+            </div>
         </div>
         <!--Generate Raise a Marketing Material Request Form-->
         <div v-if="showBoardForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
@@ -296,6 +335,15 @@
                     <p v-if="request.approval_comment && request.request_status === 'Shortlisted'"><strong>Approval Comments:</strong> {{ request.approval_comment  }}</p>
                     <p v-if="request.hold_comment && request.request_status === 'On Hold'"><strong>Held Comments:</strong> {{ request.hold_comment  }}</p>
                 </li>
+                <li v-for="item in surveyItems.items" :key="item.name" class="bg-white shadow-md rounded-lg p-4 mb-4">
+                    <p>
+                        Survey <strong>{{ item.survey_master }}</strong> was submitted on <strong>{{ new Date(item.notification_time).toLocaleString() }}</strong> by <strong>{{ item.notified_by }}</strong>.
+                    </p>
+                    <!-- <div v-if="item.notification_detail">
+                        <p><strong>Details:</strong></p>
+                        <pre class="whitespace-pre-wrap">{{ item.notification_detail }}</pre>
+                    </div> -->
+                </li>
             </ol>
         </div>
     </div>
@@ -321,24 +369,32 @@ export default {
         }
     },
     data(){
-        return {
-            poi_details: {},
-            showMergeForm : false,
-            showBoardForm : false,
-            showDistributorForm : false,
-            showGlobeActivity:true,
-            source: urlParams.get('source'),
-            pois: ref([]),
-            mergeRequests:ref([]),
-            rejectedMergeRequests:ref([]),
-            marketingRequests:ref([]),
-            mergeToLocation:null,
-            mergeNotes:null,
-            marketingMaterialOptions:ref([]),
-            selectedMarketingMaterial:null,
-            materialNotes:null
-        }
-    },
+            return {
+                poi_details: {},
+                showMergeForm : false,
+                showBoardForm : false,
+                showSurveyForm : false,
+                showGlobeActivity:true,
+                source: urlParams.get('source'),
+                pois: ref([]),
+                mergeRequests:ref([]),
+                rejectedMergeRequests:ref([]),
+                marketingRequests:ref([]),
+                surveyItems:ref([]),
+                mergeToLocation:null,
+                mergeNotes:null,
+                marketingMaterialOptions:ref([]),
+                selectedMarketingMaterial:null,
+                materialNotes:null,
+                // Survey related data
+                surveys: ref([]),
+                selectedSurveys: ref([]),
+                surveyQuestions: ref([]),
+                currentSurvey: null,
+                currentQuestionIndex: 0,
+                surveyAnswers: ref({})
+            }
+        },
     mounted(){
         createResource({
             url:'frappe.client.get',
@@ -426,16 +482,42 @@ export default {
         }).catch(error => {
             console.error("Failed to load marketing requests:", error);
         });
+        
+        // Load survey items (CRM POI Notify with notification_type = 'Survey')
+                this.surveyItems = createListResource({
+                    doctype: 'CRM POI Notify',
+                    fields: ['*'],
+                    filters: [['crm_poi', '=', this.id], ['notification_type', '=', 'Survey']],
+                    pageLength: "None",
+                })
+                this.surveyItems.reload().then(response => {
+                    this.surveyItems.items = response;
+                }).catch(error => {
+                    console.error("Failed to load survey items:", error);
+                });
+                
+                // Load active surveys
+                this.surveys = createListResource({
+                    doctype: 'CRM POI Survey Master',
+                    fields: ['name', 'survey_name'],
+                    filters: [['is_active', '=', 1]],
+                    pageLength: "None",
+                })
+                this.surveys.reload().then(response => {
+                    this.surveys.items = response;
+                }).catch(error => {
+                    console.error("Failed to load surveys:", error);
+                });
     },
     methods: {
         toggleMergeForm() {
             this.showMergeForm = !this.showMergeForm;
-            this.showDistributorForm = false;
+            this.showSurveyForm = false;
             this.showBoardForm = false;
             this.showGlobeActivity=false;
         },
-        toggleDistributorForm() {
-            this.showDistributorForm = !this.showDistributorForm;
+        toggleSurveyForm() {
+            this.showSurveyForm = !this.showSurveyForm;
             this.showMergeForm = false;
             this.showBoardForm = false;
             this.showGlobeActivity=false;
@@ -443,14 +525,14 @@ export default {
         toggleBoardForm() {
             this.showBoardForm = !this.showBoardForm;
             this.showMergeForm = false;
-            this.showDistributorForm = false;
+            this.showSurveyForm = false;
             this.showGlobeActivity=false;
         },
         toggleGlobeActivity(){
             this.showGlobeActivity=!this.showGlobeActivity;
             this.showBoardForm = false;
             this.showMergeForm = false;
-            this.showDistributorForm = false;
+            this.showSurveyForm = false;
             // console.log()
         },
         closeAllForms() {
@@ -459,7 +541,7 @@ export default {
             this.selectedMarketingMaterial =null;
             this.materialNotes=null;
             this.mergeNotes=null;
-            this.showDistributorForm = false;
+            this.showSurveyForm = false;
             this.showBoardForm = false;
         },
         locationSelected(event){
@@ -496,6 +578,150 @@ export default {
                     })
                 }
             }
+        },
+        startSurvey() {
+            if (this.selectedSurveys.length === 0) return;
+            
+            // For now, we'll use the first selected survey
+            // In the future, we might want to handle multiple surveys
+            this.currentSurvey = this.selectedSurveys[0];
+            
+            // Load survey questions
+            createResource({
+                url: 'frappe.client.get',
+                params: {
+                    doctype: "CRM POI Survey Master",
+                    name: this.currentSurvey,
+                    fields: ['*']
+                },
+            }).fetch().then(response => {
+                // Load the child table data (survey questions)
+                this.surveyQuestions = response.table_rwyu || [];
+                this.currentQuestionIndex = 0;
+                this.surveyAnswers = {};
+            }).catch(error => {
+                console.error("Failed to load survey:", error);
+                alert("Failed to load survey. Please try again.");
+            });
+        },
+        getCurrentQuestion() {
+            const question = this.surveyQuestions[this.currentQuestionIndex];
+            
+            // Initialize surveyAnswers for Multi Select questions as an array
+            if (question.main_question_type === 'Multi Select' && !Array.isArray(this.surveyAnswers[question.name])) {
+                this.surveyAnswers[question.name] = [];
+            }
+            
+            return question;
+        },
+        getQuestionOptions(question) {
+            if (question.main_question_options) {
+                return question.main_question_options.split('\n').filter(option => option.trim() !== '');
+            }
+            return [];
+        },
+        setRating(questionName, rating) {
+            this.surveyAnswers[questionName] = rating;
+        },
+        getRating(questionName) {
+            return this.surveyAnswers[questionName] || 0;
+        },
+        isCurrentQuestionValid() {
+            const currentQuestion = this.getCurrentQuestion();
+            if (!currentQuestion.mandatory_answer) {
+                return true;
+            }
+            
+            const answer = this.surveyAnswers[currentQuestion.name];
+            
+            // For Select, check if an option is selected (answer is a string)
+            if (currentQuestion.main_question_type === 'Select') {
+                return answer !== undefined && answer !== null && answer !== '';
+            }
+            
+            // For Multi Select, check if at least one option is selected (answer is an array)
+            if (currentQuestion.main_question_type === 'Multi Select') {
+                return answer && Array.isArray(answer) && answer.length > 0;
+            }
+            
+            // For Data and Rating, check if answer exists
+            if (currentQuestion.main_question_type === 'Data' || currentQuestion.main_question_type === 'Rating') {
+                return answer !== undefined && answer !== null && answer !== '';
+            }
+            
+            return false;
+        },
+        nextQuestion() {
+            if (this.isCurrentQuestionValid() && this.currentQuestionIndex < this.surveyQuestions.length - 1) {
+                this.currentQuestionIndex++;
+            }
+        },
+        previousQuestion() {
+            if (this.currentQuestionIndex > 0) {
+                this.currentQuestionIndex--;
+            }
+        },
+        submitSurvey() {
+            if (!this.isCurrentQuestionValid()) {
+                alert("Please provide an answer for the mandatory question.");
+                return;
+            }
+            
+            // Format survey details as requested
+            let surveyDetails = "";
+            this.surveyQuestions.forEach((question, index) => {
+                if (index > 0) {
+                    surveyDetails += "\n-------\n";
+                }
+                
+                surveyDetails += "Q) " + question.main_question + "\n";
+                
+                const answer = this.surveyAnswers[question.name];
+                if (answer !== undefined && answer !== null) {
+                    if (Array.isArray(answer)) {
+                        // For multi-select answers
+                        surveyDetails += "A) " + answer.join(", ");
+                    } else {
+                        // For single answers
+                        surveyDetails += "A) " + answer;
+                    }
+                } else {
+                    surveyDetails += "A) No answer provided";
+                }
+            });
+            
+            // Create a new CRM POI Notify with notification_type = 'Survey'
+            createResource({
+                url: 'frappe.client.insert',
+                params: {
+                    doc: {
+                        doctype: "CRM POI Notify",
+                        docstatus: 1,
+                        notification_type: "Survey",
+                        crm_poi: this.id,
+                        poi_name: this.poi_details.doc.location_name,
+                        survey_master: this.currentSurvey,
+                        notification_time: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                        notified_by: sessionUser(),
+                        notification_detail: surveyDetails
+                    }
+                },
+                onSuccess: (data) => {
+                    alert('Survey submitted successfully!');
+                    
+                    // Reset survey state
+                    this.currentSurvey = null;
+                    this.surveyQuestions = [];
+                    this.currentQuestionIndex = 0;
+                    this.surveyAnswers = {};
+                    this.selectedSurveys = [];
+                    window.location.reload();
+                },
+                onError: (error) => {
+                    console.error('Error submitting survey:', error);
+                    alert('Error submitting survey. Please try again.');
+                }
+            }).submit();
         },
         submitMarketingMaterialRequest(){
             if (!this.materialNotes || this.materialNotes.trim() === '') {

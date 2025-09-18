@@ -9,13 +9,15 @@
   "amended_from",
   "notification_type",
   "crm_poi",
+  "poi_name",
   "survey_master",
   "column_break_mfre",
   "notification_time",
   "notified_by",
   "is_validated",
   "section_break_pzse",
-  "detail"
+  "detail",
+  "notification_detail"
  ],
  "fields": [
   {
@@ -66,6 +68,7 @@
   {
    "fieldname": "detail",
    "fieldtype": "Table",
+   "hidden": 1,
    "label": "Detail",
    "options": "CRM POI Notification Detail"
   },
@@ -77,9 +80,11 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval: doc.notification_type === 'Survey'",
    "fieldname": "survey_master",
    "fieldtype": "Link",
    "label": "Survey Master",
+   "mandatory_depends_on": "eval: doc.notification_type === 'Survey'",
    "options": "CRM POI Survey Master"
   },
   {
@@ -89,13 +94,23 @@
    "fieldtype": "Check",
    "label": "Is Validated",
    "read_only": 1
+  },
+  {
+   "fieldname": "poi_name",
+   "fieldtype": "Data",
+   "label": "POI Name"
+  },
+  {
+   "fieldname": "notification_detail",
+   "fieldtype": "Long Text",
+   "label": "Notification Detail"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-10 22:07:04.419794",
+ "modified": "2025-09-18 12:10:53.581707",
  "modified_by": "vinodkumarkolli@gmail.com",
  "module": "Crm Extension",
  "name": "CRM POI Notify",
