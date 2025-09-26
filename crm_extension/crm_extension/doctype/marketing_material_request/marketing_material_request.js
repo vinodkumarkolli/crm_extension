@@ -137,6 +137,24 @@ frappe.ui.form.on("Marketing Material Request", {
                     assignPaymentBatch(frm)
                 },__("Payments"))
             }
+            if(frm.doc.request_status === 'Shortlisted' && (frm.doc.process_stage === 'Submitted Quotation for Requirements' || frm.doc.process_stage === 'Accepted Quotation')){
+                frm.add_custom_button(__("Ask Vendor to resubmit Quotation"), function () {
+                        frappe.call({
+                            method:"crm_extension.crm_extension.doctype.marketing_material_request.marketing_material_request.change_process_status",
+                            args:{
+                                "doc": frm.doc.name,
+                                "process_stage":"Asked Vendor Resubmit Quotation",
+                                "user": frappe.session.user
+                            },
+                            callback:function(r){
+                                if(!r.exc){
+                                    //refresh_field('status');
+                                    frappe.msgprint("Process Stage successfully changed to - Asked Vendor Resubmit Quotation")
+                                }
+                            }
+                        });                   
+                    },__("Approvals"))
+            }
             if(frm.doc.request_status === 'Shortlisted' && frm.doc.vendor){
                 //Procurement Stages Options
                 if(frm.doc.process_stage === 'Procurement'){

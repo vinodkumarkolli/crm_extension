@@ -97,5 +97,14 @@
   "modified": "2025-04-14 11:00:55.486539",
   "name": "Batch id Allocated",
   "stage_name": "Batch id Allocated"
+ },
+ {
+  "activity_evaluator": "Vendor",
+  "activity_performer": "Company Management",
+  "docstatus": 0,
+  "doctype": "Material Procurement Stage",
+  "modified": "2025-09-26 16:30:22.002282",
+  "name": "Asked Vendor Resubmit Quotation",
+  "stage_name": "Asked Vendor Resubmit Quotation"
  }
 ]
