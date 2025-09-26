@@ -472,7 +472,7 @@ export default {
                         'name':this.batchId,
                         'allocated_requests':this.materialRequests.data.length,
                         'recce_requests':this.materialRequests.recce.length,
-                        'quotation_requests':this.materialRequests.quotation.length,
+                        'quotation_requests':this.materialRequests.quotation.length + this.materialRequests.requotations.length,
                         'under_review_quotations':this.materialRequests.quotation_submitted.length,
                         'manufacturing_requests':this.materialRequests.manufacturing.length,
                         'delivery_requests':this.materialRequests.delivery.length,
