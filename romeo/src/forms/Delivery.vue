@@ -471,7 +471,7 @@ export default {
             this.userVendorDetails.data = res
             // console.log(this.userVendorDetails.data)
             if(this.userVendorDetails.data.roles.length > 0){
-                if(this.userVendorDetails.data.vendor && this.containsAny(this.userVendorDetails.data.roles,['Vendor Admin','Company Evaluator'])){
+                if(this.userVendorDetails.data.vendor && this.containsAny(this.userVendorDetails.data.roles,['Vendor Admin','Company Evaluator','Vendor Employee'])){
                     this.dataValidated=true;
                     this.materialRequest = createDocumentResource({
                         doctype:'Marketing Material Request',
