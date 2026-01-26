@@ -159,7 +159,7 @@
    "link_fieldname": "crm_poi"
   }
  ],
- "modified": "2026-01-25 20:24:47.117525",
+ "modified": "2026-01-26 09:45:58.114037",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI",
@@ -183,6 +183,7 @@
    "create": 1,
    "email": 1,
    "export": 1,
+   "import": 1,
    "print": 1,
    "read": 1,
    "report": 1,
