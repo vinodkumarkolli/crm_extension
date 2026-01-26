@@ -67,14 +67,13 @@ import {sessionUser} from '../data/session'
 import {createListResource,Autocomplete,Card, createResource} from 'frappe-ui'
 import { ref } from 'vue';
 
-const userRes = createResource({
-    url: 'frappe.auth.get_logged_user',
+const userRolesRes = createResource({
+    url: 'crm_extension.crm_extension.api.get_current_user_roles',
     auto: true
 })
 
 const hasAccess = computed(() => {
-    const data = userRes.data || {}
-    const roles = (data.roles || data.message?.roles || []).map(r => r.trim().toLowerCase());
+    const roles = (userRolesRes.data || []).map(r => r.trim().toLowerCase());
     return roles.some(r => ["bazooka user", "romeo admin", "system manager", "administrator"].includes(r));
 });
 
