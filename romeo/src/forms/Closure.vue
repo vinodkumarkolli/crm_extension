@@ -3,7 +3,7 @@
     <div v-if="poi_details.doc" class="bg-white shadow-md rounded-lg p-4 mb-4">
         <h3 class="text-xl font-semibold mb-2">{{ id }}</h3>
         <h3 class="text-xl font-semibold mb-2">{{ poi_details.doc.location_name }}</h3>
-        <div class="grid grid-cols-3 gap-2">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
             <div>
                 <!-- <p class="text-gray-600">CRM Lead ID:</p> -->
                 <label for="det_crm_lead_id" class="block text-gray-700 text-sm font-bold mb-2">
@@ -94,14 +94,14 @@
         </div>
     </div>
     <!--Generate Tab Control for Merge, Link Distributor, Raise a Board Request Forms-->
-    <div v-if="poi_details.doc && poi_details.doc.poi_status =='Active'" class="flex justify-center space-x-4">
-        <button @click="toggleClosureForm" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-            Report Permanently Closed
+    <div v-if="poi_details.doc && poi_details.doc.poi_status =='Active'" class="flex flex-wrap justify-center gap-2">
+        <button @click="toggleClosureForm" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+            Report Closed
         </button>
     </div>
     <div v-if="showClosureForm" class="bg-white shadow-md rounded-lg p-4 mb-4">
         <h3 class="text-xl font-semibold flex justify-center mb-2">Closure Form</h3>
-        <div class="grid grid-cols-2 gap-4 py-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
             <label for="closure_comment" class="block text-gray-700 text-sm font-bold mb-2">
                 Comment:
             </label>

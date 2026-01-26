@@ -4,7 +4,7 @@
         <div v-if="poi_details.doc" class="bg-white shadow-md rounded-lg p-4 mb-4">
             <h3 class="text-xl font-semibold mb-2">{{ id }}</h3>
             <h3 class="text-xl font-semibold mb-2">{{ poi_details.doc.location_name }}</h3>
-            <div class="grid grid-cols-3 gap-2">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                 <div>
                     <!-- <p class="text-gray-600">CRM Lead ID:</p> -->
                     <label for="det_crm_lead_id" class="block text-gray-700 text-sm font-bold mb-2">
@@ -95,18 +95,18 @@
             </div>
         </div>
         <!--Generate Tab Control for Merge, Link Distributor, Raise a Board Request Forms-->
-        <div v-if="poi_details.doc" class="flex justify-center space-x-4">
-            <button @click="toggleGlobeActivity" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                Globe
+        <div v-if="poi_details.doc" class="flex flex-wrap justify-center gap-2">
+            <button @click="toggleGlobeActivity" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Activity
             </button>
-            <button  @click="toggleMergeForm" v-if="(poi_details.doc.poi_status=='Active')&&(pois.items?.length>0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                Merge Request
+            <button  @click="toggleMergeForm" v-if="(poi_details.doc.poi_status=='Active')&&(pois.items?.length>0)" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Merge
             </button>
-            <button @click="toggleSurveyForm" v-if="(poi_details.doc.poi_status=='Active')&&(source == 'Field Assist')" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                Take Survey
+            <button @click="toggleSurveyForm" v-if="(poi_details.doc.poi_status=='Active')&&(source == 'Field Assist')" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Survey
             </button>
-            <button @click="toggleBoardForm" v-if="(poi_details.doc.poi_status=='Active')&&(source == 'Field Assist')" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                Raise a Marketing Material Request
+            <button @click="toggleBoardForm" v-if="(poi_details.doc.poi_status=='Active')&&(source == 'Field Assist')" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Marketing
             </button>
         </div>
         <!--Generate Merge Form-->
@@ -114,7 +114,7 @@
             <h3 class="text-xl font-semibold flex justify-center mb-2">Merge Request</h3>
                 <!-- <label for="toPOISelecteor" class="text-gray-600">Select a POI:</label> -->
                 <Autocomplete :options="pois.items" v-model="mergeToLocation" placeholder="Select a POI" id="toPOISelecteor"/>
-                <div v-if="mergeToLocation" class="grid grid-cols-2 gap-2 py-4">
+                <div v-if="mergeToLocation" class="grid grid-cols-1 md:grid-cols-2 gap-2 py-4">
                     <div>
                         <label for="merge_locationId" class="block text-gray-700 text-sm font-bold mb-2">
                             Location ID:
@@ -314,7 +314,7 @@
             
             <!-- <h3 class="flex justify-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><mark class="px-2 text-white bg-blue-600 rounded-sm dark:bg-blue-500">Globe</mark> Activity</h3> -->
              <h3 class="flex justify-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Activity</h3>
-            <ol>
+            <ol v-if="hasActivity">
                 <li v-for="request in rejectedMergeRequests.items" :key="request.name" class="bg-white shadow-md rounded-lg p-4 mb-4">
                     <p>Request ID: <strong>{{ request.name }}</strong> is in <strong> {{ request.request_status }} </strong> 
                         stage that tried merging present location with <strong>{{ request.to_poi_location_name }}</strong> which is at <strong>{{ request.radial_difference_in_mtrs }}</strong> mts away.</p><br/>
@@ -345,6 +345,9 @@
                     </div> -->
                 </li>
             </ol>
+            <div v-else class="text-center text-gray-500 py-4">
+                No Activity found
+            </div>
         </div>
     </div>
 </template>
@@ -395,6 +398,15 @@ export default {
                 surveyAnswers: ref({})
             }
         },
+    computed: {
+        hasActivity() {
+            const r1 = this.rejectedMergeRequests.items || [];
+            const r2 = this.mergeRequests.items || [];
+            const r3 = this.marketingRequests.items || [];
+            const r4 = this.surveyItems.items || [];
+            return r1.length > 0 || r2.length > 0 || r3.length > 0 || r4.length > 0;
+        }
+    },
     mounted(){
         createResource({
             url:'frappe.client.get',

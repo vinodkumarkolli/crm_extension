@@ -18,7 +18,7 @@ export default {
 <router-link :to="to" class="link" :class="{active:isActive}">
     <i class="icon" :class="icon"/>
     <transition name="fade">
-        <span v-if="!collapsed">
+        <span class="link-text" :class="{ 'hidden': collapsed }">
             <slot />
         </span>
     </transition>
@@ -57,5 +57,28 @@ export default {
     flex-shrink: 0;
     width:25px;
     margin-right: 10px;
+}
+.link-text.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .link {
+        flex-direction: column;
+        height: auto;
+        padding: 0.5em;
+        margin: 0;
+        justify-content: center;
+        font-size: 0.8em;
+    }
+    .link .icon {
+        margin-right: 0;
+        margin-bottom: 4px;
+        width: auto;
+        font-size: 1.2em;
+    }
+    .link-text.hidden {
+        display: block; /* Always show text on mobile */
+    }
 }
 </style>
