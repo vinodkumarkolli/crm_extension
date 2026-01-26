@@ -1,6 +1,6 @@
 <!--Generate code vue code using leaflet.js Openstreet Maps map interface-->
 <template>
-  <div class=" grid place-items-center px-10 py-10 bg-gray-100 h-screen">  
+  <div v-if="hasAccess" class=" grid place-items-center px-10 py-10 bg-gray-100 h-screen">  
     <router-view></router-view>
     <!-- Source for Card Component https://www.youtube.com/watch?v=djpXDquzrvQ & https://github.com/frappe/frappe-ui/blob/main/src/components/Card.vue -->
     <Card title="Bazooka" subtitle="Lets Find Juliet!"  class="flex flex-col items-center">
@@ -22,7 +22,9 @@
       </div>
     </Card>
   </div>
-  
+  <div v-else class="flex h-screen items-center justify-center bg-gray-100">
+      <div class="text-xl font-bold text-red-500">Restricted Access</div>
+  </div>
 </template>
 <script>
 import { geography } from '../store/locations';
@@ -59,10 +61,22 @@ export default {
 }
 </script>
 <script setup>
+import { computed } from 'vue';
 import {DotLottieVue} from '@lottiefiles/dotlottie-vue'
 import {sessionUser} from '../data/session'
-import {createListResource,Autocomplete,Card} from 'frappe-ui'
+import {createListResource,Autocomplete,Card, createResource} from 'frappe-ui'
 import { ref } from 'vue';
+
+const userRes = createResource({
+    url: 'frappe.auth.get_logged_user',
+    auto: true
+})
+
+const hasAccess = computed(() => {
+    const data = userRes.data || {}
+    const roles = (data.roles || data.message?.roles || []).map(r => r.trim().toLowerCase());
+    return roles.some(r => ["bazooka user", "romeo admin", "system manager", "administrator"].includes(r));
+});
 
 // let territories = ref([])
 // createListResource({

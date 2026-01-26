@@ -1,10 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { session } from './data/session'
-import { userResource } from '@/data/user'
+import { call } from 'frappe-ui'
 
 const routes = [
   {
     path: '/',
+    name: 'Root',
+    component: { template: '<div></div>' }
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: () => import('@/pages/Home.vue'),
   },
@@ -93,11 +98,12 @@ let router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   let isLoggedIn = session.isLoggedIn
-  try {
-    await userResource.promise
-  } catch (error) {
-    isLoggedIn = false
+  
+  if (to.path === '/') {
+      next('/home')
+      return
   }
+
   if(!isLoggedIn){
     window.location.href="/login?redirect-to=romeo"
   }

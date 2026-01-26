@@ -13,48 +13,18 @@ export default{
         const route = useRoute()
         const router = useRouter()
         
-        const userDoc = createResource({
-            url: 'frappe.client.get',
-            params: {
-                doctype: 'User',
-                name: sessionUser()
-            },
-            auto: true
-        })
-        
-        const userRoles = computed(() => {
-            if (userDoc.data && userDoc.data.roles) {
-                return userDoc.data.roles.map(r => r.role);
-            }
-            return [];
-        })
-        
         const isBazookaPage = computed(() => route.path === '/bazooka')
-
-        const canSeeBazooka = computed(() => {
-            const roles = userRoles.value.map(r => r.toLowerCase())
-            return roles.includes('romeo admin') || roles.includes('bazooka user') || roles.includes('system manager') || roles.includes('administrator')
-        })
-        
-        const canSeeLamp = computed(() => {
-            const roles = userRoles.value.map(r => r.toLowerCase())
-            return roles.includes('romeo admin') || roles.includes('lamp user') || roles.includes('system manager') || roles.includes('administrator')
-        })
         
         function goBack() {
             router.back()
         }
 
-        return {collapsed,toggleSidebar,sidebarWidth, isBazookaPage, canSeeBazooka, canSeeLamp, goBack}
+        return {collapsed,toggleSidebar,sidebarWidth, isBazookaPage, goBack}
     }
 }
 </script>
 <template>
     <div class="sidebar" :style="{width:sidebarWidth}">
-        <div style="color: white; font-size: 10px; word-break: break-all;" v-if="false">
-            Roles: {{ userRoles }}
-            Data: {{ userRes }}
-        </div>
         <!-- <h1>
             <span v-if="collapsed">
                 <div>V</div>
@@ -64,8 +34,8 @@ export default{
         </h1> -->
         <div class="sidebar-links">
             <template v-if="!isBazookaPage">
-                <SidebarLink v-if="canSeeBazooka" to="/" icon="fas fa-bolt">Bazooka</SidebarLink>
-                <SidebarLink v-if="canSeeLamp" to="/lamp" icon="fas fa-lightbulb">Lamp</SidebarLink>
+                <SidebarLink to="/home" icon="fas fa-bolt">Bazooka</SidebarLink>
+                <SidebarLink to="/lamp" icon="fas fa-lightbulb">Lamp</SidebarLink>
             </template>
             <SidebarLink v-else to="#" icon="fas fa-arrow-left" @click.prevent="goBack">Back</SidebarLink>
         </div>
