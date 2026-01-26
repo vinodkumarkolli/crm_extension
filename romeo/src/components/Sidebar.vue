@@ -3,7 +3,8 @@ import SidebarLink from './SidebarLink.vue'
 import { collapsed,toggleSidebar,sidebarWidth } from '@/store/sidebarstate';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { userResource } from '@/data/user';
+import { createResource } from 'frappe-ui';
+import { sessionUser } from '@/data/session';
 
 export default{
     props:{},
@@ -12,16 +13,32 @@ export default{
         const route = useRoute()
         const router = useRouter()
         
+        const userDoc = createResource({
+            url: 'frappe.client.get',
+            params: {
+                doctype: 'User',
+                name: sessionUser()
+            },
+            auto: true
+        })
+        
+        const userRoles = computed(() => {
+            if (userDoc.data && userDoc.data.roles) {
+                return userDoc.data.roles.map(r => r.role);
+            }
+            return [];
+        })
+        
         const isBazookaPage = computed(() => route.path === '/bazooka')
-        
-        const userRoles = computed(() => userResource.data?.roles || [])
-        
+
         const canSeeBazooka = computed(() => {
-            return userRoles.value.includes('Romeo Admin') || userRoles.value.includes('Bazooka User')
+            const roles = userRoles.value.map(r => r.toLowerCase())
+            return roles.includes('romeo admin') || roles.includes('bazooka user') || roles.includes('system manager') || roles.includes('administrator')
         })
         
         const canSeeLamp = computed(() => {
-            return userRoles.value.includes('Romeo Admin') || userRoles.value.includes('Lamp User')
+            const roles = userRoles.value.map(r => r.toLowerCase())
+            return roles.includes('romeo admin') || roles.includes('lamp user') || roles.includes('system manager') || roles.includes('administrator')
         })
         
         function goBack() {
@@ -34,6 +51,10 @@ export default{
 </script>
 <template>
     <div class="sidebar" :style="{width:sidebarWidth}">
+        <div style="color: white; font-size: 10px; word-break: break-all;" v-if="false">
+            Roles: {{ userRoles }}
+            Data: {{ userRes }}
+        </div>
         <!-- <h1>
             <span v-if="collapsed">
                 <div>V</div>
