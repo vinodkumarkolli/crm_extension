@@ -15,6 +15,7 @@
   "column_break_mhxn",
   "location_name",
   "pincode",
+  "poi_type",
   "section_break_ctvs",
   "crm_lead_id",
   "lead_name",
@@ -141,6 +142,12 @@
    "mandatory_depends_on": "eval:doc.poi_status === 'Merged'",
    "options": "CRM POI",
    "read_only": 1
+  },
+  {
+   "fieldname": "poi_type",
+   "fieldtype": "Select",
+   "label": "POI Type",
+   "options": "\nPHARMA\nGT"
   }
  ],
  "grid_page_length": 50,
@@ -152,11 +159,11 @@
    "link_fieldname": "crm_poi"
   }
  ],
- "modified": "2025-09-10 17:50:31.611554",
+ "modified": "2026-01-25 20:24:47.117525",
  "modified_by": "Administrator",
  "module": "Crm Extension",
  "name": "CRM POI",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
