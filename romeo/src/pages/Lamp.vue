@@ -2,19 +2,21 @@
   <div v-if="hasAccess" class=" grid place-items-center px-10 py-10 bg-gray-100 h-screen">
     <router-view></router-view>
     <!-- Source for Card Component https://www.youtube.com/watch?v=djpXDquzrvQ & https://github.com/frappe/frappe-ui/blob/main/src/components/Card.vue -->
-    <Card title="Lamp" subtitle="A guiding app for Vendors" class="flex flex-col items-center">
-      <div class="flex flex-col items-center">
+    <Card title="Lamp" subtitle="A guiding app for Vendors" class="flex flex-col items-center w-full max-w-md mx-auto shadow-lg rounded-xl overflow-hidden">
+      <div class="flex flex-col items-center p-6">
         <DotLottieVue style="height: 150px; width: 150px" autoplay loop src="https://lottie.host/e42df8d1-452a-4f40-b859-a4c0c5c89327/3km4ioB8r3.lottie" />
       </div>
-      <div class="flex flex-row justify-center items-center ">
-        <Autocomplete variant="subtle" v-model="selectedVendor" :options="vendors.items" placeholder="Select Vendor"  />
-        <button type="button" @click="launchVendorDashboard" title="Launch Vendor Dashboard" class="text-white unique-color-map hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-        </svg>
-        <span class="sr-only">Launch Vendor Dashboard</span>
+      <div class="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3 w-full px-6 pb-8">
+        <div class="w-full sm:flex-1 min-w-0">
+            <Autocomplete variant="subtle" v-model="selectedVendor" :options="vendors.items" placeholder="Select Vendor" class="w-full" />
+        </div>
+        <button type="button" @click="launchVendorDashboard" title="Launch Vendor Dashboard" class="text-white unique-color-map hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:rounded-full text-sm px-5 py-2.5 text-center inline-flex items-center justify-center shadow-md transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full sm:w-auto shrink-0">
+            <span class="sm:hidden mr-2">Launch</span>
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+            <span class="sr-only">Launch Vendor Dashboard</span>
         </button>
-        <!-- <button type="">Click me</button> -->
       </div>
     </Card>
   </div>

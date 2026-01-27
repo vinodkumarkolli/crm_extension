@@ -97,7 +97,7 @@ function initMap(setlat,setlong,districts) {
 
     const mapResource = createListResource({
         doctype: "CRM POI",
-        fields:["*"],
+        fields:["name", "location_name", "crm_lead_id", "fieldassist_id", "fieldmate_id", "workmate_id", "poi_status", "longitude", "latitude", "poi_type"],
         filters:[["custom_district","in",districts],["poi_status","=","Active"]],
         pageLength: "None",
     })

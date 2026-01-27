@@ -14,12 +14,14 @@ export default{
         const router = useRouter()
         
         const isBazookaPage = computed(() => route.path === '/bazooka')
+        const isLampPage = computed(() => route.path.startsWith('/lamp') && route.path !== '/lamp')
+        const showBackButton = computed(() => isBazookaPage.value || isLampPage.value)
         
         function goBack() {
             router.back()
         }
 
-        return {collapsed,toggleSidebar,sidebarWidth, isBazookaPage, goBack}
+        return {collapsed,toggleSidebar,sidebarWidth, showBackButton, goBack}
     }
 }
 </script>
@@ -33,7 +35,7 @@ export default{
             <span v-else>Vue Sidebar</span>
         </h1> -->
         <div class="sidebar-links">
-            <template v-if="!isBazookaPage">
+            <template v-if="!showBackButton">
                 <SidebarLink to="/home" icon="fas fa-bolt">Bazooka</SidebarLink>
                 <SidebarLink to="/lamp" icon="fas fa-lightbulb">Lamp</SidebarLink>
             </template>

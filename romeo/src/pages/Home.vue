@@ -3,17 +3,21 @@
   <div v-if="hasAccess" class=" grid place-items-center px-10 py-10 bg-gray-100 h-screen">  
     <router-view></router-view>
     <!-- Source for Card Component https://www.youtube.com/watch?v=djpXDquzrvQ & https://github.com/frappe/frappe-ui/blob/main/src/components/Card.vue -->
-    <Card title="Bazooka" subtitle="Lets Find Juliet!"  class="flex flex-col items-center">
-      <div class="flex flex-col items-center">
+    <Card title="Bazooka" subtitle="Lets Find Juliet!"  class="flex flex-col items-center w-full max-w-md mx-auto shadow-lg rounded-xl overflow-hidden">
+      <div class="flex flex-col items-center p-6">
         <DotLottieVue style="height: 150px; width: 150px" autoplay loop src="https://lottie.host/af681258-e29a-4769-b738-e7c2038fd634/sv9sNIp7cO.lottie" />
       </div>
-      <div class="flex flex-row justify-center items-center ">
-        <Autocomplete
-          :options="territories"
-          v-model="selectedLocation"
-          placeholder="Select Place"
-        />
-        <button type="button" id="launchMap" @click="launchMapSetting" title="Lets Touchdown" class="text-white unique-color-map hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      <div class="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3 w-full px-6 pb-8">
+        <div class="w-full sm:flex-1 min-w-0">
+            <Autocomplete
+            :options="territories"
+            v-model="selectedLocation"
+            placeholder="Select Place"
+            class="w-full"
+            />
+        </div>
+        <button type="button" id="launchMap" @click="launchMapSetting" title="Lets Touchdown" class="text-white unique-color-map hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:rounded-full text-sm px-5 py-2.5 text-center inline-flex items-center justify-center shadow-md transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full sm:w-auto shrink-0">
+        <span class="sm:hidden mr-2">Touchdown</span>
         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
         </svg>
