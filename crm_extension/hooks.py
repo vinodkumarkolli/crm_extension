@@ -8,7 +8,7 @@ app_license = "mit"
 # Apps
 # ------------------
 
-# required_apps = []
+required_apps = ["crm"]
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
@@ -61,6 +61,7 @@ app_license = "mit"
 
 # website user home page (by Role)
 role_home_page = {
+    "System Manager":"desk",
  	"CRM Viewer": "romeo"
 }
 
